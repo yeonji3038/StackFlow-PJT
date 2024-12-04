@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>상품 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            width: 95%;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #e9ecef;
+            font-weight: normal;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .form-control {
+            width: 90%;
+            padding: 4px;
+            border: 1px solid #ced4da;
+            border-radius: 3px;
+        }
+        .checkbox-cell {
+            width: 30px;
+            text-align: center;
+        }
+        .code-cell {
+            width: 350px;
+        }
+        .size-cell {
+            width: 80px;
+        }
+        .color-cell {
+            width: 100px;
+        }
+        .quantity-cell {
+            width: 100px;
+        }
+        .quantity-input {
+            width: 80px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th class="checkbox-cell"></th>
+                <th>상품코드</th>
+                <th>상품명</th>
+                <th>사이즈</th>
+                <th>색상코드</th>
+                <th>지시수량</th>
+                <th>지시 매장 재고</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}">
+                <td class="checkbox-cell">
+                    <input type="checkbox">
+                </td>
+                <td class="code-cell" th:text="${product.prodCode}"></td>
+                <td th:text="${product.prodName}"></td>
+                <td class="size-cell" th:text="${product.size}"></td>
+                <td class="color-cell" th:text="${product.colorCode}"></td>
+                <td class="quantity-cell">
+                    <input type="text" class="form-control quantity-input" th:value="${product.respQuan}">
+                </td>
+                <td>
+                    <select class="form-control">
+                        <option>매장 선택</option>
+                        <option th:text="${product.store}"></option>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
