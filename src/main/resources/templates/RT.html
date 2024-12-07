@@ -61,6 +61,12 @@
 <body>
 
 <div class="container">
+
+    <form action="/RT" method="get" style="margin-bottom: 20px;">
+        <input type="text" name="keyword" placeholder="상품코드를 검색해주세요." style="padding: 5px; width: 300px;">
+        <button type="submit" style="padding: 5px;">검색</button>
+    </form>
+
     <div>
         <table>
             <thead>
@@ -75,7 +81,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="product : ${products}">
+            <!-- 검색 결과가 있을 때 -->
+            <tr th:each="product : ${searchList}" th:if="${searchList.size() > 0}">
                 <td class="checkbox-cell">
                     <input type="checkbox">
                 </td>
@@ -89,9 +96,14 @@
                 <td>
                     <select class="form-control">
                         <option>매장 선택</option>
-                        <option th:text="${product.store}"></option>
+                        <option th:each="store : ${product.stores}" th:value="${store.id}" th:text="${store.storeName}"></option>
                     </select>
                 </td>
+            </tr>
+
+            <!-- 검색 결과가 없을 때 -->
+            <tr th:unless="${searchList.size() > 0}">
+                <td colspan="7" style="text-align: center;">검색 결과가 없습니다.</td>
             </tr>
             </tbody>
         </table>

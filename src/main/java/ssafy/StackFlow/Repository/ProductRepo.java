@@ -1,8 +1,9 @@
-package ssafy.StackFlow.Product;
+package ssafy.StackFlow.Repository;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ssafy.StackFlow.Domain.Product;
 
 import java.util.List;
 
