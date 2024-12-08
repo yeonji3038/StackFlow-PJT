@@ -14,13 +14,13 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="product_id")
     private Long id;
 
     private String prodCode;
     private String prodName;
     private String size;
     private String colorCode;
-    private int respQuan;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "products")
