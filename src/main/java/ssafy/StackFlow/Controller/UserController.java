@@ -16,11 +16,7 @@ import ssafy.StackFlow.Service.user.UserService;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService userService;
-
-//    public UserController(UserService userService) {
-//        this.userService = userService;
-//    }
+    private final UserService userService; // final 필드
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm) {
