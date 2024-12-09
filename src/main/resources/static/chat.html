@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        #messages {
+            border: 1px solid #ccc;
+            height: 300px;
+            overflow-y: scroll;
+            margin-top: 10px;
+            padding: 10px;
+        }
+        .message {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+  <div id="chat">
+      <input id="username" type="text" placeholder="이름을 입력하세요..." />
+      <input id="message" type="text" placeholder="메시지를 입력하세요..." />
+      <button onclick="sendMessage()">전송</button>
+      <div id="messages"></div>
+  </div>
+
+  <script>
+      var stompClient = null;
+
+      function connect() {
+          var socket = new SockJS('http://localhost:8080/chat');
+          stompClient = Stomp.over(socket);
+          stompClient.connect({}, function (frame) {
+              console.log('Connected: ' + frame);
+              stompClient.subscribe('/topic/messages', function (message) {
+                  showMessage(JSON.parse(message.body));
+              });
+          }, function (error) {
+              console.error('Error connecting: ' + error);
+          });
+      }
+
+      window.onload = function() {
+          connect();
+      };
+
+      function sendMessage() {
+          var message = {
+              sender: document.getElementById('username').value,
+              content: document.getElementById('message').value
+          };
+          stompClient.send("/app/send", {}, JSON.stringify(message));
+          document.getElementById('message').value = '';
+      }
+
+      function showMessage(message) {
+          var messagesDiv = document.getElementById('messages');
+          messagesDiv.innerHTML += '<div class="message"><strong>' + message.sender + ':</strong> ' + message.content + '</div>';
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+  </script>
+</body>
+</html>
