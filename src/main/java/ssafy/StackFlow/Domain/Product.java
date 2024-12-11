@@ -20,7 +20,10 @@ public class Product {
     private String prodCode;
     private String prodName;
     private String size;
-    private String colorCode;
+
+    @OneToOne
+    @JoinColumn(name = "prodColor")
+    private Color colorCode;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "products")

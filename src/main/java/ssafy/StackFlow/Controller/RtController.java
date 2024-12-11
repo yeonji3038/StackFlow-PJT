@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ssafy.StackFlow.Domain.Product;
 import ssafy.StackFlow.Domain.RT;
+import ssafy.StackFlow.Domain.Color;
+import ssafy.StackFlow.Service.ColorService;
 import ssafy.StackFlow.Service.RtService;
 
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RtController {
     private final RtService rtService;
-
+    private final ColorService colorService;
     @GetMapping("/RT")
     public String list(Model model, String keyword) {
         List<Product> searchList;
@@ -28,7 +30,9 @@ public class RtController {
         }else {
             searchList = rtService.findProducts();
         }
+        List<Color> colorList = colorService.findAllColors();
         model.addAttribute("searchList", searchList);
+        model.addAttribute("");
         return "RT";
     }
 
