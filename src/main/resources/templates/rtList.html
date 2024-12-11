@@ -57,29 +57,31 @@
 
     <table>
         <thead>
-            <tr>
-                <th>요청일시</th>
-                <th>상품코드</th>
-                <th>상품명</th>
-                <th>사이즈</th>
-                <th>색상코드</th>
-                <th>요청수량</th>
-                <th>요청매장</th>
-            </tr>
+        <tr>
+            <th>요청일시</th>
+            <th>상품코드</th>
+            <th>상품명</th>
+            <th>사이즈</th>
+            <th>색상코드</th>
+            <th>요청수량</th>
+            <th>요청매장</th>
+            <th>상태</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="rt : ${rtList}">
-                <td th:text="${#temporals.format(rt.reqDate, 'yyyy-MM-dd HH:mm')}"></td>
-                <td th:text="${rt.prodCode}"></td>
-                <td th:text="${rt.prodName}"></td>
-                <td th:text="${rt.size}"></td>
-                <td th:text="${rt.colorCode}"></td>
-                <td th:text="${rt.rtProducts[0].reqQuant}"></td>
-                <td th:text="${rt.reqStore}"></td>
-            </tr>
-            <tr th:if="${rtList.empty}">
-                <td colspan="7" style="text-align: center;">등록된 R/T 지시가 없습니다.</td>
-            </tr>
+        <tr th:each="rt : ${rtList}">
+            <td th:text="${#temporals.format(rt.reqDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${rt.prodCode}"></td>
+            <td th:text="${rt.prodName}"></td>
+            <td th:text="${rt.size}"></td>
+            <td th:text="${rt.colorCode}"></td>
+            <td th:text="${rt.rtProducts[0].reqQuant}"></td>
+            <td th:text="${rt.reqStore}"></td>
+            <td th:text="${rt.status.getKoreanStatus()}"></td>
+        </tr>
+        <tr th:if="${rtList.empty}">
+            <td colspan="8" style="text-align: center;">등록된 R/T 지시가 없습니다.</td>
+        </tr>
         </tbody>
     </table>
 </div>
