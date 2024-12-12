@@ -31,12 +31,4 @@ public class Signup {
     private String email; //이메일
 
 
-//    public void setUsername(String username) {
-//    }
-//
-//    public void setEmail(String email) {
-//    }
-//
-//    public void setPassword(String encode) {
-//    }
 }
