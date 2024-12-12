@@ -105,7 +105,7 @@
 
                 <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="POST">
                     <div class="mb-3">
-                        <label class="form-label">Username</label>
+                        <label class="form-label">Id</label>
                         <input type="text" class="form-control" th:field="*{username}" required>
                     </div>
                     <div class="mb-3">
@@ -123,7 +123,7 @@
                     <button type="submit" class="btn btn-light btn-md mt-2">Sign Up</button>
                 </form>
 
-                <button type="button" class="btn btn-light btn-md mt-2" onclick="location.href='/login'">BACK</button>
+                <button type="button" class="btn btn-light btn-md mt-2" onclick="location.href='/user/login'">BACK</button>
             </div>
         </div>
     </div>

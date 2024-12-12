@@ -40,4 +40,9 @@ public class UserController {
 
         return "redirect:/";
     }
+    @GetMapping("/login")  //user/login URL로 들어오는 GET 요청을 이 메서드가 처리  -> user/login URL을 매핑
+    public String login() {
+        return "login";  //매핑한 login 메서드는 login.html 템플릿을 출력
+    }
+    // 실제 로그인을 진행하는 @PostMapping 방식의 메서드는 스프링 시큐리티가 대신 처리하므로 우리가 직접 코드를 작성하여 구현할 필요x
 }
