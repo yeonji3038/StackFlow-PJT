@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>R/T지시요청</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -111,8 +113,7 @@
             <td th:text="${product.prodCode}"></td>
             <td th:text="${product.prodName}"></td>
             <td th:text="${product.size}"></td>
-            <td th:text="${product.colorCode}"></td>
-            <td>
+            <td th:text="${product.colorCode.colorCode}"></td>            <td>
                 <input type="number" class="quantity-input" min="1" style="width: 80px;">
             </td>
             <td>
@@ -165,11 +166,14 @@
             alert('선택된 상품이 없습니다.');
             return;
         }
-
+ // CSRF 토큰 가져오기
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
         fetch('/RT/submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken
             },
             body: JSON.stringify(rtData)
         })

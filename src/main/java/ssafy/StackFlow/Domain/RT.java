@@ -21,6 +21,9 @@ public class RT {
     private String reqStore;
     private LocalDateTime reqDate;
 
+    @Enumerated(EnumType.STRING)
+    private RtStatus status;
+
     @JsonIgnore
     @OneToMany(mappedBy = "RT", cascade = CascadeType.ALL)
     private List<RtProduct> rtProducts = new ArrayList<>();
@@ -32,9 +35,14 @@ public class RT {
 
     public static RT createRT(Product product, Store store) {
         RT rt = new RT();
+        rt.status = RtStatus.REQUEST;
         rt.setProdCode(product.getProdCode());
         rt.setProdName(product.getProdName());
-        rt.setColorCode(product.getColorCode());
+        if (product.getColorCode() != null) {
+            rt.setColorCode(product.getColorCode().getColorCode());
+        } else {
+            rt.setColorCode(null);
+        }
         rt.setSize(product.getSize());
         rt.setReqStore(store.getStoreName());
         rt.setReqDate(LocalDateTime.now());

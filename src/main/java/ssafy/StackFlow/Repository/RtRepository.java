@@ -11,6 +11,5 @@ import java.util.List;
 public interface RtRepository extends JpaRepository<RT, Long>{
 
         List<Product> findByProdCodeContaining(String keyword);
-
     }
 
