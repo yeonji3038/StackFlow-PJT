@@ -8,6 +8,8 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @Setter
@@ -17,13 +19,20 @@ public class Product {
     @Column(name="product_id")
     private Long id;
 
-    private String prodCode;
     private String prodName;
-    private String size;
+    private String prodCode;
 
     @OneToOne
-    @JoinColumn(name = "prodColor")
+    @JoinColumn(name = "prodCategory")
+    private Category prodCate;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "prod_color")
     private Color colorCode;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "prod_size")
+    private Size size;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "products")

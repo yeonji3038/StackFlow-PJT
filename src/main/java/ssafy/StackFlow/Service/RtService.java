@@ -36,6 +36,16 @@ public class RtService {
         return productRepo.findByProdCodeContaining(keyword);
     }
 
+    public List<Product> searchByFilters(String categoryGroup, String categoryCode, 
+                                       String colorCode, String size) {
+        String cateGroup = (categoryGroup == null || categoryGroup.trim().isEmpty()) ? null : categoryGroup;
+        String cateCode = (categoryCode == null || categoryCode.trim().isEmpty()) ? null : categoryCode;
+        String color = (colorCode == null || colorCode.trim().isEmpty()) ? null : colorCode;
+        String sizeValue = (size == null || size.trim().isEmpty()) ? null : size;
+        
+        return productRepo.findByFilters(cateGroup, cateCode, color, sizeValue);
+    }
+
     @Transactional
     public Long createInstruction(Long productId, Long storeId, int reqQuan) {
   
