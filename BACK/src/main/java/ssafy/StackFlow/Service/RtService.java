@@ -12,7 +12,6 @@ import ssafy.StackFlow.Repository.RtRepository;
 import ssafy.StackFlow.Repository.StoreRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
