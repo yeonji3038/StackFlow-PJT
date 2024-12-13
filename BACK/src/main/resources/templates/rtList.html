@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>R/T 지시 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            width: 95%;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #f8f9fa;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #e9ecef;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-button {
+            padding: 8px 15px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>R/T 지시 목록</h2>
+        <button class="back-button" onclick="location.href='/RT'">돌아가기</button>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>요청일시</th>
+            <th>상품코드</th>
+            <th>상품명</th>
+            <th>사이즈</th>
+            <th>색상코드</th>
+            <th>요청수량</th>
+            <th>요청매장</th>
+            <th>상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rt : ${rtList}">
+            <td th:text="${#temporals.format(rt.reqDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${rt.prodCode}"></td>
+            <td th:text="${rt.prodName}"></td>
+            <td th:text="${rt.size}"></td>
+            <td th:text="${rt.colorCode}"></td>
+            <td th:text="${rt.rtProducts[0].reqQuant}"></td>
+            <td th:text="${rt.reqStore}"></td>
+            <td th:text="${rt.status.getKoreanStatus()}"></td>
+        </tr>
+        <tr th:if="${rtList.empty}">
+            <td colspan="8" style="text-align: center;">등록된 R/T 지시가 없습니다.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html> 
