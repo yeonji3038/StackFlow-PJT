@@ -26,20 +26,8 @@ public class UserCreateForm {
     @Email
     private String email;
 
-//
-//    public String getPassword1() {
-//        return null;
-//    }
-//
-//    public String getPassword2() {
-//        return null;
-//    }
-//
-//    public String getUsername() {
-//        return null;
-//    }
-//
-//    public String getEmail() {
-//        return null;
-//    }
+    @NotEmpty(message = "매장코드은 필수항목입니다.")
+    private String storeCode;
+
+
 }
