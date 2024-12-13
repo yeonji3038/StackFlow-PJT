@@ -1,9 +1,0 @@
-.layoutContainer {
-  display: flex;
-  min-height: 100vh;
-}
-
-.mainContent {
-  flex: 1;
-  padding: 30px;
-}
