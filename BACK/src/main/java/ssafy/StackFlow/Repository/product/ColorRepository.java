@@ -1,7 +1,7 @@
-package ssafy.StackFlow.Repository;
+package ssafy.StackFlow.Repository.product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ssafy.StackFlow.Domain.Color;
+import ssafy.StackFlow.Domain.product.Color;
 import java.util.Optional;
 
 

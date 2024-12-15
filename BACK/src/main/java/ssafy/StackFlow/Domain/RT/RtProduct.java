@@ -1,9 +1,10 @@
-package ssafy.StackFlow.Domain;
+package ssafy.StackFlow.Domain.RT;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ssafy.StackFlow.Domain.Product;
 
 import static jakarta.persistence.FetchType.LAZY;
 @Entity
@@ -21,7 +22,7 @@ public class RtProduct {
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "RT_id")
-    private RT RT;
+    private ssafy.StackFlow.Domain.RT.RT RT;
 
     private int reqQuant;
 

@@ -1,10 +1,21 @@
 package ssafy.StackFlow.Service.store;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ssafy.StackFlow.Domain.Store;
+import ssafy.StackFlow.Repository.StoreRepository;
+
+import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class StoreService {
+    private final StoreRepository storeRepository;
+    public List<Store> findAllStores() {
+        return storeRepository.findAll();
+    }
 
     public String generateStoreCode(String location) {
         String prefix = "";

@@ -1,10 +1,10 @@
-package ssafy.StackFlow.Service;
+package ssafy.StackFlow.Service.category;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssafy.StackFlow.Domain.Category;
-import ssafy.StackFlow.Repository.CategoryRepository;
+import ssafy.StackFlow.Domain.category.Category;
+import ssafy.StackFlow.Repository.category.CategoryRepository;
 
 import java.util.List;
 

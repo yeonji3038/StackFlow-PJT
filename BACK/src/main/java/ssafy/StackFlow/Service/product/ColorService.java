@@ -1,11 +1,11 @@
-package ssafy.StackFlow.Service;
+package ssafy.StackFlow.Service.product;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssafy.StackFlow.Domain.Color;
+import ssafy.StackFlow.Domain.product.Color;
 import ssafy.StackFlow.Domain.Product;
-import ssafy.StackFlow.Repository.ColorRepository;
+import ssafy.StackFlow.Repository.product.ColorRepository;
 
 import java.util.List;
 
