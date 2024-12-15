@@ -1,8 +1,9 @@
-package ssafy.StackFlow.Domain;
+package ssafy.StackFlow.Domain.RT;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ssafy.StackFlow.Domain.Product;
 import ssafy.StackFlow.Domain.Store;
 
 import java.time.LocalDateTime;
@@ -45,9 +46,9 @@ public class RT {
             rt.setColorCode(null);
         }
         if (product.getSize() != null) {
-            rt.setColorCode(product.getSize().getSize());
+            rt.setSize(product.getSize().getSize());
         } else {
-            rt.setColorCode(null);
+            rt.setSize(null);
         }
         rt.setReqStore(store.getStoreName());
         rt.setReqDate(LocalDateTime.now());

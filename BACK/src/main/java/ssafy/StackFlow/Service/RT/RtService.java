@@ -1,14 +1,14 @@
-package ssafy.StackFlow.Service;
+package ssafy.StackFlow.Service.RT;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.StackFlow.Domain.Product;
-import ssafy.StackFlow.Domain.RT;
-import ssafy.StackFlow.Domain.RtProduct;
+import ssafy.StackFlow.Domain.RT.RT;
+import ssafy.StackFlow.Domain.RT.RtProduct;
 import ssafy.StackFlow.Domain.Store;
 import ssafy.StackFlow.Repository.ProductRepo;
-import ssafy.StackFlow.Repository.RtRepository;
+import ssafy.StackFlow.Repository.RT.RtRepository;
 import ssafy.StackFlow.Repository.StoreRepository;
 
 import java.util.List;
@@ -35,14 +35,8 @@ public class RtService {
         return productRepo.findByProdCodeContaining(keyword);
     }
 
-    public List<Product> searchByFilters(String categoryGroup, String categoryCode, 
-                                       String colorCode, String size) {
-        String cateGroup = (categoryGroup == null || categoryGroup.trim().isEmpty()) ? null : categoryGroup;
-        String cateCode = (categoryCode == null || categoryCode.trim().isEmpty()) ? null : categoryCode;
-        String color = (colorCode == null || colorCode.trim().isEmpty()) ? null : colorCode;
-        String sizeValue = (size == null || size.trim().isEmpty()) ? null : size;
-        
-        return productRepo.findByFilters(cateGroup, cateCode, color, sizeValue);
+    public List<Product> searchByFilters(String categoryGroup, String categoryCode, String colorCode, String size) {
+        return productRepo.findProductsByFilters(categoryGroup, categoryCode, colorCode, size);
     }
 
     @Transactional

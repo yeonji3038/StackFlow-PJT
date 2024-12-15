@@ -1,9 +1,9 @@
-package ssafy.StackFlow.Repository;
+package ssafy.StackFlow.Repository.RT;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ssafy.StackFlow.Domain.Product;
-import ssafy.StackFlow.Domain.RT;
+import ssafy.StackFlow.Domain.RT.RT;
 
 import java.util.List;
 

@@ -1,11 +1,9 @@
-package ssafy.StackFlow.Domain;
+package ssafy.StackFlow.Domain.RT;
 
 public enum RtStatus {
-    REQUEST("요청중"),
-    APPROVAL("승인"),
-    REFUSE("거절"),
-    DELIVERY("배달중"),
-    COMPLETE("배달완료");
+    REQUEST("미확정"),
+    APPROVAL("확정"),
+    REFUSE("불이행");
 
     private final String koreanStatus;
 

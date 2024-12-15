@@ -134,8 +134,8 @@
     <div class="page-title">
         <h2>R/T지시요청</h2>
         <div class="top-buttons">
-            <button type="button" onclick="location.href='http://localhost:8080/RT/list'">조회</button>
-            <button type="button" onclick="location.href='http://localhost:8080/RT'">목록</button>
+            <button type="button" onclick="location.href='http://localhost:8080/RT'">조회</button>
+            <button type="button" onclick="location.href='http://localhost:8080/RT/list'">목록</button>
             <button type="button" onclick="location.href='http://localhost:8080'">취소</button>
             <button type="button" class="finish-btn" id="submitButton">마감처리</button>
         </div>
@@ -146,9 +146,9 @@
             <div class="search-row">
                 <select name="categoryGroup" class="category-select">
                     <option value="">카테고리 그룹</option>
-                    <option th:each="category : ${categoryList}"
-                            th:value="${category.cateGroup}"
-                            th:text="${category.cateGroup}">
+                    <option th:each="categoryGroup : ${categoryGroupList}"
+                            th:value="${categoryGroup.groupName}"
+                            th:text="${categoryGroup.groupName}">
                     </option>
                 </select>
                 <select name="categoryCode" class="category-select">
@@ -194,7 +194,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="product : ${searchList}" th:if="${searchList.size() > 0}">
+        <tr th:if="${searchList == null}">
+            <td colspan="7" style="text-align: center;">검색 조건을 입력해주세요.</td>
+        </tr>
+        <tr th:if="${searchList != null and searchList.size() == 0}">
+            <td colspan="7" style="text-align: center;">검색 결과가 없습니다.</td>
+        </tr>
+        <tr th:each="product : ${searchList}" th:if="${searchList != null and searchList.size() > 0}">
             <td><input type="checkbox" class="product-checkbox" th:data-product-id="${product.id}"></td>
             <td th:text="${product.prodCode}"></td>
             <td th:text="${product.prodName}"></td>
@@ -206,15 +212,12 @@
             <td>
                 <select class="store-select">
                     <option value="">매장 선택</option>
-                    <option th:each="store : ${product.stores}"
+                    <option th:each="store : ${storeList}"
                             th:value="${store.id}"
                             th:text="${store.storeName}">
                     </option>
                 </select>
             </td>
-        </tr>
-        <tr th:unless="${searchList.size() > 0}">
-            <td colspan="7" style="text-align: center;">검색 결과가 없습니다.</td>
         </tr>
         </tbody>
     </table>

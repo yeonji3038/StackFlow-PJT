@@ -1,27 +1,31 @@
-package ssafy.StackFlow.Domain;
+package ssafy.StackFlow.Domain.product;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ssafy.StackFlow.Domain.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Getter
 @Setter
-public class Size {
+public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="size_id")
+    @Column(name="color_id")
     private Long id;
-    private String size;
 
-    @OneToMany(mappedBy = "size")
+    private String colorName;
+    private String colorCode;
+
+    @OneToMany(mappedBy = "colorCode")
     private List<Product> products = new ArrayList<>();
 
     @Override
     public String toString() {
-        return size;
+        return colorCode;
     }
 }

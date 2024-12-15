@@ -12,15 +12,19 @@ import java.util.List;
 public interface ProductRepo extends JpaRepository<Product, Long> {
     List<Product> findByProdCodeContaining(String keyword);
 
-    @Query("SELECT p FROM Product p WHERE " +
-           "(:cateGroup IS NULL OR p.prodCate.cateGroup = :cateGroup) AND " +
-           "(:cateCode IS NULL OR p.prodCate.cateCode = :cateCode) AND " +
-           "(:colorCode IS NULL OR p.colorCode.colorCode = :colorCode) AND " +
-           "(:size IS NULL OR p.size = :size)")
-    List<Product> findByFilters(
-            @Param("cateGroup") String cateGroup,
-            @Param("cateCode") String cateCode,
-            @Param("colorCode") String colorCode,
-            @Param("size") String size
-    );
+    @Query("SELECT p FROM Product p " +
+            "JOIN p.prodCate c " +
+            "JOIN c.cateGroup cg " +
+            "JOIN p.colorCode co " +
+            "JOIN p.size s " +
+            "WHERE (:categoryGroup IS NULL OR cg.groupName LIKE %:categoryGroup%) " +
+            "AND (:categoryCode IS NULL OR c.cateCode LIKE %:categoryCode%) " +
+            "AND (:colorCode IS NULL OR co.colorCode LIKE %:colorCode%) " +
+            "AND (:size IS NULL OR s.size LIKE %:size%)")
+    List<Product> findProductsByFilters(@Param("categoryGroup") String categoryGroup,
+                                        @Param("categoryCode") String categoryCode,
+                                        @Param("colorCode") String colorCode,
+                                        @Param("size") String size);
+
+
 }
