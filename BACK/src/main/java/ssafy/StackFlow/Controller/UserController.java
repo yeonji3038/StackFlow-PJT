@@ -35,10 +35,11 @@ public class UserController {
             return "signup";
         }
 
+        // 역할을 추가로 전달
         userService.create(userCreateForm.getUsername(),
-                userCreateForm.getEmail(), userCreateForm.getPassword1());
+                userCreateForm.getEmail(), userCreateForm.getPassword1(), "ROLE_USER"); // 기본 역할 설정
 
-        return "redirect:/";
+        return "redirect:/"; // 회원가입 후 리다이렉트
     }
     @GetMapping("/login")  //user/login URL로 들어오는 GET 요청을 이 메서드가 처리  -> user/login URL을 매핑
     public String login() {

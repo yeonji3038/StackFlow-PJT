@@ -22,6 +22,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers("/RT/submit").permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+//                        .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN 역할만 접근 가능
+//                        .anyRequest().authenticated()) // 나머지 요청은 인증 필요
+
                 .csrf((csrf) -> csrf
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
                 .headers((headers) -> headers
@@ -30,7 +33,11 @@ public class SecurityConfig {
                 //로그인 설정
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/user/login")// 페이지 url
+//                        .defaultSuccessUrl("/admin")) // 로그인 성공 시 관리자 페이지로 리다이렉트
                         .defaultSuccessUrl("/")) //  로그인 성공시 페이지는 루트url(/)임
+//                        .loginPage("/user/login") // 로그인 페이지 URL
+//                        .defaultSuccessUrl("/admin") // 로그인 성공 시 관리자 페이지로 리다이렉트
+//                        .permitAll()) // 모든 사용자에게 로그인 페이지 접근 허용
 
                 //로그아웃
                 .logout((logout) -> logout

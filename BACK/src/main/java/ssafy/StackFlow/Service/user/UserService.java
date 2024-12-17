@@ -20,11 +20,12 @@ public class UserService {
 //    }
 //
 
-    public void create(String username, String email, String password) {
+    public void create(String username, String email, String password,String role) {
         Signup user = new Signup();
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
+        user.setRole(role); // 역할 설정
         this.userRepository.save(user);
     }
 }

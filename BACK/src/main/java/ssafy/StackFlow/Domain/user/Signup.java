@@ -30,5 +30,8 @@ public class Signup {
     @Column(unique = true)
     private String email; //이메일
 
+    @Column
+    private String role; // 사용자 역할 추가
+
 
 }
