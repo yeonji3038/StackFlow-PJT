@@ -2,11 +2,11 @@ package ssafy.StackFlow.api.RT;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ssafy.StackFlow.Domain.RT.RT;
+import ssafy.StackFlow.Repository.RT.RtApiRepository;
 import ssafy.StackFlow.Service.RT.RtService;
+import ssafy.StackFlow.api.RT.dto.RtDto;
 import ssafy.StackFlow.api.RT.dto.RtInstructionDto;
 import ssafy.StackFlow.api.RT.dto.RtRequestDto;
 import ssafy.StackFlow.api.RT.dto.RtResponseDto;
@@ -14,12 +14,15 @@ import ssafy.StackFlow.api.RT.dto.RtResponseDto;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @RestController
 @RequestMapping("/api/rt")
 @RequiredArgsConstructor
 public class RtApiController {
 
     private final RtService rtService;
+    private final RtApiRepository rtApiRepository;
 
     @PostMapping("/submit")
     public ResponseEntity<RtResponseDto> createInstructions(@RequestBody RtRequestDto request) {
@@ -43,5 +46,15 @@ public class RtApiController {
             return ResponseEntity.internalServerError()
                     .body(new RtResponseDto("error", "Unexpected error occurred"));
         }
+    }
+
+    @GetMapping("list")
+    public List<RtDto> RtListApi() {
+        List<RT> rts = rtApiRepository.findAllWithItem();
+        List<RtDto> result = rts.stream()
+                .map(o -> new RtDto(o))
+                .collect(toList());
+
+        return result;
     }
 }

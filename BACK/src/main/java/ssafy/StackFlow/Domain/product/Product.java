@@ -1,13 +1,16 @@
-package ssafy.StackFlow.Domain;
+package ssafy.StackFlow.Domain.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ssafy.StackFlow.Domain.RT.RT;
+import ssafy.StackFlow.Domain.RT.RtStatus;
+import ssafy.StackFlow.Domain.Store;
 import ssafy.StackFlow.Domain.category.Category;
-import ssafy.StackFlow.Domain.product.Color;
-import ssafy.StackFlow.Domain.product.Size;
+import ssafy.StackFlow.Domain.category.CategoryGroup;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +27,19 @@ public class Product {
 
     private String prodName;
     private String prodCode;
+    private String prodDetail;
+
+    private int stockPrice;     // 입고 가격
+    private int sellPrice;      // 출고 가격
+    private int stockQuantity;  // 입고 수량
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_id")
     private Category prodCate;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "brand_id")
+    private Brand brandCode;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "color_id")
@@ -37,8 +49,13 @@ public class Product {
     @JoinColumn(name = "size_id")
     private Size size;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "category_group_id")
+    private CategoryGroup cateGroup;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "products")
     private List<Store> stores = new ArrayList<>();
+
 }
 

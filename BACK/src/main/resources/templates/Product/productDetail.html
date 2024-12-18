@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 상세 정보</title>
+  <meta name="_csrf" th:content="${_csrf.token}"/> <!-- CSRF 토큰 -->
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/> <!-- CSRF 헤더 이름 -->
+</head>
+<body>
+<h1>상품 상세 정보</h1>
+
+<p><strong>상품 ID:</strong> <span th:text="${product.id}"></span></p>
+<p><strong>상품 이름:</strong> <span th:text="${product.prodName}"></span></p>
+<p><strong>상품 코드:</strong> <span th:text="${product.prodCode}"></span></p>
+<p><strong>설명:</strong> <span th:text="${product.description}"></span></p>
+<p><strong>가격:</strong> <span th:text="${product.price}"></span></p>
+<p><strong>수량:</strong> <span th:text="${product.quantity}"></span></p>
+
+<a href="/product/list">목록으로 돌아가기</a>
+</body>
+</html>
