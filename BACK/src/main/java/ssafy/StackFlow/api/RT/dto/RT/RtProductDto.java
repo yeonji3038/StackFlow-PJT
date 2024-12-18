@@ -1,4 +1,4 @@
-package ssafy.StackFlow.api.RT.dto;
+package ssafy.StackFlow.api.RT.dto.RT;
 
 import lombok.Data;
 import ssafy.StackFlow.Domain.RT.RtProduct;
