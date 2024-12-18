@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ssafy.StackFlow.Domain.Product;
+import ssafy.StackFlow.Domain.product.Product;
 
 import static jakarta.persistence.FetchType.LAZY;
 @Entity

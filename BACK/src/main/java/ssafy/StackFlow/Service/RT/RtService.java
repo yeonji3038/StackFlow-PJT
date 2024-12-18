@@ -3,11 +3,11 @@ package ssafy.StackFlow.Service.RT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssafy.StackFlow.Domain.Product;
+import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Domain.RT.RT;
 import ssafy.StackFlow.Domain.RT.RtProduct;
 import ssafy.StackFlow.Domain.Store;
-import ssafy.StackFlow.Repository.ProductRepo;
+import ssafy.StackFlow.Repository.product.ProductRepo;
 import ssafy.StackFlow.Repository.RT.RtRepository;
 import ssafy.StackFlow.Repository.StoreRepository;
 
