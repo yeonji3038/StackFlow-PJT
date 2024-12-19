@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  width: 26.125rem;
+  border-bottom: 1px solid #b3b3b3;
+  gap: 0.625rem;
+  padding: 0.5rem;
+  align-items: center;
+}
+
+.title_large {
+  font-size: 1.25rem; /* 큰 폰트 사이즈 */
+  font-weight: bold;
+}
+
+.title_small {
+  font-size: 0.9375rem; /* 작은 폰트 사이즈 */
+  font-weight: bold;
+}

@@ -1,0 +1,91 @@
+.container {
+  width: 100%;
+  align-items: center;
+}
+
+hr {
+  background-color: black;
+  size: 10px;
+}
+
+.mainContent {
+  position: relative;
+  margin: 2rem auto;
+  padding: 25px;
+  box-sizing: border-box;
+  width: 95%;
+  height: 60vh;
+  background-color: white;
+  box-shadow: rgb(131, 139, 167) 0px 0px 10px;
+  border-radius: 10px;
+
+}
+
+.dateInput {
+  max-width: 110px;
+}
+
+.inputData * {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 13px;
+}
+
+.buttons {
+  position: absolute;
+  right: 0;
+}
+
+.buttons button {
+  border-radius: 5px;
+  border: 1px solid ;
+  box-shadow: rgb(133, 138, 152) 0px 2px 3px;
+}
+
+
+
+span {
+  display: inline-block;
+  text-align: center;
+  background-color: skyblue;
+  padding: 7px;
+  border-radius: 6px;
+  box-shadow: rgb(133, 138, 152) 0px 3px 3px;
+}
+
+
+.searchTable {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  align-items: center;
+  text-align: center;
+  width: 90%;
+}
+
+.tableName {
+  width: 100%;
+  text-align: left;
+}
+
+table {
+  width: 100%;
+  padding: 6px;
+  box-sizing: content-box;
+  font-size: 13px;
+  box-shadow: rgb(188, 193, 210) 0px 2px 3px;
+  border-radius: 10px 10px 20px 20px ;
+  border: 1px solid black;
+}
+
+
+.searchTable thead th {
+  
+  background-color: #1d96b2;
+  border: 1px solid #1d96b2;
+  font-weight: normal;
+  text-align: center;
+  color: white;
+  border-radius: 5px;
+  
+}
