@@ -14,6 +14,7 @@ import ssafy.StackFlow.Domain.RT.RT;
 import ssafy.StackFlow.Domain.category.Category;
 import ssafy.StackFlow.Domain.category.CategoryGroup;
 import ssafy.StackFlow.Domain.product.Color;
+import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Domain.product.Size;
 import ssafy.StackFlow.Service.RT.RtService;
 import ssafy.StackFlow.Service.category.CategoryGroupService;
