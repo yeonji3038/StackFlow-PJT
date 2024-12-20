@@ -22,25 +22,23 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         
-        {/* 인증이 필요한 라우트 */}
-        <Route element={<PrivateRoute />}>
-          <Route
-            path="/*"
-            element={
-              // MainLayout 안에 페이지들이 들어가있는 구조 => js 파일에서 수정하면 됨
-              <MainLayout>
-                <Routes>
-                  <Route path="/main" element={<MainPage />} />
-                  <Route path="/inventory/*" element={<InventoryPages />} />
-                  <Route path="/notice/*" element={<NoticePages />} />
-                  <Route path="/product/*" element={<ProductPages />} />
-                  <Route path="/rt/*" element={<Rt />} />
-                  <Route path='/chat' element={<ChatHistory/>}/>
-                </Routes>
-              </MainLayout>
-            }
-          />
-        </Route>
+        {/* MainLayout이 적용되는 라우트들 */}
+        <Route
+          path="/*"
+          element={
+            <MainLayout>
+              <Routes>
+                {/* 각 경로에서 앞의 / 제거 */}
+                <Route path="main" element={<MainPage />} />
+                <Route path="inventory/*" element={<InventoryPages />} />
+                <Route path="notice/*" element={<NoticePages />} />
+                <Route path="product/*" element={<ProductPages />} />
+                <Route path="rt/*" element={<Rt />} />
+                <Route path="chat" element={<ChatHistory/>}/>
+              </Routes>
+            </MainLayout>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
