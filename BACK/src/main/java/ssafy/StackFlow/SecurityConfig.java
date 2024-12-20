@@ -16,35 +16,38 @@ import org.springframework.security.config.annotation.authentication.configurati
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers("/RT/submit").permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-//                        .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN 역할만 접근 가능
-//                        .anyRequest().authenticated()) // 나머지 요청은 인증 필요
-
+                        .requestMatchers("/user/login", "/user/register", "/", "/home").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated())
                 .csrf((csrf) -> csrf
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-                //로그인 설정
+                // 로그인 설정
                 .formLogin((formLogin) -> formLogin
-                        .loginPage("/user/login")// 페이지 url
-//                        .defaultSuccessUrl("/admin")) // 로그인 성공 시 관리자 페이지로 리다이렉트
-                        .defaultSuccessUrl("/")) //  로그인 성공시 페이지는 루트url(/)임
-//                        .loginPage("/user/login") // 로그인 페이지 URL
-//                        .defaultSuccessUrl("/admin") // 로그인 성공 시 관리자 페이지로 리다이렉트
-//                        .permitAll()) // 모든 사용자에게 로그인 페이지 접근 허용
-
-                //로그아웃
+                        .loginPage("/user/login")
+                        .successHandler((request, response, authentication) -> {
+                            // 사용자 권한에 따라 리다이렉트 처리
+                            String role = authentication.getAuthorities().iterator().next().getAuthority();
+                            if ("ROLE_ADMIN".equals(role)) {
+                                response.sendRedirect("/admin"); // 어드민 페이지로 이동
+                            } else {
+                                response.sendRedirect("/"); // 일반 사용자 메인 페이지로 이동
+                            }
+                        })
+                        .permitAll())
+                // 로그아웃 설정
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                        .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true))  //.invalidateHttpSession(true)를 통해 로그아웃 시 생성된 사용자 세션도 삭제하도록 처리
-        ;
+                        .logoutSuccessUrl("/user/login")
+                        .invalidateHttpSession(true));
 
         return http.build();
     }
@@ -54,11 +57,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    //로그인
     @Bean
-    //AuthenticationManager는 스프링 시큐리티의 인증을 처리함
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-        //AuthenticationManager는 사용자 인증 시 앞에서 작성한 UserSecurityService와 PasswordEncoder를 내부적으로 사용하여 인증과 권한 부여 프로세스를 처리
     }
 }
