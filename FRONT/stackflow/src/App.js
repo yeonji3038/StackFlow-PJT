@@ -5,6 +5,8 @@ import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import PrivateRoute from './components/auth/PrivateRoute';
 import MainPage from './pages/MainPage';
+import Rt from './pages/rt/Rt';
+import ChatHistory from './pages/chatbot/Chat_history';
 
 // 임시로 페이지 컴포넌트들 생성
 const InventoryPages = () => <div>Inventory Page</div>;
@@ -32,7 +34,8 @@ function App() {
                   <Route path="/inventory/*" element={<InventoryPages />} />
                   <Route path="/notice/*" element={<NoticePages />} />
                   <Route path="/product/*" element={<ProductPages />} />
-                  <Route path="/rt/*" element={<RtPages />} />
+                  <Route path="/rt/*" element={<Rt />} />
+                  <Route path='/chat' element={<ChatHistory/>}/>
                 </Routes>
               </MainLayout>
             }
