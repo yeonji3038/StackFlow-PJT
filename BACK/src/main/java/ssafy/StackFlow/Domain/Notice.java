@@ -3,6 +3,7 @@ package ssafy.StackFlow.Domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ssafy.StackFlow.Domain.user.Signup;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +29,9 @@ public class Notice {
     // One-to-Many 관계 설정
     @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<File> files;  // Notice가 여러 File을 가질 수 있도록
+
+    @ManyToOne
+    private Signup author;
 
     @PrePersist
     public void onCreate() {

@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import ssafy.StackFlow.Domain.user.Signup;
 import ssafy.StackFlow.Repository.user.UserRepository;
+import ssafy.StackFlow.Service.DataNotFoundException;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -27,5 +31,14 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(role); // 역할 설정
         this.userRepository.save(user);
+    }
+
+    public Signup getUser(String username) {
+        Optional<Signup> signup = this.userRepository.findByusername(username);
+        if (signup.isPresent()) {
+            return signup.get();
+        } else {
+            throw new DataNotFoundException("siteuser not found");
+        }
     }
 }
