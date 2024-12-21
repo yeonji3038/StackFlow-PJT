@@ -59,4 +59,8 @@ public class NoticeService {
         notice.setupdatedAt(LocalDateTime.now());
         this.noticeRepository.save(notice);
     }
+
+    public void delete(Notice notice) {
+        this.noticeRepository.delete(notice);
+    }
 }
