@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -25,6 +25,14 @@
            border-radius: 8px; /* 둥근 모서리 */
            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
        }
+
+       .author-info {
+            font-size: 1.0rem; /* 정보 크기 */
+            text-align: left; /* 왼쪽 정렬 */
+            display: flex; /* Flexbox로 정보를 가로로 배치 */
+            justify-content: flex-start; /* 왼쪽 정렬 */
+            margin-bottom: 20px !important; /* 강제로 여백 적용 */
+        }
 
        h1 {
            font-size: 2.5rem; /* 제목 크기 */
@@ -60,9 +68,18 @@
 <div class="container">
     <h1 th:text="${notice.title}"></h1>
     <div class="content" th:text="${notice.content}"></div>
+    <div class="author-info">
+        <span>작성자 : <span th:if="${notice.author != null}" th:text="${notice.author.username}"></span></span>
+    </div>
     <div class="date-info">
-        <span>작성일: <span th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}"></span></span>
-        <span>수정일: <span th:text="${#temporals.format(notice.updatedAt, 'yyyy-MM-dd HH:mm')}"></span></span>
+        <span>작성일 : <span th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}"></span></span>
+        <span>수정일 : <span th:text="${#temporals.format(notice.updatedAt, 'yyyy-MM-dd HH:mm')}"></span></span>
+    </div>
+    <div class="my-3">
+        <a th:href="@{|/notice/modify/${notice.id}|}" class="btn btn-sm btn-outline-secondary"
+           sec:authorize="isAuthenticated()"
+           th:if="${notice.author != null and #authentication.getPrincipal().getUsername() == notice.author.username}"
+           th:text="수정"></a>
     </div>
 </div>
 
