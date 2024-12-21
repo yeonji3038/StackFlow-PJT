@@ -10,7 +10,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @Data
-public class RtDto{
+public class MyRtDto {
     private Long RT_id;
     private String product_code;
     private String product_name;
@@ -21,7 +21,7 @@ public class RtDto{
     private RtStatus rt_status;
     private List<RtProductDto> rt_products;
 
-    public RtDto(RT rt) {
+    public MyRtDto(RT rt) {
         RT_id = rt.getId();
         product_code = rt.getProdCode();
         product_name = rt.getProdName();

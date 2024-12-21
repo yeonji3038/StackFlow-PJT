@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssafy.StackFlow.Domain.RT.RT;
+import ssafy.StackFlow.Domain.Store;
 import ssafy.StackFlow.Domain.category.Category;
 import ssafy.StackFlow.Domain.category.CategoryGroup;
 import ssafy.StackFlow.Domain.product.Color;
@@ -16,10 +17,13 @@ import ssafy.StackFlow.Repository.product.ColorRepository;
 import ssafy.StackFlow.Repository.product.ProductRepo;
 import ssafy.StackFlow.Repository.product.SizeRepository;
 import ssafy.StackFlow.Service.RT.RtService;
+import ssafy.StackFlow.Service.user.UserService;
 import ssafy.StackFlow.api.RT.dto.RT.*;
 
+import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -90,7 +94,7 @@ public class RtApiController {
                         instruction.getProductId(),
                         instruction.getStoreId(),
                         instruction.getRequestQuantity()
-                );
+                ).getId();
                 rtIds.add(rtId);
             }
 
@@ -104,13 +108,31 @@ public class RtApiController {
         }
     }
 
-    @GetMapping("/api/rt/list")
-    public List<RtDto> RtListApi() {
-        List<RT> rts = rtApiRepository.findAllWithItem();
-        List<RtDto> result = rts.stream()
-                .map(o -> new RtDto(o))
-                .collect(toList());
+    @GetMapping("/api/rt/meToOtherRtlist")
+    public List<MyRtDto> RtList1Api() {
+        Store loginStore = rtService.getUserStore();
+        if (loginStore == null) {
+            return new ArrayList<>();
+        }
+        List<RT> rtList = rtApiRepository.findAllWithItem();
+        List<MyRtDto> result = rtList.stream()
+                .filter(rt -> rt.getMyStore().equals(loginStore.getStoreName()))
+                .map(MyRtDto::new)
+                .collect(Collectors.toList());
+        return result;
+    }
 
+    @GetMapping("/api/rt/OtherToMeRtlist")
+    public List<OtherRtDto> RtList2Api() {
+        Store loginStore = rtService.getUserStore();
+        if (loginStore == null) {
+            return new ArrayList<>();
+        }
+        List<RT> rtList = rtApiRepository.findAllWithItem();
+        List<OtherRtDto> result = rtList.stream()
+                .filter(rt -> rt.getReqStore().equals(loginStore.getStoreName()))
+                .map(OtherRtDto::new)
+                .collect(Collectors.toList());
         return result;
     }
 }

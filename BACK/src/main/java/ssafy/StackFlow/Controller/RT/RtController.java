@@ -23,6 +23,7 @@ import ssafy.StackFlow.Service.product.ColorService;
 import ssafy.StackFlow.Service.product.SizeService;
 import ssafy.StackFlow.Service.store.StoreService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ public class RtController {
     private final SizeService sizeService;
     private final CategoryGroupService categoryGroupService;
     private final StoreService storeService;
+
     @GetMapping("/RT")
 public String list(Model model,
               @RequestParam(required = false) String categoryGroup,
@@ -77,23 +79,41 @@ public String list(Model model,
     @ResponseBody
     public ResponseEntity<String> submitRT(@RequestBody List<Map<String, Object>> rtDataList) {
         try {
+            if (rtDataList == null || rtDataList.isEmpty()) {
+                return ResponseEntity.badRequest().body("데이터 없음");
+            }
+
             for (Map<String, Object> rtData : rtDataList) {
-                Long productId = Long.parseLong(rtData.get("productId").toString());
-                Long storeId = Long.parseLong(rtData.get("storeId").toString());
-                int reqQuan = Integer.parseInt(rtData.get("reqQuan").toString());
+                if (!rtData.containsKey("productId") || !rtData.containsKey("storeId") || !rtData.containsKey("reqQuan")) {
+                    return ResponseEntity.badRequest().body("필수 데이터 없음");
+                }
+
+                Long productId = Long.parseLong(String.valueOf(rtData.get("productId")));
+                Long storeId = Long.parseLong(String.valueOf(rtData.get("storeId")));
+                int reqQuan = Integer.parseInt(String.valueOf(rtData.get("reqQuan")));
+
+                if (productId <= 0 || storeId <= 0 || reqQuan <= 0) {
+                    return ResponseEntity.badRequest().body("유효하지 않은 값");
+                }
                 
                 rtService.createInstruction(productId, storeId, reqQuan);
             }
             return ResponseEntity.ok("Success");
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Invalid number format");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Error processing request: " + e.getMessage());
         }
     }
 
     @GetMapping("/RT/list")
     public String rtList(Model model) {
-        List<RT> rtList = rtService.findAllRTs();
-        model.addAttribute("rtList", rtList);
+        Store loginStore = rtService.getUserStore();
+        List<RT> otherRtList = rtService.getOtherRT();
+        List<RT> mtRtList = rtService.getMyRT();
+        model.addAttribute("myRtList", mtRtList);
+        model.addAttribute("otherRtList", otherRtList);
+        model.addAttribute("loginStore", loginStore);
         return "rtList";
     }
 }
