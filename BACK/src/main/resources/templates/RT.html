@@ -269,7 +269,9 @@
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('서버 응답 오류');
+                return response.text().then(text => {
+                    throw new Error(text || '서버 응답 오류');
+                });
             }
             return response.text();
         })
