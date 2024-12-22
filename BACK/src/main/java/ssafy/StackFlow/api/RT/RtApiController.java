@@ -1,7 +1,9 @@
 package ssafy.StackFlow.api.RT;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import ssafy.StackFlow.Domain.RT.RT;
 import ssafy.StackFlow.Domain.Store;
@@ -19,6 +21,10 @@ import ssafy.StackFlow.Repository.product.SizeRepository;
 import ssafy.StackFlow.Service.RT.RtService;
 import ssafy.StackFlow.Service.user.UserService;
 import ssafy.StackFlow.api.RT.dto.RT.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
@@ -27,7 +33,7 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 public class RtApiController {
@@ -39,6 +45,11 @@ public class RtApiController {
     private final CategoryGroupRepository categoryGroupRepository;
     private final ColorRepository colorRepository;
     private final SizeRepository sizeRepository;
+
+    @GetMapping("/csrf")
+    public CsrfToken csrf(HttpServletRequest request) {
+        return (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+    }
 
     @GetMapping("/api/rt/product")
     public List<RtProdDto> RtProdListApi() {
