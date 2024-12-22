@@ -16,6 +16,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import java.io.IOException;
 
 @Configuration
@@ -33,7 +37,7 @@ public class SecurityConfig {
 
                 .csrf((csrf) -> csrf
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"),
-                                new AntPathRequestMatcher("/api/rt/submit") ))
+                                new AntPathRequestMatcher("/api/rt/submit")))
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
@@ -46,8 +50,7 @@ public class SecurityConfig {
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                         .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true));
-
+                        .invalidateHttpSession(true)); // CORS 설정 추가
         return http.build();
     }
 
@@ -72,5 +75,18 @@ public class SecurityConfig {
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:3000"); // React 클라이언트 URL
+        configuration.addAllowedOrigin("http://192.168.0.2:3000"); // 추가 클라이언트 URL
+        configuration.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
+        configuration.addAllowedHeader("*"); // 모든 헤더 허용
+        configuration.setAllowCredentials(true); // 인증 정보 허용
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // 모든 경로에 대해 설정 적용
+        return source;
     }
 }
