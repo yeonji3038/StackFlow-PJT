@@ -1,23 +1,25 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import MainLayout from './components/layout/MainLayout';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
-// import PrivateRoute from './components/auth/PrivateRoute';
 import MainPage from './pages/MainPage';
 import Rt from './pages/rt/Rt';
 import ChatHistory from './pages/chatbot/ChatHistory';
 import Notice from './pages/notice/Notice';
+import ProductRegister from './pages/product/ProductRegister';
+import ProductManagement from './pages/product/ProductManagement';
+import ProductStockStatus from './pages/product/ProductStockStatus';
+import ProductCategoryRegister from './pages/product/ProductCategoryRegister';
 
 // 임시로 페이지 컴포넌트들 생성
 const InventoryPages = () => <div>Inventory Page</div>;
 const ProductPages = () => <div>Product Page</div>;
 
-
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         {/* 처음 접속시 로그인 페이지로 리다이렉트 */}
         <Route path="/" element={<Navigate to="/login" replace />} />
@@ -36,6 +38,10 @@ function App() {
                 <Route path="inventory/*" element={<InventoryPages />} />
                 <Route path="notice/*" element={<Notice />} />
                 <Route path="product/*" element={<ProductPages />} />
+                <Route path="/product/register" element={<ProductRegister />} />
+                <Route path="/product/management" element={<ProductManagement />} />
+                <Route path="/product/stockstatus" element={<ProductStockStatus />} />
+                <Route path="/product/categoryregister" element={<ProductCategoryRegister />} />
                 <Route path="rt/*" element={<Rt />} />
                 <Route path="chat" element={<ChatHistory/>}/>
               </Routes>
@@ -43,7 +49,7 @@ function App() {
           }
         />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 
