@@ -1,0 +1,191 @@
+.container {
+  width: 100%;
+}
+
+.searchSection {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.searchForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 840px;
+  align-items: center;
+}
+
+.inputRow {
+  display: flex;
+  gap: 12px;
+  width: 840px;
+  justify-content: center;
+}
+
+.inputRow select,
+.inputRow input {
+  width: 414px;
+  height: 42px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0 12px;
+  background: white;
+  font-size: 14px;
+  color: #333;
+}
+
+.lastRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 42px;
+  width: 840px;
+  justify-content: center;
+}
+
+.lastRow input {
+  width: 414px;
+  height: 42px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0 12px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.searchButton {
+  width: 80px;
+  height: 42px;
+  margin: 0;
+  padding: 0;
+  background: #789EDC;
+  color: white;
+  border: 1px solid #5481C3;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+select {
+  -webkit-appearance: default-button;
+  appearance: default-button;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px;
+  background-color: #ffffff;
+  border: none;
+  outline: none;
+}
+
+.table * {
+  border: none !important;
+  outline: none !important;
+}
+
+.tableHeader th {
+  background: rgb(186, 210, 249, 0.8);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.207);
+  color: rgb(0, 0, 0);
+  padding: 12px 20px;
+  text-align: center;
+  font-weight: normal;
+  border-radius: 5px;
+}
+
+.tableContainer {
+  background: white;
+  border-radius: 25px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  width: 800px;
+  outline: none;
+}
+
+.tableBody td {
+  padding: 15px;
+  text-align: center;
+}
+
+.tableBody tr:last-child td {
+  border-bottom: none;
+}
+
+/* 각 열의 너비 조정 */
+.tableHeader th,
+.tableBody td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 12px 15px;
+  text-align: center;
+}
+
+/* hover 효과 */
+.inputRow select:hover,
+.inputRow input:hover,
+.lastRow input:hover {
+  border-color: #6c8bef;
+}
+
+.searchButton:hover {
+  background: #5a75d5;
+}
+
+::placeholder {
+  color: #999;
+}
+
+/* 전체 행의 커서 스일 제거 */
+.tableBody tr {
+  cursor: default;
+}
+
+/* 상품코드 셀(첫 번째 열)에만 hover 효과 적용 */
+.tableBody td:first-child {
+  cursor: pointer;
+}
+
+.tableBody td:first-child:hover {
+  background-color: rgba(120, 158, 220, 0.1);
+}
+
+/* 기존의 tr hover 효과 제거 */
+.tableBody tr:hover {
+  background-color: transparent;
+}
+
+.inputRow select {
+  width: 300px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: pointer;
+}
+
+.inputRow select::-ms-expand {
+  display: none;
+}
