@@ -45,14 +45,12 @@ function Signup() {
                 placeholder="비밀번호"
                 className={styles.inputField}
               />
-              <button
-                type="button"
+              <span 
+                className={styles.showPassword} 
                 onClick={togglePasswordVisibility}
-                className={styles.showPassword}
-                aria-label="Toggle password visibility"
               >
                 {showPassword ? '🔒' : '👁️'}
-              </button>
+              </span>
             </div>
           </div>
           <div className={styles.inputGroup}>
@@ -64,14 +62,12 @@ function Signup() {
                 placeholder="비밀번호 확인"
                 className={styles.inputField}
               />
-              <button
-                type="button"
+              <span 
+                className={styles.showPassword} 
                 onClick={toggleConfirmPasswordVisibility}
-                className={styles.showPassword}
-                aria-label="Toggle password visibility"
               >
                 {showConfirmPassword ? '🔒' : '👁️'}
-              </button>
+              </span>
             </div>
           </div>
           <div className={styles.inputGroup}>

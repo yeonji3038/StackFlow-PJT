@@ -9,7 +9,7 @@ const Rt = () => {
   
 
   const submitData = async (data) => {
-    const csrfToken = "I1T8D3i_fHo65VbRgBtctxT0Bi7MSkS8U-UP6rMUnokoDU0HRmeYNk3ZGU8X1W7itTZogSfEKxeoKXaRYNI8j4BxrO8ZOSti"
+    const csrfToken = "F29D2704967D3A7C165C2024A5E80BE3"
 
     await axios.get('http://localhost:8080/api/rt/meToOtherRtlist', {
       withCredentials: true,
@@ -17,6 +17,9 @@ const Rt = () => {
       headers: {
         'X-CSRF-TOKEN': csrfToken,
       },
+    })
+    .then((res) => {
+      console.log(res.data)
     })
     .catch((err) => {
       if (err.response && err.response.status === 302) {

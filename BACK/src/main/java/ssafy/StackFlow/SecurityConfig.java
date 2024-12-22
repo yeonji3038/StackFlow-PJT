@@ -16,6 +16,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import java.io.IOException;
 
 @Configuration
@@ -24,35 +28,35 @@ import java.io.IOException;
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource)) // CORS 설정 적용
+                .csrf(csrf->csrf.disable()) // CSRF 비활성화 (API 사용 시 필수)
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers("/api/rt/submit").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN 역할만 접근 가능
+                        .requestMatchers("/user/signup/**").permitAll()  // 회원가입 URL 허용
+                        .requestMatchers("/api/user/signup/**").permitAll()  // API 회원가입 URL 허용
+                        .requestMatchers("/admin/**", "/store/**").hasRole("ADMIN") // admin과 store 관련 URL은 ADMIN 권한 필요
+                        .requestMatchers("/admin/registerStore", "/admin/registerStore/**").hasRole("ADMIN") // 매장 등록 URL 명시적 허용
+                        .requestMatchers("/chat/**").permitAll()
                         .anyRequest().authenticated()) // 나머지 요청은 인증 필요
 
-                .csrf((csrf) -> csrf
-                        .ignoringRequestMatchers(
-                                new AntPathRequestMatcher("/h2-console/**"),
-                                new AntPathRequestMatcher("/chat/**"),
-                                new AntPathRequestMatcher("/api/rt/submit")))
-
-                .headers((headers) -> headers
-                        .addHeaderWriter(new XFrameOptionsHeaderWriter(
-                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-
+//                .csrf((csrf) -> csrf
+//                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"),
+//                                new AntPathRequestMatcher("/api/rt/submit")))
+//                .headers((headers) -> headers
+//                        .addHeaderWriter(new XFrameOptionsHeaderWriter(
+//                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 // 로그인 설정
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/user/login") // 로그인 페이지 URL
                         .successHandler(successHandler()) // 성공 핸들러 설정
                         .permitAll())
-
                 // 로그아웃 설정
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                         .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true));
-
+                        .invalidateHttpSession(true)); // CORS 설정 추가
         return http.build();
     }
 

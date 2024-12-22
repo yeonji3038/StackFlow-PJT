@@ -31,6 +31,22 @@
         }
         .message {
             margin: 5px 0;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .sent {
+            background-color: #dcf8c6;
+            text-align: right;
+        }
+        .received {
+            background-color: #f1f1f1;
+        }
+        .unread {
+            font-weight: bold;
+        }
+        .read-status {
+            font-size: 0.8em;
+            color: #888;
         }
         #chat-room.hidden {
             display: none;
@@ -79,6 +95,7 @@
 <script>
     let stompClient = null;
     let currentRoomId = null;
+    let currentUserId = 'User1';  // 추후 로그인 사용자로 대체
 
     // WebSocket 연결
     function connect() {
@@ -92,18 +109,19 @@
                 renderRoomList(JSON.parse(rooms.body));
             });
 
-            // 메시지 구독
-            stompClient.subscribe('/topic/room/' + currentRoomId, function (message) {
-                showMessage(JSON.parse(message.body));
-            });
+            // 현재 roomId가 설정된 경우, 해당 방에 대해 구독 시작
+            if (currentRoomId) {
+                stompClient.subscribe(`/topic/room/${currentRoomId}`, function (message) {
+                    console.log("Received message: ", message);
+                    showMessage(JSON.parse(message.body));
+                });
+
+                stompClient.subscribe(`/topic/room/${currentRoomId}/read`, function () {
+                    markMessagesAsRead();
+                });
+            }
         });
     }
-
-    window.onload = function() {
-        connect();
-        loadRooms();
-        loadStores();
-    };
 
     // 채팅방 생성 모달 열기
     function openNewRoomModal() {
@@ -123,7 +141,8 @@
     }
 
     // 채팅방 목록 렌더링
-    function renderRoomList(rooms) {
+    function renderRoomList(data) {
+        const rooms = Array.isArray(data) ? data : [data];  // 배열로 변환
         const roomList = document.getElementById('room-list');
         roomList.innerHTML = '';
         rooms.forEach(room => {
@@ -131,30 +150,6 @@
             li.textContent = room.name;
             li.onclick = () => openRoom(room.id, room.name);
             roomList.appendChild(li);
-        });
-    }
-
-    // 스토어 목록 불러오기
-    function loadStores() {
-        fetch('/chat/stores')
-            .then(response => response.json())
-            .then(stores => renderStoreList(stores));
-    }
-
-    // 스토어 목록 렌더링
-    function renderStoreList(stores) {
-        const storeList = document.getElementById('store-list');
-        storeList.innerHTML = '';
-        stores.forEach(store => {
-            const li = document.createElement('li');
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = store.id;
-            const label = document.createElement('label');
-            label.textContent = store.storeName;
-            li.appendChild(checkbox);
-            li.appendChild(label);
-            storeList.appendChild(li);
         });
     }
 
@@ -178,7 +173,9 @@
     function createRoom() {
         const roomName = document.getElementById('room-name-input').value;
         const selectedStores = Array.from(document.querySelectorAll('#store-list input:checked'))
-            .map(input => input.value);
+            .map(input => parseInt(input.value));  // Long 타입으로 변환
+
+        console.log('Selected stores:', selectedStores); // 디버깅용
 
         // CSRF 토큰을 헤더에 포함
         const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
@@ -190,18 +187,29 @@
                 [csrfHeader]: csrfToken,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name: roomName, stores: selectedStores })
+            body: JSON.stringify({ name: roomName, storeIds: selectedStores })  // storeIds로 이름 변경
+        }).then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    console.error('Error:', error);
+                    alert('채팅방 생성에 실패했습니다.');
+                });
+            }
+            return response.json();
         }).then(() => {
             closeNewRoomModal();
             loadRooms();
+        }).catch(error => {
+            console.error('Request failed', error);
         });
     }
 
     // 메시지 전송
     function sendMessage() {
         const message = {
-            sender: 'User1', // 추후 로그인 사용자로 대체
-            content: document.getElementById('message').value
+            sender: currentUserId,  // 현재 사용자
+            content: document.getElementById('message').value,
+            read: []  // 읽은 사용자들 (초기값은 빈 배열)
         };
         stompClient.send(`/app/room/${currentRoomId}/send`, {}, JSON.stringify(message));
         document.getElementById('message').value = '';
@@ -210,8 +218,33 @@
     // 메시지 표시
     function showMessage(message) {
         const messagesDiv = document.getElementById('messages');
-        messagesDiv.innerHTML += `<div class="message"><strong>${message.sender}:</strong> ${message.content}</div>`;
+        if (!messagesDiv) return;
+
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.textContent = `${message.sender}: ${message.content}`;
+
+        const readStatus = document.createElement('span');
+        readStatus.classList.add('read-status');
+        if (message.read.length === 0) {
+            readStatus.textContent = '읽지 않음';
+        } else {
+            readStatus.textContent = `${message.read.length}명 읽음`;
+        }
+        messageElement.appendChild(readStatus);
+
+        messagesDiv.appendChild(messageElement);
+        console.log('Message added, scroll height:', messagesDiv.scrollHeight);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // 메시지 읽음 처리
+    function markMessagesAsRead() {
+        const messagesDiv = document.getElementById('messages');
+        const unreadMessages = messagesDiv.getElementsByClassName('unread');
+        Array.from(unreadMessages).forEach(message => {
+            message.classList.remove('unread');
+        });
     }
 </script>
 </body>
