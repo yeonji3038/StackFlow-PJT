@@ -1,26 +1,101 @@
 import "./Rt.css";
+import axios from "axios"
+import { useState } from 'react'
+
+import dumydata from './dumydata.json'
 
 const Rt = () => {
+  const otherRtList = dumydata
+  
+
+  const submitData = async (data) => {
+    const csrfToken = "I1T8D3i_fHo65VbRgBtctxT0Bi7MSkS8U-UP6rMUnokoDU0HRmeYNk3ZGU8X1W7itTZogSfEKxeoKXaRYNI8j4BxrO8ZOSti"
+
+    await axios.get('http://localhost:8080/api/rt/meToOtherRtlist', {
+      withCredentials: true,
+      maxRedirects: 0, // 리다이렉션 방지
+      headers: {
+        'X-CSRF-TOKEN': csrfToken,
+      },
+    })
+    .catch((err) => {
+      if (err.response && err.response.status === 302) {
+        console.error('리다이렉션 발생:', err.response.headers.location);
+      } else {
+        console.error('Error:', err);
+      }
+    });
+  }
+
+  submitData()
+  // axios({
+  //   method: 'GET',
+  //   url: 'http://localhost:8080/api/rt/meToOtherRtlist',
+  //   withCredentials: true, // 쿠키를 포함
+  // })
+  //   .then((res) => {
+  //     console.log(res.data);
+  //   })
+  //   .catch((err) => {
+  //     console.error('Error:', err);
+  //   });
+
+ 
+  
+  function input(){
+    const date = document.querySelector('#input_date').value
+    console.log(date)
+  }
+
+
   return(
-    <div className="container">
+    <div className="rtPage">
       <h1>매장 RT 관리 </h1>
       <hr />
-
+      
       <div className="mainContent">
-        <div className="inputData">
-          <span>지시기간</span>
-          <input class="dateInput" type="date" />
-          <span>처리구분</span>
-          <input type="checkbox" />
-          <input type="checkbox" />
-          <input type="checkbox" />
-          <span>매장</span> 
-          <input type="text" />
+        
+        <div className="searchBar">
+          <div className="date">
+            <label className="name">지시기간</label>
+            <input id="input_date" type="date" onChange={input}/>
+          </div>
+
+          <div className="checkbox">
+            <label className="name">처리구분</label>
+            <span className="fristCheckbox">
+              <label>미확정</label>
+              <input type="radio" />
+            </span>
+            <span>
+              <label>확정</label>
+              <input type="radio" />
+            </span>
+            <span>
+              <label>불이행</label>
+              <input type="radio" />
+            </span>
+          </div>
+
+          <div className="selector">
+            <label className="name">매장</label> 
+            <select>
+              <option>매장 선택</option>
+              <option>부산 서면점</option>
+              <option>수원점</option>
+              <option>강남점</option>
+              <option>대전점</option>
+              
+
+            </select>
+          </div>
+
           <div className="buttons">
             <button>조회</button>
             <button>등록</button>
           </div>
         </div>
+        
         <div className="searchTable">
           <div className="tableName">
             <h3>지시요청 조회</h3>  
@@ -35,18 +110,23 @@ const Rt = () => {
                 <th>지시매장</th>
                 <th>지시수량</th>
                 <th>RT 지시일</th>
+                <th>상태</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>YJBOTTEMPTM</td>
-                <td>GG바지</td>
-                <td>BK</td>
-                <td>FREE</td>
-                <td>수원점</td>
-                <td>1</td>
-                <td>24-12-10 16:19:34 </td>
-              </tr>
+              {otherRtList.map((item, index)=> {
+                return (
+                  <tr key={item.prodCode}> 
+                    <td>{item.prodCode}</td>
+                    <td>{item.prodName}</td>
+                    <td>{item.colorCode}</td>
+                    <td>{item.size}</td>
+                    <td>{item.reqStore}</td>
+                    <td>{item.rtProducts[0].reqQuant}</td>
+                    <td>{item.reqDate}</td>
+                    <td>{item.status}</td>
+                  </tr>
+                )})}
             </tbody>
           </table>
         </div>
@@ -68,22 +148,25 @@ const Rt = () => {
               
             </thead>
             <tbody>
-              <tr>
-                <td>YJBOTTEMPTM</td>
-                <td>GG바지</td>
-                <td>BK</td>
-                <td>FREE</td>
-                <td>수원점</td>
-                <td>1</td>
-                <td>24-12-10 16:19:34 </td>
-              </tr>
+              
+            {otherRtList.map((item)=> {
+                return (
+                  <tr key={item.prodCode}> 
+                    <td>{item.prodCode}</td>
+                    <td>{item.prodName}</td>
+                    <td>{item.colorCode}</td>
+                    <td>{item.size}</td>
+                    <td>{item.reqStore}</td>
+                    <td>{item.rtProducts[0].reqQuant}</td>
+                    <td>{item.reqDate}</td>
+                    <td>{item.status}</td>
+                  </tr>
+                )})}
             </tbody>
           </table>
         </div>
-      </div>
-
+      </div> 
       
-
     </div>
   )
 }

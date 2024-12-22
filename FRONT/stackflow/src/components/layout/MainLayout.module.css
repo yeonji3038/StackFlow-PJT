@@ -17,7 +17,10 @@
   flex: 1;
   padding: 20px;
   margin-left: 20px;
-  overflow-y: auto;
+}
+
+h1 {
+  font-weight: 900;
 }
 
 /* 전역 스타일은 별도의 파일로 분리하거나 필요한 요소에만 적용 */

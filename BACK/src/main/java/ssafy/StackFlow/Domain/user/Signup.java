@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import ssafy.StackFlow.Domain.Store;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Getter
 @Setter
 @Entity
@@ -31,7 +33,7 @@ public class Signup {
     private String role; // 사용자 역할 추가
 
     // 매장 정보 참조
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "store_id") // 외래키
     private Store store;
 }

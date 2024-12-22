@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Domain.Store;
+import ssafy.StackFlow.Domain.user.Signup;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -21,6 +22,7 @@ public class RT {
     private String colorCode;
     private String size;
     private String reqStore;
+    private String myStore;
     private LocalDateTime reqDate;
 
     @Enumerated(EnumType.STRING)
@@ -35,25 +37,33 @@ public class RT {
         rtProduct.setRT(this);
     }
 
-    public static RT createRT(Product product, Store store) {
+    public static RT createRT(Product product, Store store, Signup loginUser) {
         RT rt = new RT();
         rt.status = RtStatus.REQUEST;
-        rt.setProdName(product.getProdName());
+        
         rt.setProdCode(product.getProdCode());
+        rt.setProdName(product.getProdName());
+        
         if (product.getColorCode() != null) {
             rt.setColorCode(product.getColorCode().getColorCode());
-        } else {
-            rt.setColorCode(null);
         }
+        
         if (product.getSize() != null) {
             rt.setSize(product.getSize().getSize());
-        } else {
-            rt.setSize(null);
         }
+        
         rt.setReqStore(store.getStoreName());
+        
+        if (loginUser != null && loginUser.getStore() != null) {
+            rt.setMyStore(loginUser.getStore().getStoreName());
+        }
+        
         rt.setReqDate(LocalDateTime.now());
+        
         return rt;
     }
+
+
 }
 
 
