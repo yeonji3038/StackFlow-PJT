@@ -34,6 +34,8 @@ public class SecurityConfig {
                 .csrf(csrf->csrf.disable()) // CSRF 비활성화 (API 사용 시 필수)
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers("/api/rt/submit").permitAll()
+                        .requestMatchers("/user/signup/**").permitAll()  // 회원가입 URL 허용
+                        .requestMatchers("/api/user/signup/**").permitAll()  // API 회원가입 URL 허용
                         .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN 역할만 접근 가능
                         .anyRequest().authenticated()) // 나머지 요청은 인증 필요
 
