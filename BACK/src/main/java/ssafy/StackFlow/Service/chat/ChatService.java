@@ -1,9 +1,10 @@
-package ssafy.StackFlow.Service;
+package ssafy.StackFlow.Service.chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ssafy.StackFlow.Domain.ChatMessage;
-import ssafy.StackFlow.Repository.ChatMessageRepository;
+import ssafy.StackFlow.Domain.chat.ChatMessage;
+import ssafy.StackFlow.Repository.chat.ChatMessageRepository;
+
 
 import java.util.List;
 

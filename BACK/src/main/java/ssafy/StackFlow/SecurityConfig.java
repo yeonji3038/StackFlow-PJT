@@ -29,18 +29,22 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN 역할만 접근 가능
                         .anyRequest().authenticated()) // 나머지 요청은 인증 필요
 
-
                 .csrf((csrf) -> csrf
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"),
-                                new AntPathRequestMatcher("/api/rt/submit") ))
+                        .ignoringRequestMatchers(
+                                new AntPathRequestMatcher("/h2-console/**"),
+                                new AntPathRequestMatcher("/chat/**"),
+                                new AntPathRequestMatcher("/api/rt/submit")))
+
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+
                 // 로그인 설정
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/user/login") // 로그인 페이지 URL
                         .successHandler(successHandler()) // 성공 핸들러 설정
                         .permitAll())
+
                 // 로그아웃 설정
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
