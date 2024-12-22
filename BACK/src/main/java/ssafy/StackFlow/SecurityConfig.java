@@ -28,9 +28,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers("/api/rt/submit").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN 역할만 접근 가능
-                        .anyRequest().authenticated()) // 나머지 요청은 인증 필요
-
+                        .requestMatchers("/admin/**").hasRole("ADMIN")) // ADMIN 역할만 접근 가능
+//                        .anyRequest().authenticated()) // 나머지 요청은 인증 필요
 
                 .csrf((csrf) -> csrf
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"),

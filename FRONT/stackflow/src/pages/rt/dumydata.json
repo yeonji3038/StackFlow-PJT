@@ -1,0 +1,122 @@
+[
+  {
+    "prodCode": "P10000",
+    "prodName": "Product 1",
+    "colorCode": "RED",
+    "size": "S",
+    "reqStore": "Store 1",
+    "rtProducts": [
+      { "reqQuant": "10" }
+    ],
+    "reqDate": "2024-12-21T12:00:00",
+    "status": "처리 완료"
+  },
+  {
+    "prodCode": "P10001",
+    "prodName": "Product 2",
+    "colorCode": "BLUE",
+    "size": "M",
+    "reqStore": "Store 2",
+    "rtProducts": [
+      { "reqQuant": "20" }
+    ],
+    "reqDate": "2024-12-20T12:00:00",
+    "status": "대기 중"
+  },
+  {
+    "prodCode": "P10002",
+    "prodName": "Product 3",
+    "colorCode": "GREEN",
+    "size": "L",
+    "reqStore": "Store 3",
+    "rtProducts": [
+      { "reqQuant": "15" }
+    ],
+    "reqDate": "2024-12-19T12:00:00",
+    "status": "취소됨"
+  },
+  {
+    "prodCode": "P10003",
+    "prodName": "Product 4",
+    "colorCode": "RED",
+    "size": "XL",
+    "reqStore": "Store 4",
+    "rtProducts": [
+      { "reqQuant": "25" }
+    ],
+    "reqDate": "2024-12-18T12:00:00",
+    "status": "처리 완료"
+  },
+  {
+    "prodCode": "P10004",
+    "prodName": "Product 5",
+    "colorCode": "BLUE",
+    "size": "S",
+    "reqStore": "Store 5",
+    "rtProducts": [
+      { "reqQuant": "30" }
+    ],
+    "reqDate": "2024-12-17T12:00:00",
+    "status": "대기 중"
+  },
+  {
+    "prodCode": "P10005",
+    "prodName": "Product 6",
+    "colorCode": "GREEN",
+    "size": "M",
+    "reqStore": "Store 6",
+    "rtProducts": [
+      { "reqQuant": "12" }
+    ],
+    "reqDate": "2024-12-16T12:00:00",
+    "status": "취소됨"
+  },
+  {
+    "prodCode": "P10006",
+    "prodName": "Product 7",
+    "colorCode": "RED",
+    "size": "L",
+    "reqStore": "Store 7",
+    "rtProducts": [
+      { "reqQuant": "18" }
+    ],
+    "reqDate": "2024-12-15T12:00:00",
+    "status": "처리 완료"
+  },
+  {
+    "prodCode": "P10007",
+    "prodName": "Product 8",
+    "colorCode": "BLUE",
+    "size": "XL",
+    "reqStore": "Store 8",
+    "rtProducts": [
+      { "reqQuant": "22" }
+    ],
+    "reqDate": "2024-12-14T12:00:00",
+    "status": "대기 중"
+  },
+  {
+    "prodCode": "P10008",
+    "prodName": "Product 9",
+    "colorCode": "GREEN",
+    "size": "S",
+    "reqStore": "Store 9",
+    "rtProducts": [
+      { "reqQuant": "8" }
+    ],
+    "reqDate": "2024-12-13T12:00:00",
+    "status": "취소됨"
+  },
+  {
+    "prodCode": "P10009",
+    "prodName": "Product 10",
+    "colorCode": "RED",
+    "size": "M",
+    "reqStore": "Store 10",
+    "rtProducts": [
+      { "reqQuant": "35" }
+    ],
+    "reqDate": "2024-12-12T12:00:00",
+    "status": "처리 완료"
+  }
+]

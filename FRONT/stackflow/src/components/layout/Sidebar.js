@@ -47,7 +47,6 @@ const Sidebar = () => {
   const toggleMenu = (index) => {
     setOpenMenu(openMenu === index ? null : index);
   };
-
   return (
     <div className={styles.sidebarContainer}>
       <div className={styles.logo}>
