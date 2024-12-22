@@ -33,8 +33,8 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
-@CrossOrigin(origins="http://localhost:3000")
 
+@CrossOrigin(origins="http://localhost:3000")
 
 @RestController
 @RequiredArgsConstructor
