@@ -10,7 +10,7 @@ const MainPage = () => {
         <div className={styles.dashboardItem}>
           <div className={styles.headerContainer}>
             <h2>R/T 지시내역</h2>
-            <button className={styles.moreButton}>more</button>
+            <a href="/rt-instructions" className={styles.moreLink}>more</a>
           </div>
           <div className={styles.content}>
             <table className={styles.dataTable}>
@@ -36,7 +36,7 @@ const MainPage = () => {
         <div className={styles.dashboardItem}>
           <div className={styles.headerContainer}>
             <h2>R/T 반출내역</h2>
-            <button className={styles.moreButton}>more</button>
+            <a href="/rt-outputs" className={styles.moreLink}>more</a>
           </div>
           <div className={styles.content}>
             <table className={styles.dataTable}>
@@ -62,7 +62,7 @@ const MainPage = () => {
         <div className={styles.dashboardItem}>
           <div className={styles.headerContainer}>
             <h2>R/T 반입내역</h2>
-            <button className={styles.moreButton}>more</button>
+            <a href="/rt-inputs" className={styles.moreLink}>more</a>
           </div>
           <div className={styles.content}>
             <table className={styles.dataTable}>
@@ -88,7 +88,7 @@ const MainPage = () => {
         <div className={styles.dashboardItem}>
           <div className={styles.headerContainer}>
             <h2>공지사항</h2>
-            <button className={styles.moreButton}>more</button>
+            <a href="/notices" className={styles.moreLink}>more</a>
           </div>
           <div className={styles.content}>
             <table className={styles.dataTable}>
