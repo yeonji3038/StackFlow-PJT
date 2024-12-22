@@ -28,19 +28,21 @@ import java.io.IOException;
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource)) // CORS 설정 적용
+                .csrf(csrf->csrf.disable()) // CSRF 비활성화 (API 사용 시 필수)
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers("/api/rt/submit").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN 역할만 접근 가능
                         .anyRequest().authenticated()) // 나머지 요청은 인증 필요
 
-                .csrf((csrf) -> csrf
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"),
-                                new AntPathRequestMatcher("/api/rt/submit")))
-                .headers((headers) -> headers
-                        .addHeaderWriter(new XFrameOptionsHeaderWriter(
-                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+//                .csrf((csrf) -> csrf
+//                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"),
+//                                new AntPathRequestMatcher("/api/rt/submit")))
+//                .headers((headers) -> headers
+//                        .addHeaderWriter(new XFrameOptionsHeaderWriter(
+//                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 // 로그인 설정
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/user/login") // 로그인 페이지 URL
@@ -75,18 +77,5 @@ public class SecurityConfig {
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000"); // React 클라이언트 URL
-        configuration.addAllowedOrigin("http://192.168.0.2:3000"); // 추가 클라이언트 URL
-        configuration.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
-        configuration.addAllowedHeader("*"); // 모든 헤더 허용
-        configuration.setAllowCredentials(true); // 인증 정보 허용
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // 모든 경로에 대해 설정 적용
-        return source;
     }
 }
