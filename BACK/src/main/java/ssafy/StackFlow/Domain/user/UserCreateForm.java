@@ -26,8 +26,8 @@ public class UserCreateForm {
     @Email
     private String email;
 
-//    @NotEmpty(message = "매장코드은 필수항목입니다.")
-//    private String storeCode;
+    @NotEmpty(message = "매장코드은 필수항목입니다.")
+    private String storeCode;
 
 
 }
