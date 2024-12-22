@@ -201,7 +201,7 @@ body {
   
   .label {
     display: block;
-    margin-bottom: 0.2rem;
+    margin-bottom: 10px;
     font-weight: bold;
     font-size: 0.85rem;
   }
@@ -245,15 +245,37 @@ body {
   
   .signupButton {
     width: 100%;
-    padding: 0.9rem;
-    background: #002F75;
+    padding: 0.8rem;
+    background: linear-gradient(to right, #a2c1ed, #5B7CAB);
+    border: 1px solid #00368d;
     color: white;
-    border: none;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 0.9rem;
-    margin-top: 0.6rem;
+    font-size: 1rem;
+    margin-top: 0px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
   }
+  
+  .signupButton:after {
+    content: "";
+    background: linear-gradient(to right, #1488cc, #002F75);
+    position: absolute;
+    z-index: -1;
+    left: -20%;
+    right: -20%;
+    top: 0;
+    bottom: 0;
+    transform: skewX(-45deg) scale(0, 1);
+    transition: all 0.5s;
+   }
+   
+   .signupButton:hover:after {
+    transform: skewX(-45deg) scale(1, 1);
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+   }
   
   .signupLink {
     text-align: center;
