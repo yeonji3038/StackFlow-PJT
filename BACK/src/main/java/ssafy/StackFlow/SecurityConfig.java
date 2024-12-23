@@ -37,6 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/signup/**").permitAll()  // 회원가입 URL 허용
                         .requestMatchers("/api/user/signup/**").permitAll()  // API 회원가입 URL 허용
                         .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN 역할만 접근 가능
+                        .requestMatchers("/notice/create").hasRole("ADMIN")  // ADMIN 역할만 공지사항 글쓰기 가능
                         .anyRequest().authenticated()) // 나머지 요청은 인증 필요
 
 //                .csrf((csrf) -> csrf
