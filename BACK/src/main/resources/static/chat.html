@@ -95,7 +95,7 @@
 <script>
     let stompClient = null;
     let currentRoomId = null;
-    let currentUserId = 'User1';  // 추후 로그인 사용자로 대체
+    let currentUserId = /*[[${currentUserId}]]*/ 'UserName';
 
     // WebSocket 연결
     function connect() {
@@ -123,9 +123,42 @@
         });
     }
 
+    // 페이지 로드 시 WebSocket 연결 및 채팅방 목록 불러오기
+    window.onload = function () {
+        connect();
+        loadRooms();
+    };
+
     // 채팅방 생성 모달 열기
     function openNewRoomModal() {
+        loadStores();
         document.getElementById('new-room-modal').style.display = 'block';
+    }
+
+    // 지점 목록 로드
+    function loadStores() {
+        fetch('/chat/stores')
+            .then(response => response.json())
+            .then(data => renderStoreList(data));
+    }
+
+    // 체크박스 목록 렌더링
+    function renderStoreList(stores) {
+        const storeList = document.getElementById('store-list');
+        storeList.innerHTML = ''; // 기존 목록 초기화
+
+        stores.forEach(store => {
+            const li = document.createElement('li');
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.value = store.id;  // Store ID
+            const label = document.createElement('label');
+            label.textContent = store.storeName; // storeName을 사용하여 지점 이름 표시
+
+            li.appendChild(input);
+            li.appendChild(label);
+            storeList.appendChild(li);
+        });
     }
 
     // 채팅방 생성 모달 닫기
@@ -187,7 +220,7 @@
                 [csrfHeader]: csrfToken,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name: roomName, storeIds: selectedStores })  // storeIds로 이름 변경
+            body: JSON.stringify({ name: roomName, storeIds: selectedStores })
         }).then(response => {
             if (!response.ok) {
                 return response.json().then(error => {

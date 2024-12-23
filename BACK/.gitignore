@@ -39,3 +39,5 @@ out/
 # Application properties
 application.properties
 BACK/src/main/resources/application.properties
+
+.idea/
