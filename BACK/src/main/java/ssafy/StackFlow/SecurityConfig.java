@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/signup/**").permitAll()  // API 회원가입 URL 허용
                         .requestMatchers("/admin/**", "/store/**").hasRole("ADMIN") // admin과 store 관련 URL은 ADMIN 권한 필요
                         .requestMatchers("/admin/registerStore", "/admin/registerStore/**").hasRole("ADMIN") // 매장 등록 URL 명시적 허용
+                        .requestMatchers("/chat/**").permitAll()
                         .anyRequest().authenticated()) // 나머지 요청은 인증 필요
 
 //                .csrf((csrf) -> csrf
