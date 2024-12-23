@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -114,7 +114,7 @@
 <div class="container my-3">
     <h2>공지사항</h2>
     <div class="write-link">
-        <a th:href="@{/notice/create}">
+        <a th:href="@{/notice/create}" sec:authorize="hasRole('ROLE_ADMIN')">
             글쓰기
         </a>
     </div>
@@ -137,7 +137,9 @@
                 <td class="text-start">
                     <a th:href="@{|/notice/${notice.id}|}" th:text="${notice.title}"></a>
                 </td>
-                <td><span th:if="${notice.author != null}" th:text="${notice.author.username}"></span></td>
+                <td>
+                    <span th:if="${notice.author != null}" th:text="${notice.author.username == 'admin' ? '관리자' : notice.author.username}"></span>
+                </td>
                 <td th:text="${#temporals.format(notice.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
         </tbody>

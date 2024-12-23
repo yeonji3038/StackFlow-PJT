@@ -23,6 +23,7 @@ public class NoticeService {
 
     private final NoticeRepository noticeRepository;
 
+    // 공지사항 목록 조회
     public List<Notice> getList() {
         return this.noticeRepository.findAll();
     }
@@ -36,7 +37,7 @@ public class NoticeService {
         }
     }
 
-    public void create(String title, String content, Signup user) {
+    public Notice create(String title, String content, Signup user) {
         Notice n = new Notice();
         n.settitle(title);
         n.setcontent(content);
@@ -44,6 +45,7 @@ public class NoticeService {
         n.setupdatedAt(LocalDateTime.now());
         n.setAuthor(user);
         this.noticeRepository.save(n);
+        return n;
     }
 
     public Page<Notice> getList(int page) {
