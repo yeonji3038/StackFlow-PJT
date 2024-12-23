@@ -1,4 +1,4 @@
-package ssafy.StackFlow.api.RT.dto.RT;
+package ssafy.StackFlow.api.RT.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

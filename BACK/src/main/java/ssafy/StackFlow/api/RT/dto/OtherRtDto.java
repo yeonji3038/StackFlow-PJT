@@ -1,8 +1,7 @@
-package ssafy.StackFlow.api.RT.dto.RT;
+package ssafy.StackFlow.api.RT.dto;
 
 import lombok.Data;
 import ssafy.StackFlow.Domain.RT.RT;
-import ssafy.StackFlow.Domain.RT.RtStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

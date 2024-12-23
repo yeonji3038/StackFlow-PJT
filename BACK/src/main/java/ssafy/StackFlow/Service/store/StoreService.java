@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.StackFlow.Domain.Store;
+import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Repository.StoreRepository;
 
 import java.util.List;
@@ -13,6 +14,16 @@ import java.util.List;
 @RequiredArgsConstructor // 생성자 주입을 위한 Lombok 어노테이션
 public class StoreService {
     private final StoreRepository storeRepository; // StoreRepository 주입
+
+    public Store findStoreById(Long id) {
+        return storeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 매장이 없습니다."));
+    }
+
+    @Transactional
+    public Store save(Store store) {
+        return storeRepository.save(store);
+    }
 
     @Transactional // 데이터를 수정하는 메서드이므로 @Transactional 추가
     public void saveStore(Store store) {
