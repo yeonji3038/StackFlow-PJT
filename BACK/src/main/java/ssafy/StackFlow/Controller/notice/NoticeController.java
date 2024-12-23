@@ -131,8 +131,8 @@ public class NoticeController {
     }
 
     // 공지사항 생성 (API)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/api")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/api/create")
     public ResponseEntity<Notice> createNotice(@Valid @RequestBody NoticeForm noticeForm, Principal principal) {
         Signup signup = this.userService.getUser(principal.getName());
         Notice notice = this.noticeService.create(noticeForm.getTitle(), noticeForm.getContent(), signup);
@@ -140,8 +140,8 @@ public class NoticeController {
     }
 
     // 공지사항 수정 (API)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/api/{id}")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/api/modify/{id}")
     public ResponseEntity<Notice> modifyNotice(@PathVariable("id") Long id,
                                                @Valid @RequestBody NoticeForm noticeForm,
                                                Principal principal) {
@@ -154,8 +154,8 @@ public class NoticeController {
     }
 
     // 공지사항 삭제 (API)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/api/{id}")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/api/delete/{id}")
     public ResponseEntity<Void> deleteNotice(@PathVariable("id") Long id, Principal principal) {
         Notice notice = this.noticeService.getNotice(id);
         if (!notice.getAuthor().getUsername().equals(principal.getName())) {
@@ -164,4 +164,5 @@ public class NoticeController {
         this.noticeService.delete(notice);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 삭제 성공
     }
+
 }
