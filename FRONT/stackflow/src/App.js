@@ -12,6 +12,10 @@ import ProductRegister from './pages/product/ProductRegister';
 import ProductManagement from './pages/product/ProductManagement';
 import ProductStockStatus from './pages/product/ProductStockStatus';
 import ProductCategoryRegister from './pages/product/ProductCategoryRegister';
+import InventoryReceiving from './pages/inventory/InventoryReceiving';
+import InventoryShipping from './pages/inventory/InventoryShipping';
+import InventoryHistory from './pages/inventory/InventoryHistory';
+
 
 // 임시로 페이지 컴포넌트들 생성
 const InventoryPages = () => <div>Inventory Page</div>;
@@ -36,6 +40,9 @@ function App() {
               <Routes>
                 <Route path="main" element={<MainPage />} />
                 <Route path="inventory/*" element={<InventoryPages />} />
+                <Route path="/inventory/receiving" element={<InventoryReceiving />} />
+                <Route path="/inventory/shipping" element={<InventoryShipping />} />
+                <Route path="/inventory/history" element={<InventoryHistory />} />
                 <Route path="notice/*" element={<Notice />} />
                 <Route path="product/*" element={<ProductPages />} />
                 <Route path="/product/register" element={<ProductRegister />} />

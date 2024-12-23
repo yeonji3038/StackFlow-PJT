@@ -13,6 +13,7 @@ import ssafy.StackFlow.Domain.product.Color;
 import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Domain.product.Size;
 import ssafy.StackFlow.Repository.RT.RtApiRepository;
+import ssafy.StackFlow.Repository.StoreRepository;
 import ssafy.StackFlow.Repository.category.CategoryGroupRepository;
 import ssafy.StackFlow.Repository.category.CategoryRepository;
 import ssafy.StackFlow.Repository.product.ColorRepository;
@@ -47,6 +48,8 @@ public class RtApiController {
     private final CategoryGroupRepository categoryGroupRepository;
     private final ColorRepository colorRepository;
     private final SizeRepository sizeRepository;
+    private final StoreRepository storeRepository;
+
 
     @GetMapping("/csrf")
     public CsrfToken csrf(HttpServletRequest request) {
@@ -88,7 +91,14 @@ public class RtApiController {
                 .collect(toList());
         return result;
     }
-
+    @GetMapping("/api/rt/store")
+    public List<RtStoreDto> RtStoreListApi() {
+        List<Store> stores = storeRepository.findAll();
+        List<RtStoreDto> result = stores.stream()
+                .map(o -> new RtStoreDto(o))
+                .collect(toList());
+        return result;
+    }
     @GetMapping("/api/rt/size")
     public List<RtSizeDto> RtSizeListApi() {
         List<Size> sizes = sizeRepository.findAll();
