@@ -35,9 +35,9 @@ public class UserController {
             return "signup";
         }
 
-        // 역할을 추가로 전달
+        // 매장 코드를 추가로 전달
         userService.create(userCreateForm.getUsername(),
-                userCreateForm.getEmail(), userCreateForm.getPassword1(), "ROLE_USER"); // 기본 역할 설정
+                userCreateForm.getEmail(), userCreateForm.getPassword1(), "ROLE_USER", userCreateForm.getStoreCode()); // 매장 코드 추가
 
         return "redirect:/"; // 회원가입 후 리다이렉트
     }

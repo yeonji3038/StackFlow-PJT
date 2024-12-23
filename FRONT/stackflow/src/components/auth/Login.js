@@ -10,6 +10,11 @@ function Login() {
     setShowPassword((prevState) => !prevState);
   };
 
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    navigate('/signup');
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.textContainer}>
@@ -32,31 +37,28 @@ function Login() {
             />
           </div>
           <div className={styles.inputGroup}>
-            <label htmlFor="password" className={styles.label}>Password</label>
+            <label className={styles.label}>Password</label>
             <div className={styles.passwordContainer}>
               <input
-                type={showPassword ? 'text' : 'password'}
-                id="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="비밀번호"
                 className={styles.inputField}
               />
-              <button
-                type="button"
+              <span 
+                className={styles.showPassword} 
                 onClick={togglePasswordVisibility}
-                className={styles.showPassword}
-                aria-label="Toggle password visibility"
               >
                 {showPassword ? '🔒' : '👁️'}
-              </button>
+              </span>
             </div>
           </div>
           <button type="submit" className={styles.loginButton}>Log in</button>
-          <div className={styles.signupLink}>
-            아직 회원이 아니신가요?{' '}
+          <div className={styles.signupContainer}>
+            <span className={styles.signupText}>아직 회원이 아니신가요?</span>
             <button 
-              type="button" 
-              className={styles.signUpButton}
-              onClick={() => navigate('/signup')}
+              type="button"
+              className={styles.signUpButton} 
+              onClick={handleSignUp}
             >
               Sign Up
             </button>

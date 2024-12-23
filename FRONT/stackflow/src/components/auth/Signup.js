@@ -45,14 +45,12 @@ function Signup() {
                 placeholder="비밀번호"
                 className={styles.inputField}
               />
-              <button
-                type="button"
+              <span 
+                className={styles.showPassword} 
                 onClick={togglePasswordVisibility}
-                className={styles.showPassword}
-                aria-label="Toggle password visibility"
               >
                 {showPassword ? '🔒' : '👁️'}
-              </button>
+              </span>
             </div>
           </div>
           <div className={styles.inputGroup}>
@@ -64,47 +62,19 @@ function Signup() {
                 placeholder="비밀번호 확인"
                 className={styles.inputField}
               />
-              <button
-                type="button"
+              <span 
+                className={styles.showPassword} 
                 onClick={toggleConfirmPasswordVisibility}
-                className={styles.showPassword}
-                aria-label="Toggle password visibility"
               >
                 {showConfirmPassword ? '🔒' : '👁️'}
-              </button>
+              </span>
             </div>
           </div>
           <div className={styles.inputGroup}>
-            <label htmlFor="email" className={styles.label}>Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="example@site.com"
-              className={styles.inputField}
-            />
-          </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="companyName" className={styles.label}>회사명</label>
+            <label htmlFor="StoreCode" className={styles.label}>Store Code</label>
             <input
               type="text"
-              id="companyName"
-              className={styles.inputField}
-            />
-          </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="businessNumber" className={styles.label}>사업자등록번호</label>
-            <input
-              type="text"
-              id="businessNumber"
-              className={styles.inputField}
-            />
-          </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="operatingStores" className={styles.label}>운영 매장 개수</label>
-            <input
-              type="text"
-              id="operatingStores"
-              placeholder="30개 초과 시 관리자 문의"
+              id="StoreCode"
               className={styles.inputField}
             />
           </div>
