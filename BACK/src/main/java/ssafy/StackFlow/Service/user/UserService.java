@@ -9,8 +9,8 @@ import ssafy.StackFlow.Domain.user.Signup;
 import ssafy.StackFlow.Repository.StoreRepository;
 import ssafy.StackFlow.Repository.user.UserRepository;
 import ssafy.StackFlow.Service.DataNotFoundException;
+import ssafy.StackFlow.api.user.UserDto;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -20,6 +20,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final PasswordEncoder passwordEncoder;
+
+
+    // Signup saveEntity(Signup signup);
+//    Signup saveDto(UserDto userDto); // DTO를 사용하여 회원 등록
 
 //    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 //        this.userRepository = userRepository;
@@ -51,5 +55,25 @@ public class UserService {
         } else {
             throw new DataNotFoundException("siteuser not found");
         }
+    }
+
+    public Signup signup(UserDto userDto) {
+        Signup user = new Signup();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setEmail(userDto.getEmail());
+
+        // 기본 역할 설정
+        user.setRole(userDto.getRole() != null ? userDto.getRole() : "ROLE_USER"); // 기본값 설정
+
+        // Store 객체를 설정
+        Store store = storeRepository.findByStoreCode(userDto.getStoreCode());
+        if (store != null) {
+            user.setStore(store); // Store 설정
+        } else {
+            throw new RuntimeException("Store not found with storeCode: " + userDto.getStoreCode());
+        }
+
+        return userRepository.save(user); // 데이터베이스 저장
     }
 }

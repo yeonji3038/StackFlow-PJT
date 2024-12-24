@@ -36,4 +36,14 @@ public class Signup {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "store_id") // 외래키
     private Store store;
+
+    // storeCode 필드 추가
+    @Transient // JPA에서 관리하지 않는 필드
+    private String storeCode;
+
+    // Store의 storeCode를 가져오는 메서드
+    public String getStoreCode() {
+        return store != null ? store.getStoreCode() : null; // Store가 null이 아닐 경우 storeCode 반환
+    }
+
 }
