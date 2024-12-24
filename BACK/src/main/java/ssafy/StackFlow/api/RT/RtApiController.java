@@ -20,14 +20,10 @@ import ssafy.StackFlow.Repository.product.ColorRepository;
 import ssafy.StackFlow.Repository.product.ProductRepo;
 import ssafy.StackFlow.Repository.product.SizeRepository;
 import ssafy.StackFlow.Service.RT.RtService;
-import ssafy.StackFlow.Service.user.UserService;
-import ssafy.StackFlow.api.RT.dto.RT.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import ssafy.StackFlow.api.RT.dto.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -57,5 +57,7 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private List<Store> stores = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductStore> storeProducts = new ArrayList<>();
 }
 
