@@ -43,7 +43,7 @@ public class NoticeService {
         n.setcontent(content);
         n.setcreatedAt(LocalDateTime.now());
         n.setupdatedAt(LocalDateTime.now());
-//        n.setAuthor(user);
+        n.setAuthor(user);
         this.noticeRepository.save(n);
         return n;
     }

@@ -24,8 +24,7 @@ import java.util.List;
 
 @RequestMapping("/notice")
 @RequiredArgsConstructor
-//@Controller  // 백엔드 확인 (html 페이지 반환)
-@RestController  // 프론트 api 넘겨주기 (json 응답 반환)
+@Controller  // 백엔드 확인 (html 페이지 반환)
 public class NoticeController {
 
     private final NoticeService noticeService;
@@ -111,58 +110,4 @@ public class NoticeController {
         this.noticeService.delete(notice);
         return "redirect:/notice";
     }
-
-    // ----------------------------------
-    // **API 응답을 위한 엔드포인트 추가**
-    // ----------------------------------
-
-    // 공지사항 목록 조회 (API)
-    @GetMapping("/api")
-    public ResponseEntity<List<Notice>> getNoticeList() {
-        List<Notice> notices = this.noticeService.getList();
-        return new ResponseEntity<>(notices, HttpStatus.OK);
-    }
-
-    // 공지사항 상세 조회 (API)
-    @GetMapping("/api/{id}")
-    public ResponseEntity<Notice> getNotice(@PathVariable("id") Long id) {
-        Notice notice = this.noticeService.getNotice(id);
-        return new ResponseEntity<>(notice, HttpStatus.OK);
-    }
-
-    // 공지사항 생성 (API)
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/api/create")
-    public ResponseEntity<Notice> createNotice(@Valid @RequestBody NoticeForm noticeForm, Principal principal) {
-        Signup signup = this.userService.getUser(principal.getName());
-        Notice notice = this.noticeService.create(noticeForm.getTitle(), noticeForm.getContent(), signup);
-        return new ResponseEntity<>(notice, HttpStatus.CREATED);
-    }
-
-    // 공지사항 수정 (API)
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/api/modify/{id}")
-    public ResponseEntity<Notice> modifyNotice(@PathVariable("id") Long id,
-                                               @Valid @RequestBody NoticeForm noticeForm,
-                                               Principal principal) {
-        Notice notice = this.noticeService.getNotice(id);
-        if (!notice.getAuthor().getUsername().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "수정 권한이 없습니다.");
-        }
-        this.noticeService.modify(notice, noticeForm.getTitle(), noticeForm.getContent());
-        return new ResponseEntity<>(notice, HttpStatus.OK);
-    }
-
-    // 공지사항 삭제 (API)
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/api/delete/{id}")
-    public ResponseEntity<Void> deleteNotice(@PathVariable("id") Long id, Principal principal) {
-        Notice notice = this.noticeService.getNotice(id);
-        if (!notice.getAuthor().getUsername().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "삭제 권한이 없습니다.");
-        }
-        this.noticeService.delete(notice);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 삭제 성공
-    }
-
 }
