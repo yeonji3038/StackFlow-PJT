@@ -10,9 +10,12 @@ import ssafy.StackFlow.Domain.notice.Notice;
 import ssafy.StackFlow.Domain.user.Signup;
 import ssafy.StackFlow.Service.notice.NoticeService;
 import ssafy.StackFlow.Service.user.UserService;
+import ssafy.StackFlow.api.Notice.dto.FileDto;
+import ssafy.StackFlow.api.Notice.dto.NoticeDto;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/notice")
 @RequiredArgsConstructor
@@ -27,16 +30,38 @@ public class NoticeApiController {
 
     // 공지사항 목록 조회 (API)
     @GetMapping("/api")
-    public ResponseEntity<List<Notice>> getNoticeList() {
+    public ResponseEntity<List<NoticeDto>> getNoticeList() {
         List<Notice> notices = this.noticeService.getList();
-        return new ResponseEntity<>(notices, HttpStatus.OK);
+
+        // Notice 객체를 NoticeDto로 변환
+        List<NoticeDto> noticeDtos = notices.stream()
+                .map(notice -> {
+                    List<FileDto> fileDtos = notice.getFiles().stream()
+                            .map(file -> new FileDto(file.getId(), file.getFileName(), file.getFilePath(), file.getFileType()))
+                            .collect(Collectors.toList());
+
+                    // NoticeDto 생성
+                    return new NoticeDto(notice.getId(), notice.getTitle(), notice.getContent(), notice.getCreatedAt(), notice.getUpdatedAt(), fileDtos);
+                })
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(noticeDtos, HttpStatus.OK);
     }
 
     // 공지사항 상세 조회 (API)
     @GetMapping("/api/{id}")
-    public ResponseEntity<Notice> getNotice(@PathVariable("id") Long id) {
+    public ResponseEntity<NoticeDto> getNotice(@PathVariable("id") Long id) {
         Notice notice = this.noticeService.getNotice(id);
-        return new ResponseEntity<>(notice, HttpStatus.OK);
+
+        // 파일 정보를 FileDto로 변환
+        List<FileDto> fileDtos = notice.getFiles().stream()
+                .map(file -> new FileDto(file.getId(), file.getFileName(), file.getFilePath(), file.getFileType()))
+                .collect(Collectors.toList());
+
+        // NoticeDto 생성
+        NoticeDto noticeDto = new NoticeDto(notice.getId(), notice.getTitle(), notice.getContent(), notice.getCreatedAt(), notice.getUpdatedAt(), fileDtos);
+
+        return new ResponseEntity<>(noticeDto, HttpStatus.OK);
     }
 
     // 공지사항 생성 (API)
@@ -45,6 +70,7 @@ public class NoticeApiController {
     public ResponseEntity<Notice> createNotice(@RequestParam("title") String title,
                                                @RequestParam("content") String content,
                                                Principal principal) {
+        // 로그인한 사용자의 정보를 바탕으로 공지 생성
         Signup signup = this.userService.getUser(principal.getName());
         Notice notice = this.noticeService.create(title, content, signup);
         return new ResponseEntity<>(notice, HttpStatus.CREATED);
