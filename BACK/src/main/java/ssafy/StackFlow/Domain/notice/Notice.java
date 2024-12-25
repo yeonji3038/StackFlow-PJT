@@ -1,4 +1,4 @@
-package ssafy.StackFlow.Domain;
+package ssafy.StackFlow.Domain.notice;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,9 +26,8 @@ public class Notice {
     private LocalDateTime createdAt;  // created_at 필드 추가
     private LocalDateTime updatedAt;  // updated_at 필드 추가
 
-//    // One-to-Many 관계 설정
-//    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<File> files;  // Notice가 여러 File을 가질 수 있도록
+    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<File> files;  // Notice가 여러 File을 가질 수 있도록
 
     @ManyToOne
     private Signup author;
@@ -46,23 +45,23 @@ public class Notice {
         this.updatedAt = LocalDateTime.now();  // 수정 시 updatedAt 갱신
     }
 
-    public void settitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public void setcontent(String content) {
+    public void setContent(String content) {
         this.content = content;
     }
 
-    public void setcreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public void setupdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public void setAuthor(Signup author) { this.author = author; }
-
+    public void setAuthor(Signup author) {
+        this.author = author;
+    }
 }
-
