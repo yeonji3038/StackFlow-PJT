@@ -116,6 +116,26 @@
            color: white !important;
            border-color: #dc3545 !important;
        }
+
+        /* 첨부파일 영역 */
+       .attachment-section {
+           margin-top: 20px; /* 첨부파일 섹션 상단 여백 */
+       }
+
+       .attachment-section span {
+           font-size: 1.1rem;
+           font-weight: bold;
+       }
+
+       .attachment-section a {
+           font-size: 1.0rem;
+           color: #007bff;
+           text-decoration: none;
+       }
+
+       .attachment-section a:hover {
+           text-decoration: underline;
+       }
     </style>
 </head>
 <body>
@@ -130,6 +150,16 @@
         <span>작성일 : <span th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}"></span></span>
         <span>수정일 : <span th:text="${#temporals.format(notice.updatedAt, 'yyyy-MM-dd HH:mm')}"></span></span>
     </div>
+    <!-- 첨부파일 섹션: 파일이 있을 경우만 표시 -->
+    <div class="attachment-section" th:if="${#lists.size(notice.files) > 0}">
+        <strong>첨부파일: </strong>
+        <div style="display: flex; gap: 15px;">
+            <span th:each="file : ${notice.files}">
+                <a th:href="@{|/notice/download/${file.id}|}" th:text="${file.fileName}" style="display: inline-block;"></a>
+            </span>
+        </div>
+    </div>
+
     <div class="my-3">
         <a th:href="@{|/notice/modify/${notice.id}|}" class="btn btn-sm btn-outline-secondary"
            sec:authorize="isAuthenticated()"

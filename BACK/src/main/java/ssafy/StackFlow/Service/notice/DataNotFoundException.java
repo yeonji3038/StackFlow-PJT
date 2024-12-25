@@ -1,4 +1,4 @@
-package ssafy.StackFlow.Service;
+package ssafy.StackFlow.Service.notice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

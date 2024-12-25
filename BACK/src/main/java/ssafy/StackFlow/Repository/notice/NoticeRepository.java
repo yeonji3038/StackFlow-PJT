@@ -1,9 +1,9 @@
-package ssafy.StackFlow.Repository;
+package ssafy.StackFlow.Repository.notice;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import ssafy.StackFlow.Domain.Notice;
+import ssafy.StackFlow.Domain.notice.Notice;
 
 import java.util.List;
 

@@ -1,15 +1,14 @@
-package ssafy.StackFlow.Controller.notice;
+package ssafy.StackFlow.api.Notice;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ssafy.StackFlow.Domain.Notice;
+import ssafy.StackFlow.Domain.notice.Notice;
 import ssafy.StackFlow.Domain.user.Signup;
-import ssafy.StackFlow.Service.NoticeService;
+import ssafy.StackFlow.Service.notice.NoticeService;
 import ssafy.StackFlow.Service.user.UserService;
 
 import java.security.Principal;
