@@ -26,9 +26,9 @@ public class Notice {
     private LocalDateTime createdAt;  // created_at 필드 추가
     private LocalDateTime updatedAt;  // updated_at 필드 추가
 
-    // One-to-Many 관계 설정
-    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<File> files;  // Notice가 여러 File을 가질 수 있도록
+//    // One-to-Many 관계 설정
+//    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<File> files;  // Notice가 여러 File을 가질 수 있도록
 
     @ManyToOne
     private Signup author;
@@ -61,5 +61,8 @@ public class Notice {
     public void setupdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public void setAuthor(Signup author) { this.author = author; }
+
 }
 
