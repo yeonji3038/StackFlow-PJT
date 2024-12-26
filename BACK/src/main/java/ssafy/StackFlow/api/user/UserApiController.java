@@ -19,14 +19,14 @@ public class UserApiController {
 
     private final UserService userService; // UserService 주입
 
-//회원가입 APi 연결
+    //회원가입 APi 연결
     @PostMapping("/api/user/signup")
     public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
         userService.signup(userDto);
         return ResponseEntity.ok("회원가입이 완료되었습니다.");
     }
 
-
+//일반, 관리자 로그인
     @PostMapping("/api/user/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletRequest request) {
         boolean loginSuccess = userService.login(loginDto); // 로그인 처리
@@ -37,7 +37,12 @@ public class UserApiController {
             HttpSession session = request.getSession();
             session.setAttribute("loginMember", signup); // 세션에 사용자 정보 저장
 
-            return ResponseEntity.ok("로그인이 완료되었습니다."); // 로그인 성공 메시지 반환
+            // 관리자와 일반 사용자 분기 처리
+            if ("ROLE_ADMIN".equals(signup.getRole())) {
+                return ResponseEntity.ok("관리자 로그인이 완료되었습니다."); // 관리자 로그인 성공 메시지
+            } else {
+                return ResponseEntity.ok("로그인이 완료되었습니다."); // 일반 사용자 로그인 성공 메시지
+            }
         }
 
         // 로그인 실패 시
