@@ -41,6 +41,7 @@ public class RetrievalApiController {
                 .collect(toList());
         return result;
     }
+
     @PostMapping("/api/retrieval/submit")
     public ResponseEntity<RetrievalResponseDto> createInstructions(@RequestBody RetrievalRequestDto request) {
         try {

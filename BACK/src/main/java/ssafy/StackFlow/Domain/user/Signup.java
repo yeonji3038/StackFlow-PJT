@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import ssafy.StackFlow.Domain.Store;
+import ssafy.StackFlow.user.UserRole;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -44,6 +45,10 @@ public class Signup {
     // Store의 storeCode를 가져오는 메서드
     public String getStoreCode() {
         return store != null ? store.getStoreCode() : null; // Store가 null이 아닐 경우 storeCode 반환
+    }
+
+    public boolean isAdmin() {
+        return UserRole.ADMIN.getValue().equals(this.role);
     }
 
 }

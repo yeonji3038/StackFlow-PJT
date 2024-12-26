@@ -10,6 +10,8 @@ public class RtProdDto{
     private String product_name;
     private String color_code;
     private String product_size;
+    private String category_group;
+    private String category_code;
 
     public RtProdDto(Product product) {
         prod_id = product.getId();
@@ -17,5 +19,7 @@ public class RtProdDto{
         product_name = product.getProdName();
         color_code = product.getColorCode().getColorCode();
         product_size = product.getSize().getSize();
+        category_group = product.getCateGroup().getGroupName();
+        category_code = product.getProdCate().getCateCode();
     }
 }
