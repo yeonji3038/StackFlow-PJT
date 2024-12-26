@@ -1,4 +1,4 @@
-package ssafy.StackFlow.api.user;
+package ssafy.StackFlow.api.user.DTO;
 
 
 import lombok.Data;

@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>R/T지시요청</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            width: 95%;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #e9ecef;
+            font-weight: normal;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .form-control {
+            width: 90%;
+            padding: 4px;
+            border: 1px solid #ced4da;
+            border-radius: 3px;
+        }
+        .checkbox-cell {
+            width: 30px;
+            text-align: center;
+        }
+        .code-cell {
+            width: 350px;
+        }
+        .size-cell {
+            width: 80px;
+        }
+        .color-cell {
+            width: 100px;
+        }
+        .quantity-cell {
+            width: 100px;
+        }
+        .quantity-input {
+            width: 80px;
+            text-align: right;
+        }
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .search-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .category-select {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 검색 영역 -->
+    <div class="search-group">
+        <form action="/RT" method="get" style="margin: 0;">
+            <input type="text" name="keyword" placeholder="상품코드를 검색해주세요." style="padding: 5px; width: 300px;">
+            <button type="submit" style="padding: 5px;">검색</button>
+        </form>
+
+        <!-- 버튼 그룹 -->
+        <div class="button-group">
+            <button type="button" onclick="location.href='http://localhost:8080/RT/list'">조회</button>
+            <button type="button" onclick="location.href='http://localhost:8080/RT'">목록</button>
+            <button type="button" onclick="location.href='http://localhost:8080'">취소</button>
+            <button type="button" id="submitButton" class="submit-btn">마감처리</button>
+        </div>
+    </div>
+
+    <!-- 테이블 -->
+    <table>
+        <thead>
+        <tr>
+            <th><input type="checkbox" id="selectAll"></th>
+            <th>상품코드</th>
+            <th>상품명</th>
+            <th>사이즈</th>
+            <th>색상코드</th>
+            <th>지시수량</th>
+            <th>지시 매장</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${searchList}" th:if="${searchList.size() > 0}">
+            <td><input type="checkbox" class="product-checkbox" th:data-product-id="${product.id}"></td>
+            <td th:text="${product.prodCode}"></td>
+            <td th:text="${product.prodName}"></td>
+            <td th:text="${product.size}"></td>
+            <td th:text="${product.colorCode}"></td>
+            <td>
+                <input type="number" class="quantity-input" min="1" style="width: 80px;">
+            </td>
+            <td>
+                <select class="store-select">
+                    <option value="">매장 선택</option>
+                    <option th:each="store : ${product.stores}"
+                            th:value="${store.id}"
+                            th:text="${store.storeName}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr th:unless="${searchList.size() > 0}">
+            <td colspan="7" style="text-align: center;">검색 결과가 없습니다.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // 전체 선택 체크박스
+    document.getElementById('selectAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.product-checkbox');
+        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+    });
+
+    // 마감처리 버튼 클릭 이벤트
+    document.getElementById('submitButton').addEventListener('click', function() {
+        const selectedRows = document.querySelectorAll('.product-checkbox:checked');
+        const rtData = [];
+
+        selectedRows.forEach(checkbox => {
+            const row = checkbox.closest('tr');
+            const quantity = row.querySelector('.quantity-input').value;
+            const storeId = row.querySelector('.store-select').value;
+
+            if (!quantity || !storeId) {
+                alert('지시수량과 매장을 모두 선택해주세요.');
+                return;
+            }
+
+            rtData.push({
+                productId: checkbox.getAttribute('data-product-id'),
+                storeId: storeId,
+                reqQuan: parseInt(quantity)
+            });
+        });
+
+        if (rtData.length === 0) {
+            alert('선택된 상품이 없습니다.');
+            return;
+        }
+
+        fetch('/RT/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(rtData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('서버 응답 오류');
+            }
+            return response.text();
+        })
+        .then(data => {
+            alert('마감처리가 완료되었습니다.');
+            location.href = '/RT/list';
+        })
+        .catch(error => {
+            alert('마감처리 중 오류가 발생했습니다: ' + error.message);
+            console.error('Error:', error);
+        });
+    });
+</script>
+</body>
+</html>
