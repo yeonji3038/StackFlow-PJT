@@ -17,6 +17,7 @@ import ProductCategoryRegister from './pages/product/ProductCategoryRegister';
 import InventoryReceiving from './pages/inventory/InventoryReceiving';
 import InventoryShipping from './pages/inventory/InventoryShipping';
 import InventoryHistory from './pages/inventory/InventoryHistory';
+import ManagementPage from './pages/ManagementPage';
 
 
 // 임시로 페이지 컴포넌트들 생성
@@ -56,6 +57,7 @@ function App() {
                   <Route path="register" element={<RtRegister/>}/>
                 </Route>
                 <Route path="chat" element={<ChatHistory/>}/>
+                <Route path="management" element={<ManagementPage/>}/>
               </Routes>
             </MainLayout>
           }
