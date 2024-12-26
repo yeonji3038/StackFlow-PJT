@@ -97,4 +97,21 @@ public class UserService {
 
         return false; // 로그인 실패
     }
+//관리자 API  연결
+    public boolean Admin(LoginDto loginDto) {
+        Optional<Signup> optionalSignup = userRepository.findByusername(loginDto.getUsername());
+
+        if (optionalSignup.isPresent()) {
+            Signup signup = optionalSignup.get();
+
+            if (passwordEncoder.matches(loginDto.getPassword(), signup.getPassword())) {
+                // 관리자 여부 확인
+                if ("ROLE_ADMIN".equals(signup.getRole())) {
+                    return true; // 관리자 로그인 성공
+                }
+            }
+        }
+
+        return false; // 로그인 실패
+    }
 }
