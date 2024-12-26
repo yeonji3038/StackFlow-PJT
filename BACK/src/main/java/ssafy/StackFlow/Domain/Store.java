@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import ssafy.StackFlow.Domain.product.Product;
+import ssafy.StackFlow.Domain.product.ProductStore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,4 +33,7 @@ public class Store {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> products = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<ProductStore> storeProducts = new ArrayList<>();
 }

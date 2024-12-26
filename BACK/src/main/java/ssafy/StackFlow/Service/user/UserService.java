@@ -8,7 +8,7 @@ import ssafy.StackFlow.Domain.Store;
 import ssafy.StackFlow.Domain.user.Signup;
 import ssafy.StackFlow.Repository.StoreRepository;
 import ssafy.StackFlow.Repository.user.UserRepository;
-import ssafy.StackFlow.Service.DataNotFoundException;
+import ssafy.StackFlow.Service.notice.DataNotFoundException;
 import ssafy.StackFlow.api.user.UserDto;
 
 import java.util.Optional;

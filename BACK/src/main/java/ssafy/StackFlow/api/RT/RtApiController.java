@@ -13,20 +13,17 @@ import ssafy.StackFlow.Domain.product.Color;
 import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Domain.product.Size;
 import ssafy.StackFlow.Repository.RT.RtApiRepository;
+import ssafy.StackFlow.Repository.StoreRepository;
 import ssafy.StackFlow.Repository.category.CategoryGroupRepository;
 import ssafy.StackFlow.Repository.category.CategoryRepository;
 import ssafy.StackFlow.Repository.product.ColorRepository;
 import ssafy.StackFlow.Repository.product.ProductRepo;
 import ssafy.StackFlow.Repository.product.SizeRepository;
 import ssafy.StackFlow.Service.RT.RtService;
-import ssafy.StackFlow.Service.user.UserService;
-import ssafy.StackFlow.api.RT.dto.RT.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import ssafy.StackFlow.api.RT.dto.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +44,8 @@ public class RtApiController {
     private final CategoryGroupRepository categoryGroupRepository;
     private final ColorRepository colorRepository;
     private final SizeRepository sizeRepository;
+    private final StoreRepository storeRepository;
+
 
     @GetMapping("/csrf")
     public CsrfToken csrf(HttpServletRequest request) {
@@ -88,7 +87,14 @@ public class RtApiController {
                 .collect(toList());
         return result;
     }
-
+    @GetMapping("/api/rt/store")
+    public List<RtStoreDto> RtStoreListApi() {
+        List<Store> stores = storeRepository.findAll();
+        List<RtStoreDto> result = stores.stream()
+                .map(o -> new RtStoreDto(o))
+                .collect(toList());
+        return result;
+    }
     @GetMapping("/api/rt/size")
     public List<RtSizeDto> RtSizeListApi() {
         List<Size> sizes = sizeRepository.findAll();

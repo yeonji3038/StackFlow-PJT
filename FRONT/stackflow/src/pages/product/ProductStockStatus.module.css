@@ -1,0 +1,244 @@
+.container {
+  width: 100%;
+}
+
+.searchSection {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  width: 900px;
+}
+
+.searchForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.formRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 42px;
+}
+
+.formRow label {
+  width: 80px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 42px;
+  margin: 0;
+}
+
+.searchDetails {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+}
+
+.searchDetails select {
+  flex: 1;
+}
+
+.searchInput {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex: 1;
+  height: 42px;
+}
+
+.searchInput input {
+  flex: 1;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* select와 input 공통 스타일 */
+select, input {
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+}
+
+/* select 화살표 스타일 */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+.searchButton {
+  width: 80px;
+  height: 42px;
+  background: #789EDC;
+  color: white;
+  border: 1px solid #5481C3;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.searchButton:hover {
+  background: #5a75d5;
+}
+
+/* placeholder 스타일 */
+input::placeholder {
+  color: #999;
+}
+
+.tableContainer {
+  background: white;
+  border-radius: 25px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  width: 95%;
+  max-width: 1200px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px;
+  background-color: #ffffff;
+  border: none;
+  outline: none;
+}
+
+.table * {
+  border: none !important;
+  outline: none !important;
+}
+
+.tableHeader th {
+  background: rgb(186, 210, 249, 0.8);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.207);
+  color: rgb(0, 0, 0);
+  padding: 12px 20px;
+  text-align: center;
+  font-weight: normal;
+  border-radius: 5px;
+}
+
+.tableBody td {
+  padding: 15px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.tableHeader th,
+.tableBody td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* hover 효과 */
+.inputRow select:hover,
+.inputRow input:hover,
+.lastRow input:hover {
+  border-color: #6c8bef;
+}
+
+.searchButton:hover {
+  background: #5a75d5;
+}
+
+::placeholder {
+  color: #999;
+}
+
+/* select 스타일 수정 */
+.inputRow select,
+.lastRow select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  padding-right: 30px; /* 화살표를 위한 여백 */
+  cursor: pointer;
+}
+
+/* hover 시 테두리 색상 변경 */
+.inputRow select:hover,
+.lastRow select:hover {
+  border-color: #6c8bef;
+}
+
+/* focus 시 테두리 색상 변경 */
+.inputRow select:focus,
+.lastRow select:focus {
+  border-color: #5a75d5;
+  outline: none;
+}
+
+.lastRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 840px;
+  justify-content: center;
+  height: 42px;
+}
+
+.lastRow input {
+  width: 414px;
+  height: 42px;
+  border-radius: 8px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  background: white;
+  font-size: 14px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 2px;
+}
+
+.searchButton {
+  width: 80px;
+  height: 42px;
+  margin: 0;
+  padding: 0;
+  background: #789EDC;
+  color: white;
+  border: 1px solid #5481C3;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* 입력폼 포커스 시 스타일 */
+.lastRow input:focus {
+  border-color: #789EDC;
+  outline: none;
+}

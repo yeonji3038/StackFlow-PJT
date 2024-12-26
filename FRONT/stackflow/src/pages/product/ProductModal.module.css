@@ -1,0 +1,81 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #c5d9f2;
+  padding: 15px 30px 20px 20px;
+  border: 2px solid #ABABAB;
+  border-radius: 8px;
+  width: 500px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modalContent h2 {
+  text-align: center;
+}
+
+.formContent {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inputGroup label {
+  min-width: 100px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.inputGroup input,
+.inputGroup textarea {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.submitButton,
+.closeButton {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submitButton {
+  background-color: #789EDC;
+  border: 1px solid #2e4c79;
+  color: white;
+  border: none;
+}
+
+.closeButton {
+  background-color: #BED5FB;
+  border: 1px solid #769ED9;
+  color: white;
+}

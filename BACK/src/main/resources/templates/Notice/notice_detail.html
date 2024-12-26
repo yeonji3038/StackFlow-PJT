@@ -1,0 +1,189 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>공지사항 상세보기</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+
+    <style>
+        body {
+           font-family: Arial, sans-serif;
+           background-color: #f8f9fa; /* 배경색 연한 회색 */
+           margin: 0;
+           padding: 0;
+       }
+
+       .container {
+           width: 80%; /* 콘텐츠 영역 너비 */
+           max-width: 900px; /* 최대 너비 */
+           background-color: white; /* 배경을 흰색으로 설정 */
+           margin: 40px auto; /* 상단 마진 40px, 중앙 정렬 */
+           padding: 30px;
+           border-radius: 8px; /* 둥근 모서리 */
+           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+       }
+
+       .author-info {
+            font-size: 1.0rem; /* 정보 크기 */
+            text-align: left; /* 왼쪽 정렬 */
+            display: flex; /* Flexbox로 정보를 가로로 배치 */
+            justify-content: flex-start; /* 왼쪽 정렬 */
+            margin-bottom: 20px !important; /* 강제로 여백 적용 */
+        }
+
+       h1 {
+           font-size: 2.5rem; /* 제목 크기 */
+           color: #333; /* 제목 색상 */
+           margin-bottom: 50px; /* 제목과 본문 사이 간격 */
+           text-align: left; /* 제목 왼쪽 정렬 */
+       }
+
+       .content {
+           font-size: 1.2rem; /* 내용 크기 */
+           color: #555; /* 내용 텍스트 색상 */
+           line-height: 1.6; /* 줄 간격 */
+           margin-bottom: 100px; /* 내용과 날짜 사이 간격 */
+           text-align: left; /* 내용 왼쪽 정렬 */
+       }
+
+       .date-info {
+           font-size: 0.9rem; /* 날짜 정보 크기 */
+           color: #6c757d; /* 회색 텍스트 */
+           text-align: left; /* 왼쪽 정렬 */
+           display: flex; /* Flexbox로 날짜 정보를 가로로 배치 */
+           justify-content: flex-start; /* 왼쪽 정렬 */
+           gap: 20px; /* 날짜 간 간격 */
+       }
+
+       .date-info span {
+           display: inline-block; /* 인라인 블록 요소로 날짜 정보 표시 */
+       }
+
+       .my-3 {
+           margin-top: 30px;
+           display: flex;
+           gap: 15px; /* 버튼 간 간격 */
+       }
+
+       .btn {
+           font-size: 1rem;
+           padding: 10px 20px;
+           border-radius: 5px; /* 둥근 모서리 */
+           cursor: pointer;
+           transition: all 0.3s ease; /* 호버 효과를 부드럽게 하기 위한 트랜지션 */
+       }
+
+       .btn-outline-secondary {
+           border: 2px solid #6c757d;
+           background-color: transparent;
+           color: #6c757d;
+       }
+
+       .btn-outline-secondary:hover {
+           background-color: #6c757d;
+           color: white;
+           border-color: #6c757d;
+       }
+
+       .btn-primary {
+           background-color: #007bff;
+           border-color: #007bff;
+           color: white;
+       }
+
+       .btn-primary:hover {
+           background-color: #0056b3;
+           border-color: #0056b3;
+       }
+
+       .btn-danger {
+           background-color: #dc3545;
+           border-color: #dc3545;
+           color: white;
+       }
+
+       .btn-danger:hover {
+           background-color: #c82333;
+           border-color: #c82333;
+       }
+
+       .delete:hover {
+           background-color: #dc3545 !important;
+           color: white !important;
+           border-color: #dc3545 !important;
+       }
+
+        /* 첨부파일 영역 */
+       .attachment-section {
+           margin-top: 20px; /* 첨부파일 섹션 상단 여백 */
+       }
+
+       .attachment-section span {
+           font-size: 1.1rem;
+           font-weight: bold;
+       }
+
+       .attachment-section a {
+           font-size: 1.0rem;
+           color: #007bff;
+           text-decoration: none;
+       }
+
+       .attachment-section a:hover {
+           text-decoration: underline;
+       }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 th:text="${notice.title}"></h1>
+    <div class="content" th:text="${notice.content}"></div>
+    <div class="author-info">
+        <span>작성자 : <span th:if="${notice.author != null}" th:text="${notice.author.username}"></span></span>
+    </div>
+    <div class="date-info">
+        <span>작성일 : <span th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}"></span></span>
+        <span>수정일 : <span th:text="${#temporals.format(notice.updatedAt, 'yyyy-MM-dd HH:mm')}"></span></span>
+    </div>
+    <!-- 첨부파일 섹션: 파일이 있을 경우만 표시 -->
+    <div class="attachment-section" th:if="${#lists.size(notice.files) > 0}">
+        <strong>첨부파일: </strong>
+        <div style="display: flex; gap: 15px;">
+            <span th:each="file : ${notice.files}">
+                <a th:href="@{|/notice/download/${file.id}|}" th:text="${file.fileName}" style="display: inline-block;"></a>
+            </span>
+        </div>
+    </div>
+
+    <div class="my-3">
+        <a th:href="@{|/notice/modify/${notice.id}|}" class="btn btn-sm btn-outline-secondary"
+           sec:authorize="isAuthenticated()"
+           th:if="${notice.author != null and #authentication.getPrincipal().getUsername() == notice.author.username}"
+           th:text="수정">
+        </a>
+        <a href="javascript:void(0);" th:data-uri="@{|/notice/delete/${notice.id}|}"
+           class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+           th:if="${notice.author != null and #authentication.getPrincipal().getUsername() == notice.author.username}"
+           th:text="삭제">
+        </a>
+
+    </div>
+</div>
+<script layout:fragment="script" type='text/javascript'>
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+</script>
+
+</body>
+</html>

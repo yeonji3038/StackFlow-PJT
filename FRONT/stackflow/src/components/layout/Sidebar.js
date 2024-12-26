@@ -20,7 +20,8 @@ const Sidebar = () => {
       title: '입출고 등록',
       path: '/inventory',
       subMenus: [
-        { title: '입출고', path: '/inventory/register' },
+        { title: '입고', path: '/inventory/receiving' },
+        { title: '출고', path: '/inventory/shipping' },
         { title: '입출고 내역 조회', path: '/inventory/history' },
       ]
     },
@@ -47,10 +48,10 @@ const Sidebar = () => {
   const toggleMenu = (index) => {
     setOpenMenu(openMenu === index ? null : index);
   };
+
   return (
     <div className={styles.sidebarContainer}>
       <div className={styles.logo}>
-        {/* 로고 클릭시 메인페이지로 이동 */}
         <Link to="/main">
           <img src="/images/stackflow_logo.png" alt="StackFlow" />
         </Link>
@@ -61,12 +62,10 @@ const Sidebar = () => {
         {menuItems.map((item, index) => (
           <li key={index}>
             {item.subMenus.length > 0 ? (
-              // 서브메뉴가 있는 경우
               <div className={styles.menuItem} onClick={() => toggleMenu(index)}>
                 {item.title}
               </div>
             ) : (
-              // 서브메뉴가 없는 경우 - 직접 링크로 연결
               <div className={styles.menuItem}>
                 <Link to={item.path}>{item.title}</Link>
               </div>

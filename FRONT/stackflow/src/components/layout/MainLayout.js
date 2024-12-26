@@ -6,7 +6,7 @@ const MainLayout = ({ children }) => {
     <div className={styles.layoutContainer}>
       <Sidebar />
       <main className={styles.mainContent}>
-        {children}
+        {children || null}
       </main>
     </div>
   );
