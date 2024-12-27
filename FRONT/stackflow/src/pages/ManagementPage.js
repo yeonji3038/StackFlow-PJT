@@ -62,6 +62,24 @@ const ManagementPage = () => {
     }));
   };
 
+  const handleDelete = (id) => {
+    setCustomerData((prev) => prev.filter((customer) => customer.id !== id));
+  };
+
+  const handleStatusChange = (id) => {
+    setCustomerData((prev) =>
+      prev.map((customer) =>
+        customer.id === id
+          ? {
+              ...customer,
+              accountStatus: customer.accountStatus === "approve" ? "inactive" : "approve",
+              approvalDate: customer.accountStatus === "approve" ? "X" : new Date().toISOString().split('T')[0]
+          }
+          : customer
+      )
+    );
+  };
+
   return (
     <div className={styles.managementPage}>
       <h1 className={styles.title}>MANAGEMENT PAGE</h1>
@@ -96,7 +114,11 @@ const ManagementPage = () => {
                 <td>{customer.accountStatus}</td>
                 <td>
                   <label className={styles.switch}>
-                    <input type="checkbox" defaultChecked={customer.accountStatus === "approve"} />
+                    <input 
+                      type="checkbox" 
+                      checked={customer.accountStatus === "approve"}
+                      onChange={() => handleStatusChange(customer.id)}
+                    />
                     <span className={styles.slider}></span>
                   </label>
                 </td>
@@ -104,20 +126,24 @@ const ManagementPage = () => {
                 <td className={styles.addContainer}>
                   <input
                     type="number"
+                    min="1"
                     value={inputs[customer.id] || ""}
                     onChange={(e) => handleInputChange(customer.id, e.target.value)}
                     className={styles.addInput}
-                    placeholder="숫자 입력"
+                    placeholder="추가"
                   />
                   <button
                     onClick={() => handleAddStore(customer.id)}
                     className={styles.addButton}
-                  >
-                    추가
-                  </button>
+                    title="매장 추가"
+                  />
                 </td>
                 <td>
-                  <button className={styles.deleteButton}>삭제</button>
+                  <button 
+                    className={styles.deleteButton}
+                    onClick={() => handleDelete(customer.id)}
+                    title="삭제"
+                  />
                 </td>
               </tr>
             ))}
@@ -137,7 +163,7 @@ const ManagementPage = () => {
               <th>이메일</th>
               <th>승인 날짜</th>
               <th>승인 상태</th>
-              <th>상태 변경</th>
+              <th>승인 변경</th>
               <th>삭제</th>
             </tr>
           </thead>
@@ -151,12 +177,20 @@ const ManagementPage = () => {
                 <td>{customer.accountStatus}</td>
                 <td>
                   <label className={styles.switch}>
-                    <input type="checkbox" defaultChecked={customer.accountStatus === "approve"} />
+                    <input 
+                      type="checkbox" 
+                      checked={customer.accountStatus === "approve"}
+                      onChange={() => handleStatusChange(customer.id)}
+                    />
                     <span className={styles.slider}></span>
                   </label>
                 </td>
                 <td>
-                  <button className={styles.deleteButton}>삭제</button>
+                  <button 
+                    className={styles.deleteButton}
+                    onClick={() => handleDelete(customer.id)}
+                    title="삭제"
+                  />
                 </td>
               </tr>
             ))}
