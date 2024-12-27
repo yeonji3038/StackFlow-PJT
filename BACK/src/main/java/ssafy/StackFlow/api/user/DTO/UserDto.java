@@ -19,7 +19,10 @@ public class UserDto {
 
 
 //DTO(Data Transfer Object)
-// 실제 엔터티를 객체를 통해 데이터를 전달하지 않고 DTO를 톻해 데이터를 주고 받음
+// 실제 엔터티를 객체를 통해 데이터를 전달하지 않고 DTO를 톻해 데이터를 주고 받음(즉 사용자 정보를 담는 데이터 전송 객체)
+
+//@Data
+//Getter와 Setter 메서드: 모든 필드에 대해 접근할 수 있는 메서드
 
 //@NoArgsConstructor: 파라미터가 없는 기본 생성자를 자동으로 생성
 //JPA 엔티티 클래스에서 사용 -> JPA 스펙에 따라 기본 생성자가 필요
