@@ -1,5 +1,6 @@
 .managementPage {
   width: 100%;
+  padding-bottom: 40px;
 }
 
 .section {
@@ -14,51 +15,110 @@
 
 .table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 8px;
+  background-color: #ffffff;
+  border: none;
+  outline: none;
 }
 
-.table th,
-.table td {
-  border: 1px solid #ddd;
-  padding: 5px;
-  text-align: center;
+.table * {
+  border: none !important;
+  outline: none !important;
 }
 
+/* 헤더 스타일 */
 .table th {
-  background-color: #f9f9f9;
+  background: rgb(186, 210, 249, 0.8);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.207);
+  color: rgb(0, 0, 0);
+  padding: 0px 20px;
+  text-align: center;
+  font-weight: normal;
+  border-radius: 5px;
+  height: 45px;
+  vertical-align: middle;
+}
+
+/* 테이블 셀 스타일 */
+.table td {
+  padding: 5px 15px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 45px;
+  vertical-align: middle;
 }
 
 .addContainer {
   display: flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  gap: 4px;
+  height: 100%;
+  line-height: 1;
+  border: none;
+  margin: 0;
 }
 
 .addInput {
   width: 60px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  height: 24px;
+  margin: 0;
+  padding: 0 4px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
 }
 
 .addButton {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.addButton:hover {
-  background-color: #0056b3;
+.addButton::before {
+  content: "👤+";
+  color: #000000;
+  font-size: 14px;
+  line-height: 1;
 }
 
 .deleteButton {
-  color: red;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin-top: -2px;
+  background-color: transparent;
   border: none;
-  background: none;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteButton::before {
+  content: "🗑️";
+  font-size: 14px;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.deleteButton:hover {
+  opacity: 0.7;
 }
 
 .switch {
