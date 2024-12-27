@@ -119,7 +119,7 @@ public Map<String, Map<Long, String>> RtAllListApi() {
 
     Map<Long, String> categoryCodeMap = new HashMap<>();
     for (Category category : categories) {
-        categoryCodeMap.put(category.getId(), category.getCateName());
+        categoryCodeMap.put(category.getId(), category.getCateCode());
     }
     result.put("category_code", categoryCodeMap);
 
