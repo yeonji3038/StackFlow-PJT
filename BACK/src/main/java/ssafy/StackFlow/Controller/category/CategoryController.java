@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import lombok.RequiredArgsConstructor; // 추가된 import
+import ssafy.StackFlow.Repository.category.CategoryGroupRepository;
 import ssafy.StackFlow.Service.category.CategoryGroupService;
 import ssafy.StackFlow.Service.category.CategoryService;
 import ssafy.StackFlow.Domain.category.Category;
@@ -19,7 +20,7 @@ public class CategoryController {
 
     private final CategoryService categoryService; // final 추가
     private final CategoryGroupService categoryGroupService; // final 추가
-
+    private final CategoryGroupRepository categoryGroupRepository;
     @GetMapping("/code")
     public String showRegisterForm(Model model) {
         // 카테고리 그룹 목록을 모델에 추가
@@ -28,16 +29,17 @@ public class CategoryController {
     }
 
     @PostMapping("/code")
-    public String registerCategory(@RequestParam("cateGroup") CategoryGroup cateGroup,
-                                   @RequestParam String cateCode,
-                                   @RequestParam String cateName) {
+    public String registerCategory(@RequestParam("groupName") String groupName,
+                                   @RequestParam("cateCode") String cateCode,
+                                   @RequestParam("cateName") String cateName) {
         // 카테고리 객체 생성
+        CategoryGroup categoryGroup = new CategoryGroup();
+        categoryGroupRepository.save(categoryGroup);
         Category category = new Category();
-        category.setCateGroup(cateGroup); // String을 직접 설정
+        categoryGroup.setGroupName(groupName);
         category.setCateCode(cateCode);
         category.setCateName(cateName);
-
-        // 카테고리 저장
+        category.setCateGroup(categoryGroup);
         categoryService.save(category);
 
         return "redirect:/admin/code"; // 등록 후 다시 폼으로 리다이렉트
