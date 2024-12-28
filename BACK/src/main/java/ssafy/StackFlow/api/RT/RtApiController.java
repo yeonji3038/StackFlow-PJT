@@ -131,7 +131,7 @@ public Map<String, Map<Long, String>> RtAllListApi() {
 
     Map<Long, String> colorCodeMap = new HashMap<>();
     for (Color color : colors) {
-        colorCodeMap.put(color.getId(), color.getColorName());
+        colorCodeMap.put(color.getId(), color.getColorCode());
     }
     result.put("color_code", colorCodeMap);
 

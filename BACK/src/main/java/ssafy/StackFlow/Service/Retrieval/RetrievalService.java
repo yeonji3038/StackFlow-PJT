@@ -12,7 +12,6 @@ import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Domain.product.ProductStore;
 import ssafy.StackFlow.Domain.user.Signup;
 import ssafy.StackFlow.Repository.RT.RtRepository;
-import ssafy.StackFlow.Repository.Retrieval.RetrievalProductRepository;
 import ssafy.StackFlow.Repository.Retrieval.RetrievalRepository;
 import ssafy.StackFlow.Repository.StoreRepository;
 import ssafy.StackFlow.Repository.product.ProductRepo;

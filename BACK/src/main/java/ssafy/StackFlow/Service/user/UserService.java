@@ -1,5 +1,7 @@
 package ssafy.StackFlow.Service.user;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +34,17 @@ public class UserService {
 //        this.passwordEncoder = passwordEncoder;
 //    }
 //
+public Signup getCurrentUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !authentication.isAuthenticated()) {
+        throw new RuntimeException("로그인된 사용자 없음");
+    }
 
+    String username = authentication.getName();
+
+    return userRepository.findByusername(username)
+            .orElseThrow(() -> new RuntimeException("해당 사용자 찾지 못함: " + username));
+}
     public void create(String username, String email, String password, String role, String storeCode) {
         Signup user = new Signup();
         user.setUsername(username);
