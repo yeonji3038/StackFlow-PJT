@@ -94,32 +94,41 @@
     </table>
 
     <h2>타매장 지시요청</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>요청매장</th>
-            <th>품번</th>
-            <th>품명</th>
-            <th>색상</th>
-            <th>사이즈</th>
-            <th>요청수량</th>
-            <th>RT 요청일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="myrt : ${myRtList}">
-            <td th:text="${myrt.myStore}"></td>
-            <td th:text="${myrt.prodCode}"></td>
-            <td th:text="${myrt.prodName}"></td>
-            <td th:text="${myrt.colorCode}"></td>
-            <td th:text="${myrt.size}"></td>
-            <td th:text="${myrt.rtProducts[0].reqQuant}"></td>
-            <td th:text="${#temporals.format(myrt.reqDate, 'yyyy-MM-dd HH:mm')}"></td></tr>
-        <tr th:if="${myRtList.empty}">
-            <td colspan="8" style="text-align: center;">등록된 R/T 지시가 없습니다.</td>
-        </tr>
-        </tbody>
-    </table>
+    <form th:action="@{/processRtRequests}" method="post">
+        <table>
+            <thead>
+            <tr>
+                <th>선택</th>
+                <th>요청매장</th>
+                <th>품번</th>
+                <th>품명</th>
+                <th>색상</th>
+                <th>사이즈</th>
+                <th>요청수량</th>
+                <th>RT 요청일</th>
+            </tr>
+            </thead>
+            <div class="action-buttons">
+                <button type="submit" name="action" value="approve">승인</button>
+                <button type="submit" name="action" value="reject">거절</button>
+            </div>
+            <tbody>
+            <tr th:each="myrt : ${myRtList}">
+                <td><input type="checkbox" name="selectedRequests" value="${myrt.id}"></td>
+                <td th:text="${myrt.myStore}"></td>
+                <td th:text="${myrt.prodCode}"></td>
+                <td th:text="${myrt.prodName}"></td>
+                <td th:text="${myrt.colorCode}"></td>
+                <td th:text="${myrt.size}"></td>
+                <td th:text="${myrt.rtProducts[0].reqQuant}"></td>
+                <td th:text="${#temporals.format(myrt.reqDate, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            <tr th:if="${myRtList.empty}">
+                <td colspan="8" style="text-align: center;">등록된 R/T 지시가 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
 </div>
 </body>
-</html> 
+</html>

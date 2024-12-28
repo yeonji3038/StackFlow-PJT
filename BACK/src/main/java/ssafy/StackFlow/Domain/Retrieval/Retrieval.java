@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import ssafy.StackFlow.Domain.Store;
 import ssafy.StackFlow.Domain.product.Product;
+import ssafy.StackFlow.Domain.user.Signup;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class Retrieval {
     private int retQuantity;
     private String retStore;
     private LocalDateTime retDate;
+    private String reqStore;
 
     @Enumerated(EnumType.STRING)
     private RetrievalStatus retStatus;
@@ -38,7 +41,7 @@ public class Retrieval {
         retrievalProduct.setRetrieval(this);
     }
 
-    public static Retrieval createRetrieval(Product product, Store store) {
+    public static Retrieval createRetrieval(Product product, Store store, Signup loginUser) {
         Retrieval retrieval = new Retrieval();
         retrieval.retStatus = RetrievalStatus.RETRIEVAL;
 
@@ -51,6 +54,9 @@ public class Retrieval {
 
         if (product.getSize() != null) {
             retrieval.setSize(product.getSize().getSize());
+        }
+        if (loginUser != null && loginUser.getStore() != null) {
+            retrieval.setReqStore(loginUser.getStore().getStoreName());
         }
         retrieval.setRetStore(store.getStoreName());
         retrieval.setRetDate(LocalDateTime.now());

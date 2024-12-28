@@ -3,6 +3,7 @@ package ssafy.StackFlow.Service.RT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.StackFlow.Domain.RT.RtStatus;
 import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Domain.RT.RT;
 import ssafy.StackFlow.Domain.RT.RtProduct;
@@ -13,7 +14,6 @@ import ssafy.StackFlow.Repository.RT.RtRepository;
 import ssafy.StackFlow.Repository.StoreRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import ssafy.StackFlow.Repository.user.UserRepository;
 
 import java.util.ArrayList;
@@ -121,5 +121,23 @@ public class RtService {
         }
         return otherRTs;
     }
+    public void updateRtStatus(List<Long> requestIds, String status) {
+        final RtStatus rtStatus;
+        try {
+            rtStatus = RtStatus.valueOf(status);
+        } catch (IllegalArgumentException e) {
+            System.err.println("잘못된 상태 값입니다: " + status);
+            return;
+        }
+
+        for (Long requestId : requestIds) {
+            Optional<RT> rtRequestOpt = rtRepository.findById(requestId);
+            rtRequestOpt.ifPresent(rtRequest -> {
+                rtRequest.setStatus(rtStatus);
+                rtRepository.save(rtRequest);
+            });
+        }
+    }
+
 
 }
