@@ -48,7 +48,7 @@ public class ChatRoomController {
     public ResponseEntity<?> createChatRoom(@RequestBody ChatRoomRequest request,
                                             @AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) {
-            return ResponseEntity.status(401).body("Unauthorized: User is not authenticated.");
+            return ResponseEntity.status(401).body("User가 인증되지 않았습니다.");
         }
 
         try {
@@ -62,7 +62,7 @@ public class ChatRoomController {
         } catch (Exception e) {
             // 예외 처리
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Internal Server Error: " + e.getMessage());
+            return ResponseEntity.status(500).body("서버 오류: " + e.getMessage());
         }
     }
 
@@ -101,7 +101,7 @@ public class ChatRoomController {
             return ResponseEntity.ok(jsonString);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body("Error generating JSON");
+            return ResponseEntity.internalServerError().body("JSON 생성 오류");
         }
     }
 }

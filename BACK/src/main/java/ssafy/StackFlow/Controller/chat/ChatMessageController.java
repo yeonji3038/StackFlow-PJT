@@ -97,18 +97,18 @@ public class ChatMessageController {
                 // 없으면 새로 추가
                 status = new MessageReadStatus(user, chatMessage, true);
                 messageReadStatusRepository.save(status);
-                return "Message marked as read.";
+                return "Message 읽음으로 표시.";
             } else if (!status.isRead()) {
                 // 이미 존재하지만 읽음 처리되지 않았다면
                 status.setIsRead(true);
                 messageReadStatusRepository.save(status);
-                return "Message marked as read.";
+                return "Message 읽음으로 표시.";
             }
 
-            return "Message is already marked as read.";
+            return "Message가 이미 읽음으로 표시됨.";
         }
 
-        return "Invalid user or message.";
+        return "잘못된 User 또는 Message.";
     }
 
     // 특정 채팅방의 메시지와 읽음 상태 조회 API

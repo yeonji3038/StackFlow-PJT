@@ -145,15 +145,15 @@
     // 체크박스 목록 렌더링
     function renderStoreList(stores) {
         const storeList = document.getElementById('store-list');
-        storeList.innerHTML = ''; // 기존 목록 초기화
+        storeList.innerHTML = '';
 
         stores.forEach(store => {
             const li = document.createElement('li');
             const input = document.createElement('input');
             input.type = 'checkbox';
-            input.value = store.id;  // Store ID
+            input.value = store.id;
             const label = document.createElement('label');
-            label.textContent = store.storeName; // storeName을 사용하여 지점 이름 표시
+            label.textContent = store.storeName;
 
             li.appendChild(input);
             li.appendChild(label);
@@ -175,7 +175,7 @@
 
     // 채팅방 목록 렌더링
     function renderRoomList(data) {
-        const rooms = Array.isArray(data) ? data : [data];  // 배열로 변환
+        const rooms = Array.isArray(data) ? data : [data];
         const roomList = document.getElementById('room-list');
         roomList.innerHTML = '';
         rooms.forEach(room => {
@@ -206,9 +206,9 @@
     function createRoom() {
         const roomName = document.getElementById('room-name-input').value;
         const selectedStores = Array.from(document.querySelectorAll('#store-list input:checked'))
-            .map(input => parseInt(input.value));  // Long 타입으로 변환
+            .map(input => parseInt(input.value));
 
-        console.log('Selected stores:', selectedStores); // 디버깅용
+        console.log('Selected stores:', selectedStores);
 
         // CSRF 토큰을 헤더에 포함
         const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
@@ -240,11 +240,12 @@
     // 메시지 전송
     function sendMessage() {
         const message = {
-            sender: currentUserId,  // 현재 사용자
+            // sender: currentUserId,  // 로그인 된 사용자 (방장)
             content: document.getElementById('message').value,
-            read: []  // 읽은 사용자들 (초기값은 빈 배열)
+            // readUsers: []  // 읽은 사용자들 (초기값은 빈 배열)
         };
         stompClient.send(`/app/room/${currentRoomId}/send`, {}, JSON.stringify(message));
+        // console.log(currentUserId);
         document.getElementById('message').value = '';
     }
 
@@ -259,10 +260,10 @@
 
         const readStatus = document.createElement('span');
         readStatus.classList.add('read-status');
-        if (message.read.length === 0) {
+        if (message.readUsers.length === 0) {
             readStatus.textContent = '읽지 않음';
         } else {
-            readStatus.textContent = `${message.read.length}명 읽음`;
+            readStatus.textContent = `${message.readUsers.length}명 읽음`;
         }
         messageElement.appendChild(readStatus);
 

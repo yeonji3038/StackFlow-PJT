@@ -37,7 +37,7 @@ public class MessageReadStatus {
         this.isRead = isRead;
     }
 
-    // 명시적으로 setIsRead 메서드 추가
+    // 명시적으로 setIsRead 메서드 추가  ->  이거 안 하면 setter 오류 뜨는데, 위에서 setter 했는데 왜 뜨는 지 모르겠음..
     public void setIsRead(boolean isRead) {
         this.isRead = isRead;
     }

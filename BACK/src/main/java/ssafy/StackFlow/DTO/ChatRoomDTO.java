@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 public class ChatRoomDTO {
-    private Long id;                // 채팅방 ID
-    private String roomId;          // 고유 채팅방 ID
-    private String name;            // 채팅방 이름
-    private boolean isGroup;        // 단체 채팅 여부
-    private String storeName;       // 매장 이름
+    private Long id;                       // 채팅방 ID
+    private String roomId;                 // 고유 채팅방 ID
+    private String name;                   // 채팅방 이름
+    private boolean isGroup;               // 단체 채팅 여부
+    private String storeName;              // 매장 이름
     private List<String> participantNames; // 참여자 이름들 (Signup의 이름)
 
     // ChatRoom 엔티티 객체를 기반으로 DTO 생성
@@ -28,7 +28,7 @@ public class ChatRoomDTO {
         this.isGroup = chatRoom.isGroup();
 
         // store가 null인 경우 처리
-        this.storeName = (chatRoom.getStore() != null) ? chatRoom.getStore().getStoreName() : "No Store";
+        this.storeName = (chatRoom.getStore() != null) ? chatRoom.getStore().getStoreName() : "Store 없음.";
 
         // 참여자 목록에서 이름만 추출해서 넣음
         this.participantNames = chatRoom.getParticipants().stream()
