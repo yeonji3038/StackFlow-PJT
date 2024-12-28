@@ -284,4 +284,30 @@ body {
   }
   
 
+  .backButton {
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(to right, #eda2b6, #ab5b6f);
+    border: 1px solid #8d0050;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
   
+  .backButton:after {
+    content: "";
+    background: linear-gradient(to right, #cc1429, #a40542);
+    position: absolute;
+    z-index: -1;
+    left: -20%;
+    right: -20%;
+    top: 0;
+    bottom: 0;
+    transform: skewX(-45deg) scale(0, 1);
+    transition: all 0.5s;
+   }

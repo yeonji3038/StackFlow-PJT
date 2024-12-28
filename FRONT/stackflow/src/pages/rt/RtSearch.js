@@ -1,8 +1,9 @@
-import "./Rt.css";
-import axios from "axios"
+import "./RtMain.css"
+import "./RtSearch.css"
 import { useState, useEffect } from 'react'
-import moment from 'moment'
 import { useNavigate } from "react-router-dom";
+import axios from "axios"
+import moment from 'moment'
 
 const RtSearch = () => {
 
@@ -109,7 +110,7 @@ const RtSearch = () => {
     }
   return (
     <>
-     <div className="searchBar">
+     <div className="searchSection">
           <div className="date">
             <label className="name">지시기간</label>
             <input 
@@ -132,7 +133,6 @@ const RtSearch = () => {
                 value="REQUEST" 
                 onChange={onChangeInput}
                 onClick={onClickCheck}
-                
                 />
             </span>
             <span>
@@ -180,7 +180,7 @@ const RtSearch = () => {
             </select>
           </div>
 
-          <div className="buttons">
+          <div className="searchButtons">
             <button id="searchButton" 
               onClick={filteredData}>조회</button>
             <button id="createButton" onClick={goRegister}>등록</button>
