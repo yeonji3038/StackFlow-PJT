@@ -10,11 +10,12 @@ public class RetrievalProdDto {
     private String product_name;
     private String color_code;
     private String product_size;
-    private int product_stock;
+    private int headOfficeStock;
+    private int storeStock;
     private String category_group;
     private String category_code;
 
-    public RetrievalProdDto(Product product) {
+    public RetrievalProdDto(Product product, ProductStockDto productStockDto) {
         prod_id = product.getId();
         product_code = product.getProdCode();
         product_name = product.getProdName();
@@ -22,10 +23,7 @@ public class RetrievalProdDto {
         product_size = product.getSize().getSize();
         category_group = product.getCateGroup().getGroupName();
         category_code = product.getProdCate().getCateCode();
-        if (!product.getStoreProducts().isEmpty()) {
-            product_stock = product.getStoreProducts().get(0).getStockQuantity();
-        } else {
-            product_stock = 0;
-        }
+        this.headOfficeStock = productStockDto.getHeadOfficeStock();
+        this.storeStock = productStockDto.getStoreStock();
     }
 }

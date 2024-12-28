@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const RtRegister = () => {
-  const csrfToken = "38354D593B8BEC5217C2CF402FC25EFC"; // CSRF 토큰
+  const csrfToken = "297774247591B7CDF92FE8D68B95011F"; // CSRF 토큰
 
   const [category, setCategory] = useState([]);
   const [categorycode, setCategoryCode] = useState([]);
@@ -27,9 +27,9 @@ const RtRegister = () => {
     try {
       const response = await axios.get(url, {
         withCredentials: true,
-        headers: {
-          "X-CSRF-TOKEN": csrfToken,
-        },
+        // headers: {
+        //   "X-CSRF-TOKEN": csrfToken,
+        // },
       });
       setData(response.data);
     } catch (err) {

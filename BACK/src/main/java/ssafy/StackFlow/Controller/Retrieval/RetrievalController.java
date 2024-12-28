@@ -14,6 +14,7 @@ import ssafy.StackFlow.Domain.category.Category;
 import ssafy.StackFlow.Domain.category.CategoryGroup;
 import ssafy.StackFlow.Domain.product.Color;
 import ssafy.StackFlow.Domain.product.Product;
+import ssafy.StackFlow.Domain.product.ProductStore;
 import ssafy.StackFlow.Domain.product.Size;
 import ssafy.StackFlow.Domain.user.Signup;
 import ssafy.StackFlow.Repository.Retrieval.RetrievalProductRepository;
@@ -26,7 +27,9 @@ import ssafy.StackFlow.Service.product.ColorService;
 import ssafy.StackFlow.Service.product.ProductService;
 import ssafy.StackFlow.Service.product.SizeService;
 import ssafy.StackFlow.Service.store.StoreService;
+import ssafy.StackFlow.api.Retrieval.dto.ProductStockDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -81,28 +84,49 @@ public class RetrievalController {
                 searchList = retrievalService.searchByFilters(categoryGroup, categoryCode, colorCode, size);
             }
         }
+
         Signup user = getCurrentUser();
+        Store loginStore = getUserStore();
+
         List<Color> colorList = colorService.findAllColors();
         List<Category> categoryList = categoryService.findAllCategories();
         List<Size> sizeList = sizeService.findAllSizes();
         List<CategoryGroup> categoryGroupList = categoryGroupService.findAllCategoryGroups();
         List<Store> storeList = storeService.findAllStores();
-        Store loginStore = getUserStore();
+
+        List<ProductStockDto> productStocks = new ArrayList<>();
+        if (searchList != null) {
+            for (Product product : searchList) {
+                ProductStore headOfficeStock = productStoreRepository.findByStoreAndProduct(
+                        storeService.findStoreById(1L),
+                        product
+                ).orElseThrow(() -> new IllegalArgumentException("본사 재고가 존재하지 않습니다."));
+
+                ProductStore storeStock = productStoreRepository.findByStoreAndProduct(
+                        loginStore,
+                        product
+                ).orElse(null);
+
+                productStocks.add(new ProductStockDto(product, headOfficeStock.getStockQuantity(),
+                        storeStock != null ? storeStock.getStockQuantity() : 0));
+            }
+        }
 
         model.addAttribute("loginStore", loginStore);
         model.addAttribute("searchList", searchList);
+        model.addAttribute("productStocks", productStocks);
         model.addAttribute("colorList", colorList);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("sizeList", sizeList);
         model.addAttribute("storeList", storeList);
         model.addAttribute("categoryGroupList", categoryGroupList);
-
         if (user.isAdmin()) {
-            return "Retrieval/Retrieval";  // 관리자 페이지
+            return "Retrieval/Retrieval";
         } else {
-            return "Retrieval/Retrieval2"; // 사용자 페이지
+            return "Retrieval/Retrieval2";
         }
     }
+
 
     @PostMapping("/retrieval/submit")
     @ResponseBody
@@ -158,7 +182,7 @@ public class RetrievalController {
                     return ResponseEntity.badRequest().body("유효하지 않은 값");
                 }
                 Long storeId = 1L;
-                retrievalService.createRetrievalInstruction_User(productId, storeId, retQuan);
+                retrievalService.createRetrievalInstruction_User(productId, retQuan);
                 Store store = storeService.findStoreById(storeId);
                 Product product = productService.findProductById(productId);
                 retrievalService.retrievalUser(productId,1L,retQuan);
@@ -173,8 +197,20 @@ public class RetrievalController {
 
     @GetMapping("/retrieval/list")
     public String RetrievalList(Model model) {
+        Signup user = getCurrentUser();
+        Store loginStore = getUserStore();
         List<Retrieval> retrievalList = retrievalService.findAllRetrievals();
+        model.addAttribute("loginStore", loginStore);
         model.addAttribute("retrievalList", retrievalList);
         return "Retrieval/RetrievalList";
+    }
+    @GetMapping("/storage/list")
+    public String RetrievalList1(Model model) {
+        Signup user = getCurrentUser();
+        Store loginStore = getUserStore();
+        List<Retrieval> retrievalList = retrievalService.findAllRetrievals();
+        model.addAttribute("loginStore", loginStore);
+        model.addAttribute("retrievalList", retrievalList);
+        return "Retrieval/Storage";
     }
 }

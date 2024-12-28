@@ -33,38 +33,46 @@ public class RT {
     @OneToMany(mappedBy = "RT", cascade = CascadeType.ALL)
     private List<RtProduct> rtProducts = new ArrayList<>();
 
+    public void setStatus(RtStatus status) {
+        this.status = status;
+    }
+
+    public RtStatus getStatus() {
+        return status;
+    }
+
+
     public void addRtProduct(RtProduct rtProduct) {
         rtProducts.add(rtProduct);
         rtProduct.setRT(this);
     }
 
+
     public static RT createRT(Product product, Store store, Signup loginUser) {
         RT rt = new RT();
         rt.status = RtStatus.REQUEST;
-        
+
         rt.setProdCode(product.getProdCode());
         rt.setProdName(product.getProdName());
-        
+
         if (product.getColorCode() != null) {
             rt.setColorCode(product.getColorCode().getColorCode());
         }
-        
+
         if (product.getSize() != null) {
             rt.setSize(product.getSize().getSize());
         }
-        
+
         rt.setReqStore(store.getStoreName());
-        
+
         if (loginUser != null && loginUser.getStore() != null) {
             rt.setMyStore(loginUser.getStore().getStoreName());
         }
-        
+
         rt.setReqDate(LocalDateTime.now());
-        
+
         return rt;
     }
 
 
 }
-
-

@@ -208,13 +208,13 @@
         <tr th:if="${searchList != null and searchList.size() == 0}">
             <td colspan="7" style="text-align: center;">검색 결과가 없습니다.</td>
         </tr>
-        <tr th:each="product : ${searchList}" th:if="${searchList != null and searchList.size() > 0}">
-            <td><input type="checkbox" class="product-checkbox" th:data-product-id="${product.id}"></td>
-            <td th:text="${product.prodCode}"></td>
-            <td th:text="${product.prodName}"></td>
-            <td th:text="${product.colorCode?.colorCode}"></td>
-            <td th:text="${product.size?.size}"></td>
-            <td th:text="${product.storeProducts.get(0).stockQuantity}"></td>
+        <tr th:each="productStock : ${productStocks}">
+            <td><input type="checkbox" class="product-checkbox" th:data-product-id="${productStock.product.id}"></td>
+            <td th:text="${productStock.product.prodCode}">상품코드</td>
+            <td th:text="${productStock.product.prodName}">상품명</td>
+            <td th:text="${productStock.product.colorCode}">색상</td>
+            <td th:text="${productStock.product.size}">사이즈</td>
+            <td th:text="${productStock.storeStock}">로그인 매장 재고</td>
             <td>
                 <input type="number" class="quantity-input" min="1" style="width: 80px;">
             </td>

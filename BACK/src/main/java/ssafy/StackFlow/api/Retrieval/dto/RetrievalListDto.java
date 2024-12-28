@@ -11,6 +11,7 @@ import java.util.List;
 public class RetrievalListDto {
     private Long retrieval_id;
     private String product_code;
+    private String request_store;
     private String retrieval_store;
     private LocalDateTime request_date;
     private RetrievalStatus retrieval_status;
@@ -19,6 +20,7 @@ public class RetrievalListDto {
     public RetrievalListDto(Retrieval retrieval) {
         retrieval_id = retrieval.getId();
         product_code = retrieval.getProdCode();
+        request_store= retrieval.getReqStore();
         retrieval_store = retrieval.getRetStore();
         request_date = retrieval.getRetDate();
         retrieval_status = retrieval.getRetStatus();
