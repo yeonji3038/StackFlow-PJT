@@ -1,28 +1,89 @@
-import "./Rt.css";
+import "./RtMain.css";
 import "./RtRegister.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const RtRegister = () => {
-  const csrfToken = "38354D593B8BEC5217C2CF402FC25EFC"; // CSRF 토큰
+  const csrfToken = "9218C4C25DA62D44A15CCE2EB5FC52EA"; // CSRF 토큰
+  const BASE_URL = "http://localhost:8080"
 
-  const [category, setCategory] = useState([]);
-  const [categorycode, setCategoryCode] = useState([]);
-  const [colorCode, setColorCode] = useState([]);
-  const [size, setSize] = useState([]);
+// define ===============================================
+  
+  // nav
+  const nav = useNavigate();
+    
+  // state 
   const [products, setProducts] = useState([]);
-  const [store, setStore] = useState([]);
-  const [rows, setRows] = useState([]); // 선택된 상품 데이터
-
-  const [search, setSearch] = useState({
-    categoryGroup: "",
+  const [selectedProduct, setSelectedProduct] = useState([]); // 선택된 상품 목록
+  const [selectOptions, setSelectOptions] = useState([]) // option에 넣을 데이터
+  const [userInput, setUserInput] = useState({
+    categoryGroup: "",  
     categoryCode: "",
     colorCode: "",
     size: "",
     input: "",
   });
 
+// function ============================================
+  
+  // input data for filtering 
+  const onChangeInput = (productId, field, value) => {
+    setSelectedProduct((preData) =>
+      preData.map((data) =>
+        data.productId === productId ? { ...data, [field]: value } : data
+      )
+    );
+  };
+
+  // userInput func
+  const userInputData = async (commend) => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: `${BASE_URL}/api/rt/product`,
+        withCredentials: true,
+        headers: {
+          "X-CSRF-TOKEN": csrfToken,
+        },
+      })
+      if (commend === 'all') {
+        setProducts(response.data)
+      } else {
+        const filteredData = response.data.filter((item) => {
+          return (
+            (userInput.categoryGroup ? userInput.categoryGroup === item.category_group : true) &&
+            (userInput.categoryCode ? userInput.categoryCode === item.category_code : true) &&
+            (userInput.colorCode ? userInput.colorCode === item.color_code : true) &&
+            (userInput.size ? userInput.size === item.product_size : true) 
+          );
+        });
+        setProducts(filteredData);
+      }  
+    } catch (err) {
+      console.error("Error fetching or filtering data:", err);
+      }
+    };
+  
+  // mapping options data
+  const mapSelectOptions = (data) => {
+    if (selectOptions[data]) {
+      const entry = Object.entries(selectOptions[data])
+      return entry.map(([key, value]) => (
+        <option itemID={key} key={key} value={value}>
+          {value}
+        </option>
+      ))
+    } 
+  };
+   
+  // nav to rt/search
+  const goSearch = () => {
+    return nav("../search");
+  };
+  
+  // async func
   const fetchData = async (url, setData) => {
     try {
       const response = await axios.get(url, {
@@ -37,171 +98,133 @@ const RtRegister = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData("http://localhost:8080/api/rt/categoryGroup", setCategory);
-    fetchData("http://localhost:8080/api/rt/category", setCategoryCode);
-    fetchData("http://localhost:8080/api/rt/color", setColorCode);
-    fetchData("http://localhost:8080/api/rt/size", setSize);
-    fetchData("http://localhost:8080/api/rt/store", setStore);
-  }, []);
-
-  // 체크박스 선택/해제 핸들러
-  const handleCheckboxChange = (product) => {
-    setRows((prevRows) => {
-      if (prevRows.some((row) => row.productId === product.prod_id)) {
+  // check box on / off handling
+  const onChangeCheckBox = (product) => {
+    setSelectedProduct((preData) => {
+      if (preData.some((data) => data.productId === product.prod_id)) {
         // 이미 선택된 경우 제거
-        return prevRows.filter((row) => row.productId !== product.prod_id);
+        return preData.filter((data) => data.productId !== product.prod_id);
       } else {
         // 선택되지 않은 경우 추가
         return [
-          ...prevRows,
+          ...preData,
           { productId: product.prod_id, storeId: "", requestQuantity: "" },
         ];
       }
     });
   };
 
-  // 입력값 변경 핸들러
-  const handleInputChange = (productId, field, value) => {
-    setRows((prevRows) =>
-      prevRows.map((row) =>
-        row.productId === productId ? { ...row, [field]: value } : row
-      )
-    );
-  };
+  // 랜더링 시 함수 호출 
+  useEffect(() => {
+    fetchData(`${BASE_URL}/api/rt/all`,setSelectOptions)
+  }, []);
 
-  // 검색 필터링
-  const filteredData = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/rt/product", {
-        withCredentials: true,
-        headers: {
-          "X-CSRF-TOKEN": csrfToken,
-        },
-      });
-      const filtered = response.data.filter((item) => {
-        return (
-          (search.colorCode ? item.color_code === search.colorCode : true) &&
-          (search.size ? item.product_size === search.size : true)
-        );
-      });
-      setProducts(filtered);
-    } catch (err) {
-      console.error("Error fetching or filtering data:", err);
-    }
-  };
-
-  // 데이터 전송
+  // 마감처리
   const handleSubmit = async () => {
-    console.log(rows)
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/rt/submit",
-        { instructions: rows },
-        {
-          withCredentials: true,
-          maxRedirects: 0,
-          headers: {
-            "X-CSRF-TOKEN": csrfToken,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("Response:", response.data);
+      const response = await axios({
+        method : "POST",
+        url : `${BASE_URL}/api/rt/submit`,
+        data : { instructions: selectedProduct },
+        withCredentials : true,
+        maxRedirects : 0,
+        headers : {
+          "X-CSRF-TOKEN": csrfToken,
+          "Content-Type": "application/json",
+        },
+    });
+    if (response) {
+      Swal.fire({
+      icon: 'success',
+      title: '마감 처리가 완료되었습니다.',
+    }) 
+    }
+        
     } catch (err) {
       console.error("Error:", err);
     }
   };
 
-  const nav = useNavigate();
-  const goSearch = () => {
-    return nav("../search");
-  };
-
-
-  
   return (
     <>
-      <header className="searchBar">
-        <div className="buttons">
-          <button onClick={filteredData}>조회</button>
-          <button onClick={goSearch}>취소</button>
-          <button onClick={handleSubmit}>마감처리</button>
+      <header className="searchSection">
+        <div className="searchButtons">
+          <button 
+            className="button allSearchButton" 
+            onClick={() => userInputData('all')}>
+              전체조회
+          </button>
+          <button 
+            className="button navButton"
+            onClick={goSearch}>취소
+          </button>
+          <button
+          className="button orderCommitButton" 
+          onClick={handleSubmit}>마감처리</button>
         </div>
       </header>
 
-      <div className="search">
-        <div className="searchSelect">
-          <select
-            name="categoryGroup"
-            value={search.categoryGroup}
-            onChange={(e) =>
-              setSearch({ ...search, categoryGroup: e.target.value })
-            }
-          >
-            <option value={""}>카테고리 그룹</option>
-            {category.map((item, index) => (
-              <option key={index} value={item.category_group_code}>
-                {item.category_group_code}
-              </option>
-            ))}
-          </select>
-          <select
-            name="categoryCode"
-            value={search.categoryCode}
-            onChange={(e) =>
-              setSearch({ ...search, categoryCode: e.target.value })
-            }
-          >
-            <option value={""}>카테고리 코드</option>
-            {categorycode.map((item, index) => (
-              <option key={index} value={item.category_code}>
-                {item.category_code}
-              </option>
-            ))}
-          </select>
-          <select
-            name="colorCode"
-            value={search.colorCode}
-            onChange={(e) =>
-              setSearch({ ...search, colorCode: e.target.value })
-            }
-          >
-            <option value={""}>색상 코드</option>
-            {colorCode.map((item, index) => (
-              <option key={index} value={item.color_code}>
-                {item.color_code}
-              </option>
-            ))}
-          </select>
-          <select
-            name="size"
-            value={search.size}
-            onChange={(e) => setSearch({ ...search, size: e.target.value })}
-          >
-            <option value={""}>사이즈</option>
-            {size.map((item, index) => (
-              <option key={index} value={item.size}>
-                {item.size}
-              </option>
-            ))}
-          </select>
+      <section className="userInputSection">
+        <div className="userInputContainer">
+          <div className="userSearchSelect">
+            <select
+              name="categoryGroup"
+              value={userInput.categoryGroup}
+              onChange={(e) => 
+                setUserInput({ ...userInput, categoryGroup: e.target.value })
+              }>
+              <option value={""}>카테고리 그룹</option>
+              {mapSelectOptions("category_group_code")}
+            </select>
+            
+            <select
+              name="categoryCode"
+              value={userInput.categoryCode}
+              onChange={(e) =>
+                setUserInput({ ...userInput, categoryCode: e.target.value })
+              }
+            >
+              <option value={""}>카테고리 코드</option>
+              {mapSelectOptions("category_code")}
+            </select>
+            <select
+              name="colorCode"
+              value={userInput.colorCode}
+              onChange={(e) =>
+                setUserInput({ ...userInput, colorCode: e.target.value })
+              }
+            >
+              <option value={""}>색상 코드</option>
+              {mapSelectOptions("color_code")}
+       
+            </select>
+            <select
+              name="size"
+              value={userInput.size}
+              onChange={(e) => setUserInput({ ...userInput, size: e.target.value })}
+            >
+              <option value={""}>사이즈</option>
+              {mapSelectOptions("size")}
+            </select>
+          </div>
+
+          <div className="SearchInputPart">
+            <input
+              type="text"
+              className="userSearchInput"
+              placeholder="상품명을 입력해주세요"
+              name="input"
+              maxLength= "20"
+              onChange={(e) =>
+                setUserInput({ ...userInput, input: e.target.value })
+              }
+            />
+            <button type="submit" className="submitButton" onClick={userInputData}>
+              검색
+            </button>
+          </div>
         </div>
-        <div className="searchInputGroup">
-          <input
-            type="text"
-            className="searchInput"
-            placeholder="상품명을 입력해주세요"
-            name="input"
-            onChange={(e) =>
-              setSearch({ ...search, input: e.target.value })
-            }
-          />
-          <button type="submit" className="search-button" onClick={filteredData}>
-            검색
-          </button>
-        </div>
-      </div>
+      </section>
 
       <article className="table">
         <table>
@@ -226,7 +249,7 @@ const RtRegister = () => {
                     <input
                       type="checkbox"
                       onChange={(e) =>
-                        handleCheckboxChange(item, e.target.checked)
+                        onChangeCheckBox(item, e.target.checked)
                       }
                     />
                   </td>
@@ -239,22 +262,20 @@ const RtRegister = () => {
                       type="number"
                       placeholder="수량"
                       onChange={(e) =>
-                        handleInputChange(item.prod_id, "requestQuantity", e.target.value)
+                        onChangeInput(item.prod_id, "requestQuantity", e.target.value)
                       }
                     />
                   </td>
                   <td>
                     <select
-                      onChange={(e) =>
-                        handleInputChange(item.prod_id, "storeId", e.target.value)
+                      onChange={(e) => {
+                        onChangeInput(item.prod_id, "storeId", e.target.selectedIndex -1)
+
+                      }
                       }
                     >
                       <option value="">매장 선택</option>
-                      {store.map((storeItem, index) => (
-                        <option key={index} value={storeItem.store_id}>
-                          {storeItem.store_name}
-                        </option>
-                      ))}
+                      {mapSelectOptions("store_name")}
                     </select>
                   </td>
                 </tr>
