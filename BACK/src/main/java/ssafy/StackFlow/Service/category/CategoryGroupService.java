@@ -7,6 +7,8 @@ import ssafy.StackFlow.Domain.category.CategoryGroup;
 import ssafy.StackFlow.Repository.category.CategoryGroupRepository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -15,5 +17,10 @@ public class CategoryGroupService {
 
     public List<CategoryGroup> findAllCategoryGroups() {
         return categoryGroupRepository.findAll();
+    }
+
+    public CategoryGroup findById(Long id) {
+        return categoryGroupRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid category group ID: " + id));
     }
 }

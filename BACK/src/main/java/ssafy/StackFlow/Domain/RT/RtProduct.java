@@ -22,7 +22,7 @@ public class RtProduct {
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "RT_id")
-    private ssafy.StackFlow.Domain.RT.RT RT;
+    private RT RT;
 
     private int reqQuant;
 

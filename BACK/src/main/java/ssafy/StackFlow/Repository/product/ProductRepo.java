@@ -15,10 +15,13 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p " +
             "JOIN p.prodCate c " +
             "JOIN c.cateGroup cg " +
+//            "JOIN p.prodCate cc" +
             "JOIN p.colorCode co " +
             "JOIN p.size s " +
             "WHERE (:categoryGroup IS NULL OR cg.groupName LIKE %:categoryGroup%) " +
             "AND (:categoryCode IS NULL OR c.cateCode LIKE %:categoryCode%) " +
+
+//            "AND (:prodCate IS NULL OR cc.prodCate LIKE %:categoryCode%) " +
             "AND (:colorCode IS NULL OR co.colorCode LIKE %:colorCode%) " +
             "AND (:size IS NULL OR s.size LIKE %:size%)")
     List<Product> findProductsByFilters(@Param("categoryGroup") String categoryGroup,

@@ -1,4 +1,60 @@
+import axios from "axios"
+
 const Notice = () => {
+  const BASE_URL = "http://localhost:8080"
+  const csrfToken = "49E4D212AE15782CCE4948B88F1244AF"; // CSRF 토큰
+
+   // userInput func
+   const GETTEST = async (commend) => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: `${BASE_URL}/notice/api`,
+        withCredentials: true,
+        headers: {
+          "X-CSRF-TOKEN": csrfToken,
+        },
+      })
+      console.log(response)
+      } catch (err) {
+        console.error("Error fetching or filtering data:", err);
+        }
+    } 
+    
+    const GETDETAILTEST = async (commend) => {
+      try {
+        const response = await axios({
+          method: "GET",
+          url: `${BASE_URL}/notice/api/1`,
+          withCredentials: true,
+          headers: {
+            "X-CSRF-TOKEN": csrfToken,
+          },
+        })
+        console.log(response)
+        } catch (err) {
+          console.error("Error fetching or filtering data:", err);
+          }
+      } 
+      const DELETETEST = async (commend) => {
+        try {
+          const response = await axios({
+            method: "DELETE",
+            url: `${BASE_URL}/notice/api/delete/3`,
+            withCredentials: true,
+            maxRedirects: 0,
+            headers: {
+              "X-CSRF-TOKEN": csrfToken,
+            }
+           
+          })
+          console.log(response)
+          } catch (err) {
+            console.error("Error fetching or filtering data:", err);
+            }
+        } 
+  
+
   return (
     <>
       <h1>공지사항</h1>
@@ -22,10 +78,11 @@ const Notice = () => {
             <td>기존 고객 추가 매장 등록</td>
             <td>2024-12-10</td>
           </tr>
-
+        
         </tbody>
 
       </table>
+      <button onClick={DELETETEST}>test</button>
     </>
 
   )

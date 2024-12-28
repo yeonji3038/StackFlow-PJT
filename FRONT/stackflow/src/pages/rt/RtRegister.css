@@ -1,0 +1,84 @@
+.allSearchButton{
+  background-color: #789EDC;
+  border: 1px solid #5481C3;
+}
+
+.navButton {
+  background-color: #BAD2F9;
+  border: 1px solid #789EDC;
+}
+
+.orderCommitButton {
+  border: 1px solid #888;
+  background: #B3B3B3;
+}
+
+.userInputSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 1.4rem;
+}
+
+.userInputContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  width: 90%;
+  background: rgba(186, 210, 249, 0.60);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 1.5rem;
+}
+
+.userSearchSelect {
+  margin-bottom: 10px;
+}
+
+.userSearchSelect select {
+  width: 130px;
+  margin-right: 14px;
+  text-align: left;
+  height: 28px;
+  font-size: 11px;
+}
+
+.SearchInputPart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.userSearchInput {
+  padding: 5px;
+  width: 480px;
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin: 0;
+  margin-right: 20px;
+}
+
+.submitButton {
+  padding: 5px 15px;
+  width: 70px;
+  height: 40px;
+  margin: 0;
+  background-color: #4b89dc;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+
+ article {
+  margin-top: 30px;
+  height: 300px !important;
+    border-spacing: 5px 5px; 
+}
+
+
+

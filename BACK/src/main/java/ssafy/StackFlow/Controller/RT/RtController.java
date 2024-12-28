@@ -72,7 +72,7 @@ public String list(Model model,
     model.addAttribute("storeList", storeList);
     model.addAttribute("categoryGroupList", categoryGroupList);
 
-        return "RT";
+        return "RT/RT";
     }
 
     @PostMapping("/RT/submit")
@@ -114,7 +114,7 @@ public String list(Model model,
         model.addAttribute("myRtList", mtRtList);
         model.addAttribute("otherRtList", otherRtList);
         model.addAttribute("loginStore", loginStore);
-        return "rtList";
+        return "RT/rtList";
     }
 }
 

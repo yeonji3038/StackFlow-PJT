@@ -1,11 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
 
 import MainLayout from './components/layout/MainLayout';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import MainPage from './pages/MainPage';
-import Rt from './pages/rt/Rt';
+import RtMain from './pages/rt/RtMain';
+import RtSearch from './pages/rt/RtSearch';
+import RtRegister from './pages/rt/RtRegister';
 import ChatHistory from './pages/chatbot/ChatHistory';
 import Notice from './pages/notice/Notice';
 import ProductRegister from './pages/product/ProductRegister';
@@ -15,6 +17,7 @@ import ProductCategoryRegister from './pages/product/ProductCategoryRegister';
 import InventoryReceiving from './pages/inventory/InventoryReceiving';
 import InventoryShipping from './pages/inventory/InventoryShipping';
 import InventoryHistory from './pages/inventory/InventoryHistory';
+import ManagementPage from './pages/ManagementPage';
 
 
 // 임시로 페이지 컴포넌트들 생성
@@ -23,7 +26,7 @@ const ProductPages = () => <div>Product Page</div>;
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
         {/* 처음 접속시 로그인 페이지로 리다이렉트 */}
         <Route path="/" element={<Navigate to="/login" replace />} />
@@ -49,14 +52,18 @@ function App() {
                 <Route path="/product/management" element={<ProductManagement />} />
                 <Route path="/product/stockstatus" element={<ProductStockStatus />} />
                 <Route path="/product/categoryregister" element={<ProductCategoryRegister />} />
-                <Route path="rt/*" element={<Rt />} />
+                <Route path="rt/*" element={<RtMain />}>
+                  <Route path="search" element={<RtSearch/>}/>
+                  <Route path="register" element={<RtRegister/>}/>
+                </Route>
                 <Route path="chat" element={<ChatHistory/>}/>
+                <Route path="management" element={<ManagementPage/>}/>
               </Routes>
             </MainLayout>
           }
         />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 

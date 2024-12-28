@@ -1,0 +1,221 @@
+.rtMainPage {
+  width: 100%;
+  height: 79.4vh;
+}
+
+.title {
+  font-size: 2rem;
+}
+
+.mainContent {
+  margin: 1.5rem auto 0 auto;
+  padding: 2.0rem 2.3rem;
+  height: 100%;
+  width: 100%;
+  min-height: 600px;
+  min-width: 900px;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: rgb(131, 139, 167) 0px 0px 3px;
+  border-radius: 20px;
+}
+
+.searchSection {
+  font-size: 0.7rem;
+  height: 05vh;
+  position: relative;
+  width: 100%;
+}
+
+.searchSection * {
+  display: inline-block;
+  white-space: nowrap;
+  height: 25px;
+  line-height: 30px;
+  width: 100%;
+}
+
+.searchButtons{
+  position: absolute;
+  width: 90px;
+  right: 15%;
+  top: 0;
+}
+
+.searchButtons button {
+  width: 3.5rem;
+  height: 2.3rem;
+  font-size: 0.8rem;
+  border-radius: 14px;
+  margin: 0;
+  padding: 0;
+  margin-left: 8px;
+  color: rgb(255, 248, 249);
+  font-weight: 500;
+  box-shadow: rgb(133, 138, 152) 0px 1px 3px;
+  line-height: 0.5rem;
+  text-align: center;
+}
+
+
+
+
+
+.date, .checkbox, .seletor {
+  margin-right: 0.9rem
+}
+
+.name {
+  display: inline-block;
+  background-color: #BAD2F9CC;
+  font-weight: 600;
+  padding: 3px;
+  margin-right: 7px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  width: 40px;
+  text-align: center;
+} 
+
+input[type='date']{
+  position: relative;
+  border: 1px solid #D9D9D9;
+  color: #504b4b; 
+  font-size: 11px;
+  font-weight: 600;
+  width: 130px;
+  height: 35px;
+  
+}
+
+
+
+.checkbox {
+  display: b;
+}
+
+.checkbox span {
+  font-weight: 550;
+}
+
+.checkbox span label {
+  margin: 0 3px 0 8px;
+  font-size: 0.7rem;
+}
+
+.fristCheckbox label {
+  margin-left: 0 !important;
+}
+
+input[type='radio']{
+  position: relative;
+  top: 3px;
+  margin: 0;
+  width: 15px;
+  vertical-align: -6px;
+}
+
+
+.selector select{
+  width: 100px;
+  height: 35px;
+  font-size: 11px;
+}
+
+
+
+
+
+
+#searchButton {
+  background-color:#5481C3;
+}
+
+#createButton {
+  background-color: #BAD2F9;
+}
+
+.searchTable {
+  min-width: 100%;
+  display: flex;
+  flex-direction: column; 
+  margin: 12px auto;
+  align-items: center;
+  text-align: center;
+  width: 95%;
+  
+}
+
+.tableName {
+  width: 100%;
+  text-align: left;
+  padding: 0;
+}
+
+h3 {
+  margin-bottom: 10px;
+}
+
+.table {
+  width: 100%;
+  height: 11.5rem;
+  padding: 0 6px ;
+  font-size: 10px;
+  box-shadow: rgb(188, 193, 210) 0px 2px 3px;
+  border-radius: 10px;
+  overflow-x: scroll;
+}
+
+table {
+  min-width: 100%;
+  width: 100%;
+  height: auto;
+  border-spacing: 5px 5px; 
+  border-collapse: separate;
+}
+
+
+table th{
+  font-weight: 600;
+  background-color: #bad2f9;
+  padding: 8px;
+  border-radius: 7px;
+  font-size: 12px;
+  position: sticky;
+  top: 0px;
+  height: 10px;
+  z-index: 1;
+  margin-bottom: 5px ;
+}
+
+.chooseProduct {
+  width: 20px;
+  background-color: white;
+}
+
+input[type="checkbox"] {
+position: absolute;
+top: 15%;
+right: 3px;
+width: 15px;
+height: 15px;
+background-color: white;
+}
+
+
+table td {
+  height: 10px;
+  text-align: center;
+  position: relative;
+}
+
+
+
+.noData {
+  position:relative;
+  top : 50px;
+  left: 40%;
+  font-size: 12px;
+  font-weight: 800;
+}
+
