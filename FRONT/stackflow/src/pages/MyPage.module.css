@@ -1,0 +1,101 @@
+.managementPage {
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+.formWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.formCard {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 400px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 0px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.input {
+  flex: 1;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.submitButton, .cancelButton {
+  width: 80px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.submitButton {
+  background-color: #789EDC;
+  border: 1px solid #3f6cb1;  
+  color: white;
+}
+
+.cancelButton {
+  background-color: #e0e0e0;
+  border: 1px solid #777777;  
+  color: #333;
+}
+
+.submitButton:hover {
+  background-color: #6b8dc7;
+}
+
+.cancelButton:hover {
+  background-color: #d0d0d0;
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.inputGroup label {
+  font-size: 14px;
+  color: #333;
+  width: 100px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.readOnly {
+  background-color: #f5f5f5;
+  color: #666;
+  cursor: not-allowed;
+}
