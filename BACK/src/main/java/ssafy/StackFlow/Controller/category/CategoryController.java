@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import lombok.RequiredArgsConstructor; // 추가된 import
+import ssafy.StackFlow.Domain.product.Color;
 import ssafy.StackFlow.Repository.category.CategoryGroupRepository;
 import ssafy.StackFlow.Service.category.CategoryGroupService;
 import ssafy.StackFlow.Service.category.CategoryService;
@@ -44,4 +45,17 @@ public class CategoryController {
 
         return "redirect:/admin/code"; // 등록 후 다시 폼으로 리다이렉트
     }
+ /*   @PostMapping("/color/code")
+    public String ColorCode(@RequestParam("colorCode") String colorCode,
+                                   @RequestParam("colorName") String colorName) {
+        // 카테고리 객체 생성
+        Color color = new Color();
+        color.setColorCode(colorCode);
+        color.setCateName(colorName);
+        categoryService.save(color);
+
+        return "redirect:/admin/code"; // 등록 후 다시 폼으로 리다이렉트
+    }
+
+  */
 }

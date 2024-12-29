@@ -21,9 +21,9 @@ public class UserApiController {
 
     //회원가입 APi 연결
     @PostMapping("/api/user/signup")
-    public ResponseEntity<String> signup(@RequestBody UserDto userDto) {
-        userService.signup(userDto);
-        return ResponseEntity.ok("회원가입이 완료되었습니다.");
+    public ResponseEntity<Signup> signup(@RequestBody UserDto userDto) {
+        Signup createdUser = userService.signup(userDto); // 생성된 사용자 정보 반환
+        return ResponseEntity.ok(createdUser); // 생성된 사용자 정보 반환
     }
 
 //일반, 관리자 로그인

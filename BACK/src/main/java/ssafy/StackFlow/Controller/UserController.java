@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
 import ssafy.StackFlow.Domain.user.UserCreateForm;
+import ssafy.StackFlow.Repository.user.UserRepository;
 import ssafy.StackFlow.Service.user.UserService;
 
 @RequiredArgsConstructor
@@ -16,7 +17,8 @@ import ssafy.StackFlow.Service.user.UserService;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService userService; // final 필드
+    private final UserService userService;// final 필드
+    private final UserRepository userRepository;
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm) {
@@ -46,4 +48,5 @@ public class UserController {
         return "login";  //매핑한 login 메서드는 login.html 템플릿을 출력
     }
     // 실제 로그인을 진행하는 @PostMapping 방식의 메서드는 스프링 시큐리티가 대신 처리하므로 우리가 직접 코드를 작성하여 구현할 필요x
+
 }
