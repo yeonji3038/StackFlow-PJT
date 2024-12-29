@@ -45,6 +45,7 @@ public class UserApiController {
 
             LoginResponse response = new LoginResponse();
             response.setUser(signup);
+            response.setStore(signup.getStore());
             response.setJsessionId(session.getId());
 
             // 관리자와 일반 사용자 분기 처리
