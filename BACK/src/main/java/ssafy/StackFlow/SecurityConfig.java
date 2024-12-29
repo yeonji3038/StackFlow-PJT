@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/notice/api/**").permitAll() // 공지사항 상세 조회
                         .requestMatchers("/notice/api/create").permitAll() // 공지사항 생성 API 로그인 없이 접근 허용
 
-                        .requestMatchers("/api/user/login/**").permitAll()  // API 회원가입 URL 허용
+                        .requestMatchers("/api/user/login/**").permitAll()  // API 로그인 URL 허용
 
                         .requestMatchers("/admin/**", "/store/**").hasRole("ADMIN") // admin과 store 관련 URL은 ADMIN 권한 필요
                         .requestMatchers("/admin/registerStore", "/admin/registerStore/**").hasRole("ADMIN") // 매장 등록 URL 명시적 허용

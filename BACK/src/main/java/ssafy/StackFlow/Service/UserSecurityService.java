@@ -47,7 +47,7 @@ public class UserSecurityService implements UserDetailsService {
 
         // 스프링 시큐리티 User 객체 생성 및 반환
         return new User(signup.getUsername(), signup.getPassword(), authorities);
-        // User 객체를 생성해 반환하는데, 이 객체는 스프링 시큐리티에서 사용하며 User 생성자에는 사용자명, 비밀번호, 권한 리스트가 전달
+        // User 객체를 생성해 반환하는데, 이 객체는 스프링 시큐리티에서 사용하며 User 생성자에는 사용자명, 비밀번호, 권��� 리스트가 전달
         //시큐리티는 loadUserByUsername 메서드에 의해 리턴된 User 객체의 비밀번호가 사용자로부터 입력받은 비밀번호와 일치하는지를 검사하는 기능을 내부에 가지고 있다.
     }
 }

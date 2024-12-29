@@ -1,4 +1,5 @@
-<nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+<nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-light bg-light border-bottom"
+     xmlns:th="http://www.w3.org/1999/xhtml">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">STACKFLOW</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -15,7 +16,7 @@
           <a class="nav-link" th:href="@{/user/signup}">SIGNUP</a>
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
-          <span class="navbar-text" th:text="${session.storeName}"></span>
+          <span class="navbar-text" th:text="${session.storeName != null ? session.storeName : '매장 정보 없음'}"></span>
         </li>
       </ul>
     </div>

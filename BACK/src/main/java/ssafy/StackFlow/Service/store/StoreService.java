@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.StackFlow.Domain.Store;
-import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Repository.StoreRepository;
 
 import java.util.List;
@@ -30,14 +29,13 @@ public class StoreService {
         // 매장 위치를 기반으로 매장 코드 생성
         String storeCode = generateStoreCode(store.getLocation());
         store.setStoreCode(storeCode); // 생성된 매장 코드를 설정
-        
+
         // DB에 저장
         storeRepository.save(store); // 매장 정보를 데이터베이스에 저장
     }
 
     public String generateStoreCode(String location) {
         String prefix = ""; // 매장 코드의 접두사 초기화
-
 
         switch (location) {
             case "서면":
@@ -64,7 +62,7 @@ public class StoreService {
         // 해당 위치의 마지막 매장 번호를 찾아서 +1
         List<Store> existingStores = storeRepository.findByLocationOrderByStoreCodeDesc(location);
         String number = "01"; // 기본 매장 번호 설정
-        
+
         if (!existingStores.isEmpty()) {
             String lastCode = existingStores.get(0).getStoreCode(); // 가장 최근 매장 코드 가져오기
             int lastNumber = Integer.parseInt(lastCode.substring(lastCode.length() - 2)); // 마지막 두 자리 숫자 추출
@@ -76,5 +74,9 @@ public class StoreService {
 
     public List<Store> findAllStores() {
         return storeRepository.findAll(); // 모든 매장 정보를 반환
+    }
+
+    public Store getStoreByUser(String username) {
+        return storeRepository.findByStoreCode(username);
     }
 }
