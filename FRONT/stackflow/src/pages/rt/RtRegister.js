@@ -4,12 +4,11 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 const RtRegister = () => {
-  const csrfToken = "9218C4C25DA62D44A15CCE2EB5FC52EA"; // CSRF 토큰
-  const BASE_URL = "http://localhost:8080"
 
-// define ===============================================
+// define ============================================================
   
   // nav
   const nav = useNavigate();
@@ -25,6 +24,11 @@ const RtRegister = () => {
     size: "",
     input: "",
   });
+  
+  // store
+  const state = useSelector( (state) => (state))
+  const csrfToken = state.csrfToken // CSRF 토큰
+  const BASE_URL = state.BASE_URL
 
 // function ============================================
   
@@ -69,13 +73,17 @@ const RtRegister = () => {
   // mapping options data
   const mapSelectOptions = (data) => {
     if (selectOptions[data]) {
-      const entry = Object.entries(selectOptions[data])
-      return entry.map(([key, value]) => (
-        <option itemID={key} key={key} value={value}>
-          {value}
-        </option>
-      ))
-    } 
+      const entry = Object.entries(selectOptions[data]);
+  
+      return entry
+        .filter((_, index) => index !== 0) // 인덱스 0 제외
+        .map(([key, value]) => (
+          <option itemID={key} key={key} value={value}>
+            {value}
+          </option>
+        ));
+    }
+    return null; // 옵션이 없으면 null 반환
   };
    
   // nav to rt/search
@@ -119,29 +127,79 @@ const RtRegister = () => {
     fetchData(`${BASE_URL}/api/rt/all`,setSelectOptions)
   }, []);
 
+  console.log(selectedProduct)
+  
   // 마감처리
-  const handleSubmit = async () => {
+  const onSubmit = async () => {
     try {
+      // Step 1: 유효성 검사
+      if (selectedProduct.length === 0) {
+        Swal.fire({
+          icon: 'error',
+          title: '선택된 상품이 없습니다.',
+          text: '상품을 선택하고 요청 수량과 매장을 입력해주세요.',
+        });
+        return;
+      }
+  
+      // Step 2: 선택된 데이터의 필드 검사
+      for (const product of selectedProduct) {
+        if (!product.storeId || !product.requestQuantity) {
+          Swal.fire({
+            icon: 'error',
+            title: '입력 값이 누락되었습니다.',
+            text: '모든 상품의 매장 ID와 요청 수량을 입력해주세요.',
+          });
+          return;
+        }
+        if (isNaN(product.requestQuantity) || product.requestQuantity <= 0) {
+          Swal.fire({
+            icon: 'error',
+            title: '유효하지 않은 요청 수량입니다.',
+            text: '요청 수량은 1 이상의 숫자여야 합니다.',
+          });
+          return;
+        }
+      }
+  
+      // Step 3: 서버 요청
       const response = await axios({
-        method : "POST",
-        url : `${BASE_URL}/api/rt/submit`,
-        data : { instructions: selectedProduct },
-        withCredentials : true,
-        maxRedirects : 0,
-        headers : {
+        method: "POST",
+        url: `${BASE_URL}/api/rt/submit`,
+        data: { instructions: selectedProduct },
+        withCredentials: true,
+        maxRedirects: 0,
+        headers: {
           "X-CSRF-TOKEN": csrfToken,
           "Content-Type": "application/json",
         },
-    });
-    if (response) {
-      Swal.fire({
-      icon: 'success',
-      title: '마감 처리가 완료되었습니다.',
-    }) 
-    }
-        
+      });
+  
+      // Step 4: 서버 응답 확인
+      if (response && response.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: '마감 처리가 완료되었습니다.',
+        });
+  
+        // 성공 시 선택된 상품 초기화
+        setSelectedProduct([]);
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: '마감 처리에 실패했습니다.',
+          text: '다시 시도해주세요.',
+        });
+      }
     } catch (err) {
+      // Step 5: 에러 처리
       console.error("Error:", err);
+  
+      Swal.fire({
+        icon: 'error',
+        title: '서버 요청 중 오류가 발생했습니다.',
+        text: err.response?.data?.message || '알 수 없는 오류가 발생했습니다.',
+      });
     }
   };
 
@@ -160,7 +218,7 @@ const RtRegister = () => {
           </button>
           <button
           className="button orderCommitButton" 
-          onClick={handleSubmit}>마감처리</button>
+          onClick={onSubmit}>마감처리</button>
         </div>
       </header>
 
@@ -269,7 +327,7 @@ const RtRegister = () => {
                   <td>
                     <select
                       onChange={(e) => {
-                        onChangeInput(item.prod_id, "storeId", e.target.selectedIndex -1)
+                        onChangeInput(item.prod_id, "storeId", e.target.selectedIndex)
 
                       }
                       }

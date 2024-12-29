@@ -1,6 +1,7 @@
 import "./RtMain.css";
 import { Outlet } from "react-router-dom";
 
+
 const RtMain = () => {
   return(
     <div className="rtMainPage">

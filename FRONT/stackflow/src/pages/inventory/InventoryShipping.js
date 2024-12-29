@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './InventoryShipping.module.css';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const InventoryShipping = () => {
   const [selectAll, setSelectAll] = useState(false);
@@ -8,8 +10,55 @@ const InventoryShipping = () => {
     item2: false,
     item3: false
   });
+  const [products, setProducts] = useState([]);
+  const state = useSelector( (state) => (state))
+  const csrfToken = state.csrfToken // CSRF 토큰
+  const BASE_URL = state.BASE_URL
+
+
+  // async func
+  const fetchData = async (url, setData) => {
+    try {
+      const response = await axios.get(url, {
+        withCredentials: true,
+        headers: {
+          "X-CSRF-TOKEN": csrfToken,
+        },
+      });
+      setData(response.data);
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  };
+
+// 
+  // async func
+  const postTest = async () => {
+    const response = await axios({
+      method: "POST",
+      url: `${BASE_URL}/api/retrieval/submit/admin`,
+      data: { instructions: [
+        {
+          "productId": 2,
+          "storeId": 2,
+          "retrivalQuantity": 10
+        }
+    ]},
+      withCredentials: true,
+      maxRedirects: 0,
+      headers: {
+        "X-CSRF-TOKEN": csrfToken,
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response.data)
+  }
+
+  // 
 
   useEffect(() => {
+    fetchData(`${BASE_URL}/api/retrieval/list`,setProducts)
+
     // 모든 항목이 체크되었는지 확인
     const totalItems = Object.keys(checkedItems).length;
     const checkedCount = Object.values(checkedItems).filter(Boolean).length;
@@ -36,7 +85,9 @@ const InventoryShipping = () => {
       [id]: !prev[id]
     }));
   };
+  // http://localhost:8080/
 
+  console.log(products)
   return (
     <div className={styles.container}>
       <h1 className={styles.header}>출고</h1>
@@ -179,7 +230,9 @@ const InventoryShipping = () => {
       </table>
 
       <div className={styles.buttonContainer}>
-        <button className={styles.submitButton}>출고</button>
+        <button 
+          className={styles.submitButton}
+          onClick={postTest}>출고</button>
         <button className={styles.resetButton}>취소</button>
       </div>
     </div>

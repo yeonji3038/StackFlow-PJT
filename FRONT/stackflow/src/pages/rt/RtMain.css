@@ -28,18 +28,18 @@
 }
 
 .searchSection * {
-  display: inline-block;
   white-space: nowrap;
   height: 25px;
   line-height: 30px;
-  width: 100%;
 }
 
 .searchButtons{
   position: absolute;
-  width: 90px;
-  right: 15%;
+  right: 0%;
+  width: 200px;
   top: 0;
+  display: flex;
+  justify-content: end;
 }
 
 .searchButtons button {
@@ -56,10 +56,6 @@
   line-height: 0.5rem;
   text-align: center;
 }
-
-
-
-
 
 .date, .checkbox, .seletor {
   margin-right: 0.9rem
@@ -121,9 +117,6 @@ input[type='radio']{
   height: 35px;
   font-size: 11px;
 }
-
-
-
 
 
 
@@ -209,12 +202,19 @@ table td {
   position: relative;
 }
 
+tbody {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
 
-
+tr {
+  width: 100%;
+}
 .noData {
-  position:relative;
-  top : 50px;
-  left: 40%;
+  position: absolute;
+  top: -100%;
+  left: 45%;
   font-size: 12px;
   font-weight: 800;
 }
