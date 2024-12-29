@@ -3,6 +3,7 @@ package ssafy.StackFlow.Service.product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.StackFlow.Domain.RT.RT;
 import ssafy.StackFlow.Domain.Store;
 import ssafy.StackFlow.Domain.category.Category;
 import ssafy.StackFlow.Domain.category.CategoryGroup;
@@ -59,7 +60,7 @@ public class ProductService {
     @Transactional
 //    public void create(String prodName, String prodDetail, String prodCode, String brandCode, String categorygroup, String categoryCode, String colorCode, String size,
 //                       int stockPrice, int stockQuantity, int sellPrice)
-    public void create(String prodName, String prodDetail, String prodCode, String categorygroup, String categoryCode, String colorCode, String size,
+    public Product create(String prodName, String prodDetail, String prodCode, String categorygroup, String categoryCode, String colorCode, String size,
                        int stockPrice, int stockQuantity, int sellPrice)
     {
         Category category = categoryRepository.findByCateCode(categoryCode)
@@ -96,5 +97,10 @@ public class ProductService {
         p.getStoreProducts().add(productStore);
 
         productRepo.save(p);
-    }
+
+        Product savedProd =  productRepo.save(p);
+
+        return savedProd;
 }
+}
+
