@@ -12,6 +12,7 @@ import ssafy.StackFlow.Domain.user.Signup;
 import ssafy.StackFlow.Service.user.UserService;
 import ssafy.StackFlow.api.user.DTO.LoginDto;
 import ssafy.StackFlow.api.user.DTO.UserDto;
+import ssafy.StackFlow.api.user.DTO.LoginResponse;
 
 import java.security.Principal;
 
@@ -28,9 +29,9 @@ public class UserApiController {
         return ResponseEntity.ok(createdUser); // 생성된 사용자 정보 반환
     }
 
-//일반, 관리자 로그인
+    //일반, 관리자 로그인
     @PostMapping("/api/user/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginDto loginDto, HttpServletRequest request) {
         boolean loginSuccess = userService.login(loginDto); // 로그인 처리
 
         if (loginSuccess) {
@@ -42,16 +43,23 @@ public class UserApiController {
             System.out.println("JSESSIONID 값: " + session.getId());
             System.out.println("사용자 이름: " + signup.getUsername());
 
+            LoginResponse response = new LoginResponse();
+            response.setUser(signup);
+            response.setJsessionId(session.getId());
+
             // 관리자와 일반 사용자 분기 처리
             if ("ROLE_ADMIN".equals(signup.getRole())) {
-                return ResponseEntity.ok("관리자 로그인이 완료되었습니다."); // 관리자 로그인 성공 메시지
+                response.setMessage("관리자 로그인이 완료되었습니다."); // 관리자 로그인 성공 메시지
             } else {
-                return ResponseEntity.ok("로그인이 완료되었습니다."); // 일반 사용자 로그인 성공 메시지
+                response.setMessage("로그인이 완료되었습니다."); // 일반 사용자 로그인 성공 메시지
             }
+            return ResponseEntity.ok(response);
         }
 
         // 로그인 실패 시
-        return ResponseEntity.status(401).body("비밀번호 또는 아이디가 올바르지 않습니다."); // 로그인 실패 메시지 반환
+        LoginResponse errorResponse = new LoginResponse();
+        errorResponse.setMessage("비밀번호 또는 아이디가 올바르지 않습니다.");
+        return ResponseEntity.status(401).body(errorResponse); // 로그인 실패 메시지 반환
     }
 
     // 로그아웃 API
@@ -82,4 +90,3 @@ public class UserApiController {
         return ResponseEntity.ok(signup);
     }
 }
-
