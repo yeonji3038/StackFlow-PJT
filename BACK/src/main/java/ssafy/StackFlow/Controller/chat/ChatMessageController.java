@@ -46,7 +46,7 @@ public class ChatMessageController {
         // 메시지 생성 및 저장
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setRoomId(request.getRoomId());
-        chatMessage.setSender(sender); // sender에 현재 로그인한 사용자 이름 설정
+        chatMessage.setSender(sender);
         chatMessage.setContent(request.getContent());
         chatMessage.setTimestamp(LocalDateTime.now());
         ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
@@ -57,7 +57,7 @@ public class ChatMessageController {
         // 읽지 않은 사용자에게 알림 푸시
         for (Signup participant : participants) {
             if (!isMessageRead(participant.getId(), savedMessage.getId())) {
-                sendNotification(participant);  // 알림 전송
+                sendNotification(participant);
             }
         }
 
