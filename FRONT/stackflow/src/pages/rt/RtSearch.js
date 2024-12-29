@@ -4,16 +4,27 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import moment from 'moment'
+import { useSelector } from "react-redux";
 
 const RtSearch = () => {
 
-   //  검색 조건 담는 변수
-   const [input, setInput] = useState({
+// define ============================================================
+  const csrfToken =  useSelector.csrfToken
+  const BASE_URL = useSelector.BASE_URL
+
+  //  검색 조건 담는 변수
+  const [input, setInput] = useState({
     date : "",
     check : "",
     select : ""
   })
 
+  const [myRtData, myRtSetData] = useState([]) // 데이터를 저장할 상태
+  const [otherRtData, otherRtSetData] = useState([]) // 데이터를 저장할 상태
+  const [storeList, storeListSetData ] = useState([])
+
+  
+//  func ================================================================
   // 검색 조건 담는 이벤트 함수
   const onChangeInput = (e) => {
     setInput({
@@ -22,13 +33,7 @@ const RtSearch = () => {
     })
   }
 
-  // 데이터 가져오는 함수 
-  const [myRtData, myRtSetData] = useState([]) // 데이터를 저장할 상태
-  const [otherRtData, otherRtSetData] = useState([]) // 데이터를 저장할 상태
-  const [storeList, storeListSetData ] = useState([])
-  // const [test, setTest ] = useState([])
-  const csrfToken = "38354D593B8BEC5217C2CF402FC25EFC"; // CSRF 토큰
-
+  // 데이터 가져오는 함수
   const fetchData = async (url, setData) => {
     try {
       const response = await axios.get(url, {
@@ -48,7 +53,8 @@ const RtSearch = () => {
     }
   };
 
-    useEffect(() => {
+  // 페이지 랜더링 시 호출되는 함수
+  useEffect(() => {
       fetchData('http://localhost:8080/api/rt/meToOtherRtlist', myRtSetData)
       fetchData('http://localhost:8080/api/rt/OtherToMeRtlist', otherRtSetData);
       fetchData('http://localhost:8080/api/rt/store', storeListSetData);
@@ -68,7 +74,7 @@ const RtSearch = () => {
         const filtered = input.date  || input.check  || input.select 
         ? response.data.filter((item) => {
             return (
-              (input.date ? item.request_date === input.date : true) &&
+              (input.date ? item.request_date.includes(input.date) : true) &&
               (input.check ? item.rt_status === input.check : true) &&
               (input.select ? item.request_store === input.select : true)
             );
@@ -110,8 +116,9 @@ const RtSearch = () => {
     }
   return (
     <>
-     <div className="searchSection">
-          <div className="date">
+     <section className="searchSection">
+      <div className="selectBox">
+        <div className="date">
             <label className="name">지시기간</label>
             <input 
               id="input_date" 
@@ -158,7 +165,7 @@ const RtSearch = () => {
                 onClick={onClickCheck}
                 />
             </span>
-          </div>
+      </div>
 
           <div className="selector">
             <label className="name">매장</label> 
@@ -179,13 +186,14 @@ const RtSearch = () => {
 
             </select>
           </div>
-
+        </div>
+          
           <div className="searchButtons">
             <button id="searchButton" 
               onClick={filteredData}>조회</button>
             <button id="createButton" onClick={goRegister}>등록</button>
           </div>
-        </div>
+        </section>
         
         <div className="searchTable">
           <div className="tableName">
@@ -221,7 +229,7 @@ const RtSearch = () => {
                     </tr>
                   ))
                 ) : ( 
-                  <tr>
+                  <tr className="noDataTr">
                     <td className="noData">
                       데이터가 없습니다
                     </td>
@@ -232,12 +240,14 @@ const RtSearch = () => {
           </div>
         </div>
         <div className="searchTable">
-          <div className="tableName">
-            <h3>타매장 지시요청</h3>  
-          </div>
-          <div className="buttons">
-            <button>취소</button>
-            <button>승인</button>
+          <div className="searchSection">  
+            <div className="tableName">
+              <h3>타매장 지시요청</h3>  
+            </div>
+              <div className="searchButtons">
+                <button>취소</button>
+                <button>승인</button>
+            </div>
           </div>
           <div className="table">   
             <table>
