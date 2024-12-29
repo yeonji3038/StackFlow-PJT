@@ -21,7 +21,7 @@ public class ChatMessage {
     @NotNull
     private String roomId; // 채팅방 ID
 
-    @NotNull
+    // @NotNull
     private String sender; // 발신자
 
     private String recipient; // 수신자 (개인 채팅 시 사용)

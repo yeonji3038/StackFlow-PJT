@@ -11,6 +11,9 @@ import ssafy.StackFlow.Repository.chat.ChatRoomRepository;
 import ssafy.StackFlow.Repository.chat.MessageReadStatusRepository;
 import ssafy.StackFlow.Repository.user.UserRepository;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,19 +38,21 @@ public class ChatMessageController {
 
     // 메시지 저장 및 알림 푸시 API
     @PostMapping("/sendMessage")
-    public ChatMessage sendMessage(@RequestParam String roomId,
-                                   @RequestParam String sender,
-                                   @RequestParam String content) {
+    public ChatMessage sendMessage(@RequestBody ChatMessageRequest request) {
+        // 현재 로그인한 사용자 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String sender = authentication.getName(); // 현재 로그인한 사용자 이름
+
         // 메시지 생성 및 저장
         ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setRoomId(roomId);
-        chatMessage.setSender(sender);
-        chatMessage.setContent(content);
+        chatMessage.setRoomId(request.getRoomId());
+        chatMessage.setSender(sender); // sender에 현재 로그인한 사용자 이름 설정
+        chatMessage.setContent(request.getContent());
         chatMessage.setTimestamp(LocalDateTime.now());
         ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
 
         // 채팅방에 참여한 사용자 목록 불러오기
-        List<Signup> participants = chatRoomRepository.findByRoomId(roomId).getParticipants();
+        List<Signup> participants = chatRoomRepository.findByRoomId(request.getRoomId()).getParticipants();
 
         // 읽지 않은 사용자에게 알림 푸시
         for (Signup participant : participants) {
@@ -57,9 +62,31 @@ public class ChatMessageController {
         }
 
         // WebSocket을 통해 방에 메시지 전송
-        messagingTemplate.convertAndSend("/topic/messages/" + roomId, savedMessage);
+        messagingTemplate.convertAndSend("/topic/messages/" + request.getRoomId(), savedMessage);
 
         return savedMessage;
+    }
+
+    // 요청을 위한 DTO 클래스
+    public static class ChatMessageRequest {
+        private String roomId;
+        private String content;
+
+        public String getRoomId() {
+            return roomId;
+        }
+
+        public void setRoomId(String roomId) {
+            this.roomId = roomId;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
     }
 
     // 메시지 읽음 상태 확인

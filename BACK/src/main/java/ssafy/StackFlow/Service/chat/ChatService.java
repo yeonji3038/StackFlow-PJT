@@ -1,6 +1,8 @@
 package ssafy.StackFlow.Service.chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ssafy.StackFlow.Domain.chat.ChatMessage;
 import ssafy.StackFlow.Domain.chat.ChatRoom;
@@ -19,6 +21,7 @@ public class ChatService {
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomRepository chatRoomRepository;
 
+    @Autowired
     public ChatService(ChatMessageRepository chatMessageRepository, ChatRoomRepository chatRoomRepository) {
         this.chatMessageRepository = chatMessageRepository;
         this.chatRoomRepository = chatRoomRepository;
@@ -69,5 +72,17 @@ public class ChatService {
     // 채팅방 ID로 메시지 조회
     public List<ChatMessage> getMessagesByRoomId(Long roomId) {
         return chatMessageRepository.findByRoomId(String.valueOf(roomId)); // repository 메서드 호출
+    }
+
+    // 메시지 전송
+    public void sendMessage(String content) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        ChatMessage message = new ChatMessage();
+        message.setSender(username);
+        message.setContent(content);
+        message.setTimestamp(LocalDateTime.now());
+        chatMessageRepository.save(message);
     }
 }

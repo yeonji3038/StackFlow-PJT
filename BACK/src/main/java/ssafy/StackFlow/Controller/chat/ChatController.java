@@ -32,6 +32,8 @@ public class ChatController {
             throw new IllegalStateException("로그인되지 않은 사용자입니다.");
         }
 
+        System.out.println("Principal: " + principal.getName());
+
         String sender = principal.getName(); // 로그인된 사용자 이름
         message.setSender(sender);
         message.setRoomId(String.valueOf(roomId));
