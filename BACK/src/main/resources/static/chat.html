@@ -118,16 +118,16 @@
                     if (response.ok) {
                         return response.json();
                     } else {
-                        throw new Error('User not logged in');
+                        throw new Error('로그인이 안 되어있습니다.');
                     }
                 })
                 .then(data => {
                     currentUserId = data.username;
-                    console.log('Current User:', currentUserId);
+                    console.log('현재 로그인 된 사용자:', currentUserId);
                     connect(); // 웹소켓
                 })
                 .catch(error => {
-                    console.error('Error fetching user info:', error);
+                    console.error('사용자 정보 불러오기 오류:', error);
                 });
         };
 
@@ -242,7 +242,7 @@
             const selectedStores = Array.from(document.querySelectorAll('#store-list input:checked'))
                 .map(input => parseInt(input.value));
 
-            console.log('Selected stores:', selectedStores);
+            console.log('선택된 매장들:', selectedStores);
 
             // CSRF 토큰을 헤더에 포함
             const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');

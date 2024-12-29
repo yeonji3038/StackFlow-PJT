@@ -39,8 +39,8 @@ public class UserApiController {
             HttpSession session = request.getSession();
             session.setAttribute("loginMember", signup); // 세션에 사용자 정보 저장
 
-            System.out.println("Session ID: " + session.getId());
-            System.out.println("User stored in session: " + signup.getUsername());
+            System.out.println("JSESSIONID 값: " + session.getId());
+            System.out.println("사용자 이름: " + signup.getUsername());
 
             // 관리자와 일반 사용자 분기 처리
             if ("ROLE_ADMIN".equals(signup.getRole())) {
