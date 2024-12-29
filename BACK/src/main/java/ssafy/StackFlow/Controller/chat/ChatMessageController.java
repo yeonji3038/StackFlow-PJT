@@ -11,6 +11,9 @@ import ssafy.StackFlow.Repository.chat.ChatRoomRepository;
 import ssafy.StackFlow.Repository.chat.MessageReadStatusRepository;
 import ssafy.StackFlow.Repository.user.UserRepository;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,31 +38,55 @@ public class ChatMessageController {
 
     // 메시지 저장 및 알림 푸시 API
     @PostMapping("/sendMessage")
-    public ChatMessage sendMessage(@RequestParam String roomId,
-                                   @RequestParam String sender,
-                                   @RequestParam String content) {
+    public ChatMessage sendMessage(@RequestBody ChatMessageRequest request) {
+        // 현재 로그인한 사용자 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String sender = authentication.getName(); // 현재 로그인한 사용자 이름
+
         // 메시지 생성 및 저장
         ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setRoomId(roomId);
+        chatMessage.setRoomId(request.getRoomId());
         chatMessage.setSender(sender);
-        chatMessage.setContent(content);
+        chatMessage.setContent(request.getContent());
         chatMessage.setTimestamp(LocalDateTime.now());
         ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
 
         // 채팅방에 참여한 사용자 목록 불러오기
-        List<Signup> participants = chatRoomRepository.findByRoomId(roomId).getParticipants();
+        List<Signup> participants = chatRoomRepository.findByRoomId(request.getRoomId()).getParticipants();
 
         // 읽지 않은 사용자에게 알림 푸시
         for (Signup participant : participants) {
             if (!isMessageRead(participant.getId(), savedMessage.getId())) {
-                sendNotification(participant);  // 알림 전송
+                sendNotification(participant);
             }
         }
 
         // WebSocket을 통해 방에 메시지 전송
-        messagingTemplate.convertAndSend("/topic/messages/" + roomId, savedMessage);
+        messagingTemplate.convertAndSend("/topic/messages/" + request.getRoomId(), savedMessage);
 
         return savedMessage;
+    }
+
+    // 요청을 위한 DTO 클래스
+    public static class ChatMessageRequest {
+        private String roomId;
+        private String content;
+
+        public String getRoomId() {
+            return roomId;
+        }
+
+        public void setRoomId(String roomId) {
+            this.roomId = roomId;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
     }
 
     // 메시지 읽음 상태 확인
@@ -97,18 +124,18 @@ public class ChatMessageController {
                 // 없으면 새로 추가
                 status = new MessageReadStatus(user, chatMessage, true);
                 messageReadStatusRepository.save(status);
-                return "Message marked as read.";
+                return "Message 읽음으로 표시.";
             } else if (!status.isRead()) {
                 // 이미 존재하지만 읽음 처리되지 않았다면
                 status.setIsRead(true);
                 messageReadStatusRepository.save(status);
-                return "Message marked as read.";
+                return "Message 읽음으로 표시.";
             }
 
-            return "Message is already marked as read.";
+            return "Message가 이미 읽음으로 표시됨.";
         }
 
-        return "Invalid user or message.";
+        return "잘못된 User 또는 Message.";
     }
 
     // 특정 채팅방의 메시지와 읽음 상태 조회 API

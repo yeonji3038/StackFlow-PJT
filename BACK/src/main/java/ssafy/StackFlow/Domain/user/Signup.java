@@ -1,6 +1,7 @@
 package ssafy.StackFlow.Domain.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +37,7 @@ public class Signup {
     // 매장 정보 참조
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "store_id") // 외래키
+    @JsonIgnore
     private Store store;
 
     // storeCode 필드 추가

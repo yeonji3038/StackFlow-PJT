@@ -26,10 +26,10 @@ public class MessageReadStatusController {
     @PostMapping("/updateReadStatus")
     public MessageReadStatus updateReadStatus(@RequestParam Long messageId, @RequestParam Long userId) {
         ChatMessage chatMessage = chatMessageRepository.findById(messageId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid message ID"));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 message ID"));
 
         Signup user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 user ID"));
 
         MessageReadStatus status = new MessageReadStatus();
         status.setChatMessage(chatMessage);
