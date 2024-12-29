@@ -116,5 +116,20 @@ public String list(Model model,
         model.addAttribute("loginStore", loginStore);
         return "RT/rtList";
     }
+
+    @PostMapping("/processRtRequests")
+    public String processRtRequests(@RequestParam(value = "selectedRequests", required = false) List<Long> selectedRequests,
+                                    @RequestParam(value = "action", required = false) String action) {
+        if (action.equals("approve")) {
+            rtService.updateRtStatus(selectedRequests, "APPROVAL");
+        } else if (action.equals("reject")) {
+            rtService.updateRtStatus(selectedRequests, "REFUSE");
+        }
+        return "redirect:/RT";
+    }
+
+
+
+
 }
 

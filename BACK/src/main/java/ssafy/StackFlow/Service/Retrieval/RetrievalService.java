@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.StackFlow.Domain.RT.RT;
 import ssafy.StackFlow.Domain.Retrieval.Retrieval;
 import ssafy.StackFlow.Domain.Retrieval.RetrievalProduct;
 import ssafy.StackFlow.Domain.Store;
@@ -21,8 +22,9 @@ import ssafy.StackFlow.Service.product.ProductService;
 import ssafy.StackFlow.Service.store.StoreService;
 
 import java.util.List;
+import java.util.Optional;
 
-    @Service
+@Service
     @Transactional(readOnly = true)
     @RequiredArgsConstructor
     public class RetrievalService {
@@ -126,8 +128,9 @@ import java.util.List;
 
                 Store store = storeRepository.findById(storeId)
                         .orElseThrow(() -> new RuntimeException("매장을 찾을 수 없습니다."));
+                Signup currentUser = getCurrentUser();
 
-                Retrieval retrieval = Retrieval.createRetrieval(product, store);
+                Retrieval retrieval = Retrieval.createRetrieval(product, store,currentUser);
 
                 RetrievalProduct retrievalProduct = RetrievalProduct.createRetrievalProduct(product, retQuan);
                 retrieval.addRetrievalProduct(retrievalProduct);
@@ -141,7 +144,7 @@ import java.util.List;
         }
 
         @Transactional
-        public Retrieval createRetrievalInstruction_User(Long productId, Long storeId, int retQuan) {
+        public Retrieval createRetrievalInstruction_User(Long productId, int retQuan) {
             try {
                 Product product = productRepo.findById(productId)
                         .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
@@ -149,7 +152,9 @@ import java.util.List;
                 Store store = storeRepository.findById(1L)
                         .orElseThrow(() -> new RuntimeException("매장을 찾을 수 없습니다."));
 
-                Retrieval retrieval = Retrieval.createRetrieval(product, store);
+                Signup currentUser = getCurrentUser();
+
+                Retrieval retrieval = Retrieval.createRetrieval(product, store, currentUser);
 
                 RetrievalProduct retrievalProduct = RetrievalProduct.createRetrievalProduct(product, retQuan);
                 retrieval.addRetrievalProduct(retrievalProduct);
@@ -165,5 +170,7 @@ import java.util.List;
         public List<Retrieval> findAllRetrievals() {
             return retrievalRepository.findAll();
         }
+
+
     }
 
