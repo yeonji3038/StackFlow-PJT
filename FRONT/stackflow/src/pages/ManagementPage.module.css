@@ -42,7 +42,7 @@
 
 /* 테이블 셀 스타일 */
 .table td {
-  padding: 5px 15px;
+  padding: 1px 15px;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
