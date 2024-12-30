@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:c="http://www.w3.org/1999/XSL/Transform">
+<head>
+    <meta charset="utf-8">
+    <title>R/T 지시 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            width: 95%;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #f8f9fa;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #e9ecef;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-button {
+            padding: 8px 15px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>R/T 지시 등록 / 조회</h2>
+        <button class="back-button" onclick="location.href='/RT'">돌아가기</button>
+    </div>
+    <h3 th:if="${loginStore != null}">
+        현재 로그인된 매장 이름: <span th:text="${loginStore.storeName}"></span>
+    </h3>
+    <h3 th:if="${loginStore == null}">
+        매장 정보가 없습니다.
+    </h3>
+
+
+    <h2>지시 요청 조회</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>품번</th>
+            <th>품명</th>
+            <th>색상</th>
+            <th>사이즈</th>
+            <th>지시매장</th>
+            <th>지시수량</th>
+            <th>RT 지시일</th>
+            <th>상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rt : ${otherRtList}">
+            <td th:text="${rt.prodCode}"></td>
+            <td th:text="${rt.prodName}"></td>
+            <td th:text="${rt.colorCode}"></td>
+            <td th:text="${rt.size}"></td>
+            <td th:text="${rt.reqStore}"></td>
+            <td th:text="${rt.rtProducts[0].reqQuant}"></td>
+            <td th:text="${#temporals.format(rt.reqDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${rt.status.getKoreanStatus()}"></td>
+        </tr>
+        <tr th:if="${otherRtList.empty}">
+            <td colspan="8" style="text-align: center;">등록된 R/T 지시가 없습니다.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>타매장 지시요청</h2>
+    <form th:action="@{/processRtRequests}" method="post">
+        <table>
+            <thead>
+            <tr>
+                <th>선택</th>
+                <th>요청매장</th>
+                <th>품번</th>
+                <th>품명</th>
+                <th>색상</th>
+                <th>사이즈</th>
+                <th>요청수량</th>
+                <th>RT 요청일</th>
+            </tr>
+            </thead>
+            <div class="action-buttons">
+                <button type="submit" name="action" value="approve">승인</button>
+                <button type="submit" name="action" value="reject">거절</button>
+            </div>
+            <tbody>
+            <tr th:each="myrt : ${myRtList}">
+                <td><input type="checkbox" name="selectedRequests" value="${myrt.id}"></td>
+                <td th:text="${myrt.myStore}"></td>
+                <td th:text="${myrt.prodCode}"></td>
+                <td th:text="${myrt.prodName}"></td>
+                <td th:text="${myrt.colorCode}"></td>
+                <td th:text="${myrt.size}"></td>
+                <td th:text="${myrt.rtProducts[0].reqQuant}"></td>
+                <td th:text="${#temporals.format(myrt.reqDate, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            <tr th:if="${myRtList.empty}">
+                <td colspan="8" style="text-align: center;">등록된 R/T 지시가 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+</html>

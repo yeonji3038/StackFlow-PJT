@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import ssafy.StackFlow.Domain.Store;
-import ssafy.StackFlow.api.user.DTO.StoreDto;
 import ssafy.StackFlow.user.UserRole;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -36,7 +35,7 @@ public class Signup {
     private String role; // 사용자 역할 추가
 
     // 매장 정보 참조
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "store_id") // 외래키
     @JsonIgnore
     private Store store;
