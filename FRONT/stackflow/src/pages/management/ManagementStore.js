@@ -5,7 +5,7 @@ const ManagementStore = () => {
   const [customerData, setCustomerData] = useState([
     {
       id: "hellohi123",
-      company: "hellohi",
+      store: "수원점",
       businessNumber: "453453254545",
       email: "hellohi@naver.com",
       storeCode: "ST001",
@@ -15,7 +15,7 @@ const ManagementStore = () => {
     },
     {
       id: "stackoverflow12",
-      company: "stackoverflow",
+      store: "대구점",
       businessNumber: "578365435472",
       email: "stackoverflow12@naver.com",
       storeCode: "ST002",
@@ -25,7 +25,7 @@ const ManagementStore = () => {
     },
     {
       id: "godls0215",
-      company: "godls",
+      store: "연천점",
       businessNumber: "1235645634357",
       email: "godls0215@naver.com",
       storeCode: "ST003",
@@ -62,7 +62,7 @@ const ManagementStore = () => {
           <thead>
             <tr>
               <th>아이디</th>
-              <th>회사명</th>
+              <th>매장명</th>
               <th>이메일</th>
               <th>매장코드</th>
               <th>승인 날짜</th>
@@ -75,7 +75,7 @@ const ManagementStore = () => {
             {customerData.map((customer) => (
               <tr key={customer.id}>
                 <td>{customer.id}</td>
-                <td>{customer.company}</td>
+                <td>{customer.store}</td>
                 <td>{customer.email}</td>
                 <td>{customer.storeCode}</td>
                 <td>{customer.approvalDate}</td>
