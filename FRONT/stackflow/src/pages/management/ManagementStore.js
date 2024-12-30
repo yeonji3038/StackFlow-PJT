@@ -55,10 +55,9 @@ const ManagementStore = () => {
 
   return (
     <div className={styles.managementPage}>
-      <h1 className={styles.title}>MANAGEMENT PAGE</h1>
+      <h1 className={styles.title}>매장 관리</h1>
       <hr />
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>매장 관리</h2>
         <table className={styles.table}>
           <thead>
             <tr>

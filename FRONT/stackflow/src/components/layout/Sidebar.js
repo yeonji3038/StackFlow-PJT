@@ -26,11 +26,6 @@ const Sidebar = () => {
       ]
     },
     {
-      title: '공지사항',
-      path: '/notice',
-      subMenus: []
-    },
-    {
       title: 'RT',
       path: '/rt',
       subMenus: [
@@ -39,17 +34,14 @@ const Sidebar = () => {
       ]
     },
     {
-      title: '채팅',
-      path: '/chat',
+      title: '공지사항',
+      path: '/notice',
       subMenus: []
     },
     {
-      title: '관리자',
-      path: '/management',
-      subMenus: [
-        { title: '매장 관리', path: '/management/store' },
-        { title: '매장코드 생성', path: '/management/code' },
-      ]
+      title: '채팅',
+      path: '/chat',
+      subMenus: []
     }
   ];
 
@@ -92,6 +84,19 @@ const Sidebar = () => {
       </ul>
       <div className={styles.divider} />
       <div className={styles.bottomSection}>
+        <div className={styles.menuItem}>
+          <div onClick={() => toggleMenu('management')}>MANAGEMENT</div>
+          {openMenu === 'management' && (
+            <ul className={styles.subMenuList}>
+              <li className={styles.subMenuItem}>
+                <Link to="/management/store">매장 관리</Link>
+              </li>
+              <li className={styles.subMenuItem}>
+                <Link to="/management/code">매장 코드 생성</Link>
+              </li>
+            </ul>
+          )}
+        </div>
         <div className={styles.menuItem}>
           <Link to="/mypage">MY PAGE</Link>
         </div>

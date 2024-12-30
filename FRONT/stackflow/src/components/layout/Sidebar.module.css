@@ -44,10 +44,6 @@
   color: white;
 }
 
-.menuItem:hover {
-  opacity: 0.8;
-}
-
 .bottomSection {
   padding: 10px;
 }
@@ -100,10 +96,6 @@ button:hover:after {
   text-decoration: none;
   display: block;
   width: 100%;
-}
-
-.menuItem a:hover {
-  opacity: 0.8;
 }
 
 .subMenuList {
