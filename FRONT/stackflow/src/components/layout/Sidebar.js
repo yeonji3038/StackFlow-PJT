@@ -42,6 +42,14 @@ const Sidebar = () => {
       title: '채팅',
       path: '/chat',
       subMenus: []
+    },
+    {
+      title: '관리자',
+      path: '/management',
+      subMenus: [
+        { title: '매장 관리', path: '/management/store' },
+        { title: '매장코드 생성', path: '/management/code' },
+      ]
     }
   ];
 
@@ -84,9 +92,6 @@ const Sidebar = () => {
       </ul>
       <div className={styles.divider} />
       <div className={styles.bottomSection}>
-        <div className={styles.menuItem}>
-          <Link to="/management">MANAGEMENT</Link>
-        </div>
         <div className={styles.menuItem}>
           <Link to="/mypage">MY PAGE</Link>
         </div>
