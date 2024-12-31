@@ -60,6 +60,7 @@
   gap: 6px;
   padding: 10px 0px;
   background: linear-gradient(to right, #b0cbf1, #678dc3);
+  font-family: 'NanumSquare', sans-serif !important;
 }
 
 .centerButtons {
@@ -83,6 +84,7 @@
   border: 1px solid #3f6cb1;  
   border-radius: 8px;
   margin-right: 10px;
+  font-family: 'NanumSquare', sans-serif !important;
 }
 
 .radioLabel {
