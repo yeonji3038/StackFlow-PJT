@@ -83,6 +83,7 @@
   width: auto;
   min-width: 80px;
   max-width: 120px;
+  font-family: 'NanumSquare', sans-serif !important;
 }
 
 .formGroup textarea {
@@ -112,6 +113,7 @@
   border-radius: 10px;
   font-size: 1rem;
   cursor: pointer;
+  font-family: 'NanumSquare', sans-serif !important;
 }
 
 .formGroup > select {

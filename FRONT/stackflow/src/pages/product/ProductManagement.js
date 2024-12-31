@@ -27,7 +27,7 @@ const ProductManagement = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.header}>상품조회</h1>
+      <h1 className={styles.header}>등록 상품 관리</h1>
       <hr />
       <section className={styles.searchSection}>
         <form className={styles.searchForm}>

@@ -117,10 +117,13 @@
   color: white;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   white-space: nowrap;
   box-sizing: border-box;
   max-width: 90px;
+  align-items: center;
+  font-family: 'NanumSquare', sans-serif !important;
+
 }
 
 .addressButton:hover {
@@ -135,8 +138,9 @@
   border: 1px solid #3f6cb1;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 17px;
   margin-top: 20px;
+  font-family: 'NanumSquare', sans-serif !important;
 }
 
 .submitButton:hover {
