@@ -4,7 +4,7 @@ import styles from './Sidebar.module.css';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/authSlice';
 import { useNavigate } from 'react-router-dom';
-import useAuth from '../../store/tokenManage'
+import useAuth from '../../store/tokenManage'
 
 const Sidebar = () => {
   const [openMenu, setOpenMenu] = useState(null);
