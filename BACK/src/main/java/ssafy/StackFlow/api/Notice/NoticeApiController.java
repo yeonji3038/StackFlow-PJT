@@ -19,12 +19,8 @@ import java.util.stream.Collectors;
 
 @RequestMapping("/notice")
 @RequiredArgsConstructor
-@RestController  // 프론트 api 넘겨주기 (json 응답 반환)
+@RestController  // 프론트 API 넘겨주기 (json 응답 반환)
 public class NoticeApiController {
-    // ----------------------------------
-    // **API 응답을 위한 엔드포인트 추가**
-    // ----------------------------------
-
     private final NoticeService noticeService;
     private final UserService userService;
 
@@ -37,7 +33,7 @@ public class NoticeApiController {
         List<NoticeDto> noticeDtos = notices.stream()
                 .map(notice -> {
                     List<FileDto> fileDtos = notice.getFiles().stream()
-                            .map(file -> new FileDto(file.getId(), file.getFileName(), file.getFilePath(), file.getFileType()))
+                            .map(file -> new FileDto(file.getId(), file.getFileName(), file.getFileType()))  // filePath 제외
                             .collect(Collectors.toList());
 
                     // NoticeDto 생성
@@ -55,7 +51,7 @@ public class NoticeApiController {
 
         // 파일 정보를 FileDto로 변환
         List<FileDto> fileDtos = notice.getFiles().stream()
-                .map(file -> new FileDto(file.getId(), file.getFileName(), file.getFilePath(), file.getFileType()))
+                .map(file -> new FileDto(file.getId(), file.getFileName(), file.getFileType()))  // filePath 제외
                 .collect(Collectors.toList());
 
         // NoticeDto 생성
@@ -77,7 +73,6 @@ public class NoticeApiController {
     }
 
     // 공지사항 수정 (API)
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/api/modify/{id}")
     public ResponseEntity<Notice> modifyNotice(@PathVariable("id") Long id,
                                                @RequestParam("title") String title,
@@ -92,7 +87,6 @@ public class NoticeApiController {
     }
 
     // 공지사항 삭제 (API)
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/api/delete/{id}")
     public ResponseEntity<Void> deleteNotice(@PathVariable("id") Long id,
                                              Principal principal) {
