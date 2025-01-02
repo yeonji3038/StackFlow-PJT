@@ -9,4 +9,5 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Store findByStoreCode(String storeCode);
 
     List<Store> findByLocationOrderByStoreCodeDesc(String location);
+
 }
