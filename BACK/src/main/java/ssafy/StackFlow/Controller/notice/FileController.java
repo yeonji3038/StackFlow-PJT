@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ssafy.StackFlow.Service.notice.FileService;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/files")  // 파일 관련 URL 매핑
@@ -24,10 +25,10 @@ public class FileController {
 
     // 파일 업로드 요청 처리
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file, Model model) {
+    public String uploadFile(@RequestParam("file") List<MultipartFile> files, Model model) {
         try {
-            // fileService의 saveFile 메서드를 호출하여 파일 저장
-            fileService.saveFile(file);
+            // 파일을 DB에만 저장하도록 변경
+            fileService.uploadFiles(files, null);  // null은 Notice를 나타내는 값이므로, 필요한 경우 Notice 객체로 처리
             model.addAttribute("message", "File uploaded successfully!");
             return "uploadPage";  // 업로드 완료 후 다시 업로드 페이지로 돌아가거나, 다른 페이지로 리다이렉션
         } catch (IOException e) {
