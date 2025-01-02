@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Signup.module.css';
 import axios from 'axios';
+import { useConfig } from '../../store';
 
 function Signup() {
-    const BASE_URL = "http://localhost:8080"
+    
   // define ======================================================
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const nav = useNavigate();
+  const { BASE_URL } = useConfig()
 
  // 로그인 버튼
  const signupSubmit = async (e) => {

@@ -20,6 +20,8 @@ import InventoryHistory from './pages/inventory/InventoryHistory';
 import MyPage from './pages/MyPage';
 import ManagementStore from './pages/management/ManagementStore';
 import ManagementCode from './pages/management/ManagementCode';
+import PrivateRoute from './store/PrivateRoute';
+
 
 // 임시로 페이지 컴포넌트들 생성
 const InventoryPages = () => <div>Inventory Page</div>;
@@ -36,6 +38,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         
+
+        <Route element={<PrivateRoute />}>
         {/* MainLayout이 적용되는 라우트들 */}
         <Route
           path="/*"
@@ -67,6 +71,7 @@ function App() {
             </MainLayout>
           }
         />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

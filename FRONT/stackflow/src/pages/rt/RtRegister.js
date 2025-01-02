@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
+import { useConfig } from "../../store";
 
 const RtRegister = () => {
 
@@ -28,7 +29,7 @@ const RtRegister = () => {
   // store
   const state = useSelector( (state) => (state))
   const csrfToken = state.csrfToken // CSRF 토큰
-  const BASE_URL = state.BASE_URL
+  const { BASE_URL } = useConfig()
 
 // function ============================================
   

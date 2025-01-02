@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Sidebar.module.css';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../store/authSlice';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../../store/tokenManage'
 
 const Sidebar = () => {
   const [openMenu, setOpenMenu] = useState(null);
+  const { deleteToken } = useAuth();
+
 
   const menuItems = [
     {
@@ -46,9 +52,20 @@ const Sidebar = () => {
   ];
 
   const toggleMenu = (index) => {
-    setOpenMenu(openMenu === index ? null : index);
+    setOpenMenu(openMenu === index ? null : index);   
+  };
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  const onClickLogout = (e) => {
+    deleteToken() // 쿠키에서 토큰 제거 
+    // Redux Store에서 사용자 정보 및 로그인 상태 초기화
+    dispatch(logout());
+    navigate('/login'); // 로그인 페이지로 이동
   };
 
+  
   return (
     <div className={styles.sidebarContainer}>
       <div className={styles.logo}>
@@ -100,7 +117,9 @@ const Sidebar = () => {
         <div className={styles.menuItem}>
           <Link to="/mypage">MY PAGE</Link>
         </div>
-        <button className={styles.logoutButton}>LOGOUT</button>
+        <button 
+          className={styles.logoutButton} 
+          onClick={onClickLogout}>LOGOUT</button>
       </div>
     </div>
   );
