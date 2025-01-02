@@ -40,11 +40,11 @@ public class UserApiController {
             Signup signup = userService.getUser(username); // 사용자 정보 조회
             HttpSession session = request.getSession();
             session.setAttribute("loginMember", signup); // 세션에 사용자 정보 저장
-            session.setAttribute("storeName", signup.getStore()); // 매장 이름 세션에 저장
+            session.setAttribute("storeName", signup.getStoreName()); // 매장 이름 세션에 저장
 
             System.out.println("JSESSIONID 값: " + session.getId());
             System.out.println("사용자 이름: " + signup.getUsername());
-            System.out.println("매장 이름: " + signup.getStoreName());
+            System.out.println("세션에 저장된 매장 이름: " + session.getAttribute("storeName"));
 
 
 

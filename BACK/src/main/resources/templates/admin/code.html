@@ -57,18 +57,15 @@
 
 <!-- 색상 코드 등록 -->
 <h2>색상 코드 등록</h2>
-<form action="/admin/color/code" method="POST">
+<form action="/admin/color" method="POST">
+  <label for="colorName">색상 이름:</label>
+  <input type="text" id="colorName" name="colorName" required>
   <label for="colorCode">색상 코드:</label>
+
   <input type="text" id="colorCode" name="colorCode" required>
   <button type="submit">색상 코드 등록</button>
 </form>
 
-<!-- 시즌 코드 등록 -->
-<h2>시즌 코드 등록</h2>
-<form action="/api/season/register" method="POST">
-  <label for="seasonCode">시즌 코드:</label>
-  <input type="text" id="seasonCode" name="seasonCode" required placeholder="예: spring, summer, fall, winter">
-  <button type="submit">시즌 코드 등록</button>
-</form>
+
 </body>
 </html>

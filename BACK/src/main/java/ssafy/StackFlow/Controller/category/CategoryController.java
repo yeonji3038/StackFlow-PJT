@@ -13,6 +13,7 @@ import ssafy.StackFlow.Service.category.CategoryGroupService;
 import ssafy.StackFlow.Service.category.CategoryService;
 import ssafy.StackFlow.Domain.category.Category;
 import ssafy.StackFlow.Domain.category.CategoryGroup;
+import ssafy.StackFlow.Service.product.ColorService;
 
 @Controller
 @RequestMapping("/admin")
@@ -20,6 +21,7 @@ import ssafy.StackFlow.Domain.category.CategoryGroup;
 public class CategoryController {
 
     private final CategoryService categoryService; // final 추가
+    private final ColorService colorService; // final 추가
     private final CategoryGroupService categoryGroupService; // final 추가
     private final CategoryGroupRepository categoryGroupRepository;
     @GetMapping("/code")
@@ -45,17 +47,16 @@ public class CategoryController {
 
         return "redirect:/admin/code"; // 등록 후 다시 폼으로 리다이렉트
     }
- /*   @PostMapping("/color/code")
+   @PostMapping("/color")
     public String ColorCode(@RequestParam("colorCode") String colorCode,
                                    @RequestParam("colorName") String colorName) {
         // 카테고리 객체 생성
         Color color = new Color();
         color.setColorCode(colorCode);
-        color.setCateName(colorName);
-        categoryService.save(color);
+        color.setColorName(colorName);
+        colorService.save(color);
 
         return "redirect:/admin/code"; // 등록 후 다시 폼으로 리다이렉트
     }
 
-  */
 }
