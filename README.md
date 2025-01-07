@@ -76,6 +76,7 @@ git, 프로젝트 생성 - 연지 \
 # :computer: 개발 기록
 
 ### :four_leaf_clover: 최연지
+#### 💼 ROLE
 
 
 | 날짜                | 일정 내용            | 체크  |
