@@ -32,6 +32,15 @@
 ### ✔️Back-end
 <img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=Spring%20Boot&logoColor=yellow"><img src="https://img.shields.io/badge/IntelliJ%20IDEA-000000?style=for-the-badge&logo=IntelliJ%20IDEA&logoColor=white"><img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=MariaDB&logoColor=white"><img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 
+# 프로젝트 일정
+
+| 날짜       | 일정 내용           |
+|------------|---------------------|
+| 2025-01-07 | 개발 회의           |
+| 2025-01-08 | 코드 리뷰           |
+| 2025-01-09 | 배포 작업           |
+| 2025-01-10 | 테스트 진행         |
+| 2025-01-11 | 최종 점검 및 배포   |
 
 ----
 
