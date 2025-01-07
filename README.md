@@ -1,5 +1,5 @@
 # Stack-Flow
-<img src="http://mazandi.herokuapp.com/api?handle=yeonji3038&theme=cold"/>
+
 
 
 ### 꼭 지키기
