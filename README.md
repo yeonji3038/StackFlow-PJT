@@ -14,12 +14,12 @@
   <tbody>
     <tr>
       <td align="center"><a href="https://github.com/yeonji3038/StackFlow-PJT/tree/yeonji3038"><img src="/src/yjpng.png" width="100px;" alt=""/><br /><sub><b>BE 팀장 : 최연지 <br>rokmc17047200@gmail.com</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/yeonji3038/.git"><img src="/src/jm.png" width="100px;" alt=""/><br /><sub><b>BE 팀원 : 권정민<br>kwonjm0302@gmail.com](mailto:kwonjm0302@gmail.com</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/yeonji3038/StackFlow-PJT/tree/harperim-1218-UD"><img src="/src/ji.png" width="100px;" alt=""/><br /><sub><b>BE 팀원 : 임정인<br>harperim127@gmail.com](mailto:harperim127@gmail.com</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="/src/gm.png" width="100px;" alt=""/><br /><sub><b>BE 팀원 : 제갈민<br>vlf5231@naver.com](mailto:vlf5231@naver.com</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/yeonji3038/.git"><img src="/src/jm.png" width="100px;" alt=""/><br /><sub><b>BE 팀원 : 권정민<br>kwonjm0302@gmail.com</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/yeonji3038/StackFlow-PJT/tree/harperim-1218-UD"><img src="/src/ji.png" width="100px;" alt=""/><br /><sub><b>BE 팀원 : 임정인<br>harperim127@gmail.com</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="/src/gm.png" width="100px;" alt=""/><br /><sub><b>BE 팀원 : 제갈민<br>vlf5231@naver.com</b></sub></a><br /></td>
      <tr/>
-      <td align="center"><a href=""><img src="/src/hi.png" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 신해인<br>godls0215@naver.com](mailto:godls0215@naver.com</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="/src/hs.png" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 서현석<br>ngsg23@gmail.com](mailto:ngsg23@gmail.com</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="/src/hi.png" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 신해인<br>godls0215@naver.com</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="/src/hs.png" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 서현석<br>ngsg23@gmail.com</b></sub></a><br /></td>
     </tr>
   </tbody>
 </table>
