@@ -13,7 +13,7 @@
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/yeonji3038/StackFlow-PJT.git"><img src="/src/yjpng.png" width="100px;" alt=""/><br /><sub><b>BE 팀장 : 최연지</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/yeonji3038/yeonji3038.git"><img src="/src/yjpng.png" width="100px;" alt=""/><br /><sub><b>BE 팀장 : 최연지</b></sub></a><br /></td>
       <td align="center"><a href=""><img src="/src/jm.png" width="100px;" alt=""/><br /><sub><b>BE 팀원 : 권정민</b></sub></a><br /></td>
       <td align="center"><a href=""><img src="/src/ji.png" width="100px;" alt=""/><br /><sub><b>BE 팀원 : 임정인</b></sub></a><br /></td>
       <td align="center"><a href=""><img src="/src/gm.png" width="100px;" alt=""/><br /><sub><b>BE 팀원 : 제갈민</b></sub></a><br /></td>
