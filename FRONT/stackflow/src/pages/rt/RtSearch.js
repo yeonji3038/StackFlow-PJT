@@ -1,39 +1,69 @@
 import "./RtMain.css"
 import "./RtSearch.css"
+
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import moment from 'moment'
-import { useSelector } from "react-redux";
+import { useConfig } from "../../store";
+import useToken from "../../store/tokenManage";
 
 const RtSearch = () => {
+  const { getToken } = useToken()
+  const csrfToken =  getToken() 
+  const { BASE_URL } = useConfig()
 
-// define ============================================================
-  const csrfToken =  useSelector.csrfToken
-  const BASE_URL = useSelector.BASE_URL
+  // 상태 변수 정의
+  const [products, setProducts] = useState([]);  // 조회된 상품 데이터 저장
+  const [selectedProduct, setSelectedProduct] = useState([]); // 선택된 상품 목록
+  const [myRtData, myRtSetData] = useState([]) // 데이터를 저장할 상태
+  const [otherRtData, otherRtSetData] = useState([]) // 데이터를 저장할 상태
+  const [storeList, storeListSetData ] = useState([])  // store 정보 담는 변수 
 
-  //  검색 조건 담는 변수
-  const [input, setInput] = useState({
+  // 날짜 데이터 포멧 함수
+  const formatDate = (date) => {
+    return moment(date).format('YYYY-MM-DD HH:MM')
+  }
+
+  // nav
+  const nav = useNavigate()
+
+  const goRegister = () => {
+    return nav('../register')
+  }
+
+  // 필터링 조건을 담는 변수 
+  const [filterSelct, setFilterSelect] = useState({
     date : "",
     check : "",
     select : ""
   })
 
-  const [myRtData, myRtSetData] = useState([]) // 데이터를 저장할 상태
-  const [otherRtData, otherRtSetData] = useState([]) // 데이터를 저장할 상태
-  const [storeList, storeListSetData ] = useState([])
-
-  
-//  func ================================================================
-  // 검색 조건 담는 이벤트 함수
+  // 필터링 조건 담는 이벤트 함수
   const onChangeInput = (e) => {
-    setInput({
-      ...input,
+    setFilterSelect({
+      ...filterSelct,
       [e.target.name] : e.target.value
     })
   }
 
-  // 데이터 가져오는 함수
+  // 체크박스에 사용되는 옵션들 
+  const checkboxOptions = [
+    { id: "REQUEST", label: "미확정", value: "REQUEST" },
+    { id: "APPROVAL", label: "확정", value: "APPROVAL" },
+    { id: "REFUSE", label: "불이행", value: "REFUSE" },
+  ];
+
+  // RtFilterBox의 checkbox 해제 함수
+  const onClickCheck = (e) => {
+    const checkTag = document.getElementById(`${filterSelct.check}`);
+    if (filterSelct.check && e.target.value === filterSelct.check) {
+      checkTag.checked = false
+      filterSelct.check = ''
+    } 
+  }
+
+ // 서버로부터 데이터를 가져오는 함수
   const fetchData = async (url, setData) => {
     try {
       const response = await axios.get(url, {
@@ -53,125 +83,116 @@ const RtSearch = () => {
     }
   };
 
-  // 페이지 랜더링 시 호출되는 함수
-  useEffect(() => {
-      fetchData('http://localhost:8080/api/rt/meToOtherRtlist', myRtSetData)
-      fetchData('http://localhost:8080/api/rt/OtherToMeRtlist', otherRtSetData);
-      fetchData('http://localhost:8080/api/rt/store', storeListSetData);
-    }, []);
 
-    const filteredData = async () => {
-      try {
-        // 데이터 가져오기
-        const response = await axios.get('http://localhost:8080/api/rt/meToOtherRtlist', {
-          withCredentials: true,
-          maxRedirects: 0, // 리다이렉션 방지
-          headers: {
-            'X-CSRF-TOKEN': csrfToken,
-          },
-        });
+   // 전체 선택/해제 핸들러
+   const [selectAll, setSelectAll] = useState(false); // 전체 선택 상태
+   
+   const handleSelectAll = (isChecked) => {
+     setSelectAll(isChecked); // 전체 선택 상태 업데이트
+     if (isChecked) {
+       setSelectedProduct(products.map((product) => ({ productId: product.prod_id }))); // 모든 제품 선택
+     } else {
+       setSelectedProduct([]); // 선택 해제
+     }
+   };
+
+    // 체크박스 상태 토글
+  const onChangeCheckBox = (product) => {
+    setSelectedProduct((preData) => {
+      if (preData.some((data) => data.productId === product.prod_id)) {
+        // 이미 선택된 경우 제거
+        return preData.filter((data) => data.productId !== product.prod_id);
+      } else {
+        // 선택되지 않은 경우 추가
+        return [
+          ...preData,
+          { productId: product.prod_id, storeId: "", requestQuantity: "" },
+        ];
+      }
+    });
+  };
+
+  
+
+
+  // rt_status 매핑 객체 
+  const statusMap = {
+    "REQUEST" : '미확정',
+    "APPROVAL" : '확정',
+    "REFUSE" : '대기',
+  };
+
+  // myRtdata filter 함수
+  const filteredData = async () => {
+    try {
+      // 데이터 가져오기
+      const response = await axios({
+        method: "GET",
+        url: `${BASE_URL}/api/rt/meToOtherRtlist`,
+        withCredentials: true,
+        maxRedirects: 0, // 리다이렉션 방지
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
+      });
+      if (response && response.status === 200){
         // 데이터 필터링
-        const filtered = input.date  || input.check  || input.select 
+        const filtered = filterSelct.date  || filterSelct.check  || filterSelct.select 
         ? response.data.filter((item) => {
             return (
-              (input.date ? item.request_date.includes(input.date) : true) &&
-              (input.check ? item.rt_status === input.check : true) &&
-              (input.select ? item.request_store === input.select : true)
+              (filterSelct.date ? item.request_date.includes(filterSelct.date) : true) &&
+              (filterSelct.check ? item.rt_status === filterSelct.check : true) &&
+              (filterSelct.select ? item.request_store === filterSelct.select : true)
             );
           })
         : response.data; // input 값이 없으면 원래 데이터 반환
-       
         // 필터링된 데이터 상태 업데이트
         myRtSetData(filtered);
-      } catch (err) {
-        console.error('Error fetching or filtering data:', err);
-      }
-    };
-
-    // rt_status 매핑 객체 
-    const statusMap = {
-      "REQUEST" : '미확정',
-      "APPROVAL" : '확정',
-      "REFUSE" : '대기',
-    };
-
-    // check 해제 함수
-    const onClickCheck = (e) => {
-      const checkTag = document.getElementById(`${input.check}`);
-      if (input.check && e.target.value === input.check) {
-        checkTag.checked = false
-        input.check = ''
-      } 
+      }  
+    } catch (err) {
+      console.error('Error fetching or filtering data:', err);
     }
+  };
 
-    // 날짜 데이터 포멧 함수
-    const formatDate = (date) => {
-      return moment(date).format('YYYY-MM-DD HH:MM')
-    }
-
-    const nav = useNavigate()
-
-    const goRegister = () => {
-      return nav('../register')
-    }
+  // 페이지 랜더링 시 호출되는 함수
+  useEffect(() => {
+      fetchData(`${BASE_URL}/api/rt/meToOtherRtlist`, myRtSetData)
+      fetchData('http://localhost:8080/api/rt/OtherToMeRtlist', otherRtSetData);
+      fetchData('http://localhost:8080/api/rt/store', storeListSetData);
+    }, []);
+   
   return (
     <>
-     <section className="searchSection">
-      <div className="selectBox">
-        <div className="date">
-            <label className="name">지시기간</label>
-            <input 
-              id="input_date" 
-              type="date" 
-              name="date"
-              
-              value={input.date} 
-              onChange={onChangeInput}/>
+      <section className="mainTop">
+        <div className="RtFilterBox">
+          <div className="dateSelector">
+              <label className="deteSelectorName">지시기간</label>
+              <input id="inputDate" type="date" name="date"
+                value={filterSelct.date} onChange={onChangeInput}/>
+          </div>  
+          
+          <div className="processingCheckbox">
+            <label className="checkboxName">처리구분</label>
+            {checkboxOptions.map((option) => (
+              <span key={option.id} className={`checkboxItem ${option.id}`}>
+                <label htmlFor={option.id}>{option.label}</label>
+                <input
+                  type="radio"
+                  id={option.id}
+                  name="check"
+                  value={option.value}
+                  onChange={onChangeInput}
+                  onClick={onClickCheck}
+                />
+              </span>
+            ))}
           </div>
 
-          <div className="checkbox">
-            <label className="name">처리구분</label>
-            <span className="fristCheckbox">
-              <label htmlFor="REQUEST">미확정</label>
-              <input 
-                type="radio" 
-                id="REQUEST" 
-                name="check"
-                value="REQUEST" 
-                onChange={onChangeInput}
-                onClick={onClickCheck}
-                />
-            </span>
-            <span>
-              <label htmlFor="APPROVAL">확정</label>
-              <input 
-                type="radio" 
-                id="APPROVAL" 
-                name="check"
-                value="APPROVAL" 
-                onChange={onChangeInput}
-                onClick={onClickCheck}
-                />
-                
-            </span>
-            <span>
-              <label htmlFor="REFUSE">불이행</label>
-              <input 
-                type="radio" 
-                id="REFUSE" 
-                name="check"
-                value="REFUSE"
-                onChange={onChangeInput}
-                onClick={onClickCheck}
-                />
-            </span>
-      </div>
-
-          <div className="selector">
-            <label className="name">매장</label> 
+          <div className="storeSelector">
+            <label className="storeSelectorName">매장</label> 
             <select 
               name="select" 
-              value={input.select}
+              value={filterSelct.select}
               onChange={onChangeInput}
             >
               <option value={''}>매장 선택</option>
@@ -182,20 +203,18 @@ const RtSearch = () => {
                   </option>
                 )
                 })}
-              
-
             </select>
           </div>
-        </div>
+      </div>
           
-          <div className="searchButtons">
+          <div className="buttonSet">
             <button id="searchButton" 
               onClick={filteredData}>조회</button>
             <button id="createButton" onClick={goRegister}>등록</button>
           </div>
-        </section>
+      </section>
         
-        <div className="searchTable">
+        <section className="RtTableSection">
           <div className="tableName">
             <h3>지시요청 조회</h3>  
           </div>
@@ -229,7 +248,7 @@ const RtSearch = () => {
                     </tr>
                   ))
                 ) : ( 
-                  <tr className="noDataTr">
+                  <tr className="noDataTr" style={{ height: "100%" }}>
                     <td className="noData">
                       데이터가 없습니다
                     </td>
@@ -238,15 +257,16 @@ const RtSearch = () => {
               </tbody>
             </table>
           </div>
-        </div>
-        <div className="searchTable">
-          <div className="searchSection">  
+        </section>
+
+        <section className="RtTableSection otherRtTable">
+          <div className="otherRtTableTop">  
             <div className="tableName">
               <h3>타매장 지시요청</h3>  
-            </div>
-              <div className="searchButtons">
+              <div className="buttonSet otherRtButton">
                 <button>취소</button>
                 <button>승인</button>
+            </div>
             </div>
           </div>
           <div className="table">   
@@ -254,7 +274,11 @@ const RtSearch = () => {
               <thead>
                 <tr>
                   <th className="chooseProduct">
-                    <input type="checkbox"/>
+                    <input
+                      type="checkbox"
+                      checked={selectAll}
+                      onChange={(e) => handleSelectAll(e.target.checked)}
+                    />
                   </th>
                   <th>요청매장</th>
                   <th>품번</th>
@@ -271,7 +295,13 @@ const RtSearch = () => {
                 otherRtData.map((item, index) => {
                   return (
                     <tr key={item.rt_id}>
-                      <td className="chooseProduct"><input type="checkbox"/></td>
+                      <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedProduct.some((data) => data.productId === item.prod_id)}
+                        onChange={() => onChangeCheckBox(item)}
+                      />
+                      </td>
                       <td>{item.rt_products[0].request_quantity}</td>
                       <td>{item.product_code}</td>
                       <td>{item.product_name}</td>
@@ -293,7 +323,7 @@ const RtSearch = () => {
                </tbody>
             </table>
           </div>
-        </div>
+        </section>
     </>
   )
 }
