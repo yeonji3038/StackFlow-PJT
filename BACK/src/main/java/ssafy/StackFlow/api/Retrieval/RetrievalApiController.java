@@ -8,6 +8,7 @@ import ssafy.StackFlow.Domain.Store;
 import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Domain.product.ProductStore;
 import ssafy.StackFlow.Repository.Retrieval.RetrievalRepository;
+import ssafy.StackFlow.Repository.StoreRepository;
 import ssafy.StackFlow.Repository.product.ProductRepo;
 import ssafy.StackFlow.Repository.product.ProductStoreRepository;
 import ssafy.StackFlow.Service.Retrieval.RetrievalService;
@@ -31,24 +32,30 @@ public class RetrievalApiController {
     private final RetrievalRepository retrievalRepository;
     private final StoreService storeService;
     private final ProductService productService;
+    private final StoreRepository storeRepository;
+
 
     @GetMapping("/api/retrieval/product")
     public List<RetrievalProdDto> RetProdListApi() {
         Long headOfficeId = 1L;
-        Store loginStore = retrievalService.getUserStore();
-
         List<Product> products = productRepo.findAll();
-
+        List<Store> stores = storeRepository.findAll();
         List<RetrievalProdDto> result = products.stream()
                 .map(product -> {
                     int headOfficeStock = getProductStore(headOfficeId, product.getId(), true).getStockQuantity();
-                    int storeStock = getProductStore(loginStore.getId(), product.getId(), false).getStockQuantity();
-                    ProductStockDto productStockDto = new ProductStockDto(product, headOfficeStock, storeStock);
-                    return new RetrievalProdDto(product, productStockDto);
+
+                    List<StoreStockDto> storeStocks = stores.stream()
+                            .map(store -> {
+                                int storeStock = getProductStore(store.getId(), product.getId(), false).getStockQuantity();
+                                return new StoreStockDto(store.getId(), store.getStoreName(), storeStock);
+                            })
+                            .collect(Collectors.toList());
+                    return new RetrievalProdDto(product, headOfficeStock, storeStocks);
                 })
                 .collect(Collectors.toList());
         return result;
     }
+
 
     private ProductStore getProductStore(Long storeId, Long productId, boolean isMandatory) {
         return productStoreRepository.findByStoreAndProduct(
@@ -89,6 +96,7 @@ public class RetrievalApiController {
                 retrievalService.retrievalAdmin(instruction.getProductId(),1L,instruction.getStoreId(),instruction.getRetrivalQuantity());
                 retIds.add(retId);
             }
+            System.out.println(request);
             return ResponseEntity.ok(new RetrievalResponseDto("success", retIds));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
