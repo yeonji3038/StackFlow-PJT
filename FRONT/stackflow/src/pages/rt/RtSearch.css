@@ -1,8 +1,84 @@
-.selectBox * {
-  display: inline-block;
+.RtFilterBox{
+  display: flex;
+  flex-direction: row;  
+  height: 30px;
+  white-space: nowrap;
+  align-items: center;
 }
 
-.name {
-  padding: 2px 9px;
-  line-height: 28px;
+.dateSelector, .processingCheckbox, .storeSelector {
+  padding-right: 20px;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  height: 100%;
 }
+
+.deteSelectorName, .checkboxName, .storeSelectorName{
+  height: 100%;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  background-color: rgba(186, 210, 249, 0.80);
+  border-radius: 5px;
+  margin-right: 10px;
+  text-align: center; 
+   line-height: 30px;
+   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);  
+}
+
+#inputDate {
+  margin: 0;
+  width: 130px;
+  height: 100%;
+  border: 1px solid #D9D9D9;
+  font-size: 10px;
+}
+
+.checkboxItem {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  margin-right: 10px; 
+  
+}
+
+.REFUSE {
+  margin: 0;
+}
+
+.checkboxItem input {
+  margin: 0 0 0 3px;
+}
+
+.storeSelector select {
+  height: 100%;
+}
+
+#searchButton {
+  background-color:#5481C3;
+}
+
+#createButton {
+  background-color: #BAD2F9;
+}
+
+
+.otherRtTableTop {
+  width: 100%;
+  position: relative;
+}
+
+.otherRtTable{
+  margin-top: 50px;
+}
+
+.otherRtTable td {
+  height: 20px !important;
+}
+
+.otherRtButton{
+  top: 0 ;
+}
+

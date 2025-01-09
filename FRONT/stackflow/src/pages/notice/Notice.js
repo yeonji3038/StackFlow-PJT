@@ -2,7 +2,7 @@ import axios from "axios"
 
 const Notice = () => {
   const BASE_URL = "http://localhost:8080"
-  const csrfToken = "49E4D212AE15782CCE4948B88F1244AF"; // CSRF 토큰
+  const csrfToken = "72900BBA49A02D53A893D789E339F216"; // CSRF 토큰
 
    // userInput func
    const GETTEST = async (commend) => {
@@ -44,7 +44,7 @@ const Notice = () => {
             withCredentials: true,
             maxRedirects: 0,
             headers: {
-              "X-CSRF-TOKEN": csrfToken,
+              "x-www-form-urlencoded": csrfToken,
             }
            
           })

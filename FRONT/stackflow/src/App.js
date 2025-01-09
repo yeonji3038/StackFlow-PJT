@@ -57,7 +57,8 @@ function App() {
                 <Route path="/product/management" element={<ProductManagement />} />
                 <Route path="/product/stockstatus" element={<ProductStockStatus />} />
                 <Route path="/product/categoryregister" element={<ProductCategoryRegister />} />
-                <Route path="rt/*" element={<RtMain />}>
+                <Route path="rt/*" element={<RtMain/>}>
+                  <Route index element={<Navigate to="./search" replace />} />
                   <Route path="search" element={<RtSearch/>}/>
                   <Route path="register" element={<RtRegister/>}/>
                 </Route>

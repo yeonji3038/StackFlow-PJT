@@ -4,6 +4,7 @@ import { createContext, useContext } from "react";
 import authReducer from './authSlice';
 
 
+
 // 정적 데이터 관리 
 const ConfigContext = createContext();
 
@@ -25,6 +26,7 @@ export const useConfig = () => useContext(ConfigContext);
 const store = configureStore({
   reducer : {
     auth: authReducer,
+   
   }
 })
 
