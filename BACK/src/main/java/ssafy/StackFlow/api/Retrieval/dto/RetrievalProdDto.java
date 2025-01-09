@@ -8,6 +8,8 @@ import java.util.List;
 @Data
 public class RetrievalProdDto {
     private Long prod_id;
+    private int sell_price;
+    private int stock_price;
     private String product_code;
     private String product_name;
     private String color_code;
@@ -20,6 +22,8 @@ public class RetrievalProdDto {
     public RetrievalProdDto(Product product, int headOfficeStock, List<StoreStockDto> storeStocks) {
         prod_id = product.getId();
         product_code = product.getProdCode();
+        sell_price = product.getSellPrice();
+        stock_price = product.getStockPrice();
         product_name = product.getProdName();
         color_code = product.getColorCode().getColorCode();
         product_size = product.getSize().getSize();
