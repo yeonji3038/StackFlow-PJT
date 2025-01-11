@@ -136,9 +136,9 @@
 | 날짜                | 일정 내용            | 체크  |
 |---------------------|----------------------|-------|
 | 2024-12-02 ~ 2025-01 | 개발 회의            |  :white_check_mark:   |
-| 2024-12-03          | 피그마 생성            | :white_check_mark:   |
-| 2024-12-09          | 피그마 메인, 상품관리 완성            | :white_check_mark:  |
-| 2024-12-11          | 피그마 RT, 게시판, 관리자 및 마이페이지 완성          | :white_check_mark:   |
+| 2024-12-03          | Figma 생성            | :white_check_mark:   |
+| 2024-12-09          | Figma 메인, 상품관리 완성            | :white_check_mark:  |
+| 2024-12-11          | Figma RT, 게시판, 관리자 및 마이페이지 완성          | :white_check_mark:   |
 | 2024-12-20          | React 공통 레이아웃 구현    | :white_check_mark:   |
 | 2024-12-21          | React 메인 화면 구현    | :white_check_mark:   |
 | 2024-12-22          | React 상품 등록 구현    | :white_check_mark:   |
