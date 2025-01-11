@@ -67,7 +67,7 @@ const ManagementStore = () => {
               <th>매장코드</th>
               <th>승인 날짜</th>
               <th>승인 상태</th>
-              <th>승인 변경</th>
+              {/* <th>승인 변경</th> */}
               <th>삭제</th>
             </tr>
           </thead>
@@ -80,7 +80,7 @@ const ManagementStore = () => {
                 <td>{customer.storeCode}</td>
                 <td>{customer.approvalDate}</td>
                 <td>{customer.accountStatus}</td>
-                <td>
+                {/* <td>
                   <label className={styles.switch}>
                     <input 
                       type="checkbox" 
@@ -89,7 +89,7 @@ const ManagementStore = () => {
                     />
                     <span className={styles.slider}></span>
                   </label>
-                </td>
+                </td> */}
                 <td>
                   <button 
                     className={styles.deleteButton}
