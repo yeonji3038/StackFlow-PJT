@@ -111,12 +111,6 @@ const ManagementCode = () => {
             </button>
           </form>
         </div>
-        <div className={styles.rightColumn}>
-          <div className={styles.mapContainer}>
-            <p>지도가 표시될 영역</p>
-          </div>
-        </div>
-      </div>
 
       {/* 주소 찾기 모달 */}
       {modalState && (
