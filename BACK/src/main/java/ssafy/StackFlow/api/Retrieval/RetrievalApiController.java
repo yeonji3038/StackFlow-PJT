@@ -125,55 +125,39 @@ public class RetrievalApiController {
 
     @PostMapping("/api/retrieval/submit/user")
     public ResponseEntity<ApiResponse<List<Long>>> createInstructionsUser(@RequestBody RetrievalRequestUserDto request) {
-        try {
-            // 입력 데이터 검증
-            if (request == null || request.getInstructions() == null || request.getInstructions().isEmpty()) {
-                return ResponseEntity.badRequest()
-                        .body(new ApiResponse<>("error", "Request or instructions cannot be null or empty", null));
-            }
-
-            List<Long> retIds = new ArrayList<>();
-
-            for (RetrievalInstructionUserDto instruction : request.getInstructions()) {
-                // 유효성 검증
-                if (instruction.getProductId() == null) {
-                    return ResponseEntity.badRequest()
-                            .body(new ApiResponse<>("error", "Product ID cannot be null", null));
-                }
-                if (instruction.getRetrivalQuantity() <= 0) {
-                    return ResponseEntity.badRequest()
-                            .body(new ApiResponse<>("error", "Retrieval quantity must be greater than 0", null));
-                }
-
-                // 서비스 호출 및 재고 부족 체크
-                try {
-                    Long retId = retrievalService.createRetrievalInstruction_User(
-                            instruction.getProductId(),
-                            instruction.getRetrivalQuantity()
-                    ).getId();
-
-                    retrievalService.retrievalUser(
-                            instruction.getProductId(),
-                            1L,
-                            instruction.getRetrivalQuantity()
-                    );
-
-                    retIds.add(retId);
-                } catch (InsufficientStockException e) { // 재고 부족 시 예외 처리
-                    return ResponseEntity.ok(
-                            new ApiResponse<>("error", "Insufficient stock for product: " + instruction.getProductId(), null)
-                    );
-                }
-            }
-
-            // 성공 응답
-            return ResponseEntity.ok(new ApiResponse<>("success", "Instructions processed successfully", retIds));
-        } catch (Exception e) {
-            e.printStackTrace(); // 디버깅용
-            return ResponseEntity.internalServerError()
-                    .body(new ApiResponse<>("error", "Unexpected error occurred: " + e.getMessage(), null));
+        if (request == null || request.getInstructions() == null || request.getInstructions().isEmpty()) {
+            throw new IllegalArgumentException("Request or instructions cannot be null or empty");
         }
+
+        List<Long> retIds = new ArrayList<>();
+
+        for (RetrievalInstructionUserDto instruction : request.getInstructions()) {
+            if (instruction.getProductId() == null) {
+                throw new IllegalArgumentException("Product ID cannot be null");
+            }
+            if (instruction.getRetrivalQuantity() <= 0) {
+                throw new IllegalArgumentException("Retrieval quantity must be greater than 0");
+            }
+            try {
+                Long retId = retrievalService.createRetrievalInstruction_User(
+                        instruction.getProductId(),
+                        instruction.getRetrivalQuantity()
+                ).getId();
+                retrievalService.retrievalUser(
+                        instruction.getProductId(),
+                        1L,
+                        instruction.getRetrivalQuantity()
+                );
+                retIds.add(retId);
+            } catch (InsufficientStockException e) { // 재고 부족 시 예외 처리
+                return ResponseEntity.ok(
+                        new ApiResponse<>("error", "Insufficient stock for product: " + instruction.getProductId(), null)
+                );
+            }
+        }
+        return ResponseEntity.ok(new ApiResponse<>("success", "Instructions processed successfully", retIds));
     }
+
 }
 
 
