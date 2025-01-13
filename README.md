@@ -67,19 +67,20 @@
 |---------------------|----------------------|-------|
 | 2024-12-03          | git,프로젝트,ERD 생성           | :white_check_mark:  |
 | 2024-12-09          | ERD 생성 및 완료       |  :white_check_mark:   |
-| 2024-12-09 ~          | 회원가입        | :white_check_mark:     |
-| 2024-12-09          | 로그인           | :white_check_mark:    |
-| 2024-12-10          | 관리자         | :white_check_mark:     |
+| 2024-12-17         | 회원가입        | :white_check_mark:     |
+| 2024-12-18          | 로그인           | :white_check_mark:    |
+| 2024-12-20          | 관리자         | :white_check_mark:     |
+| 2024-12-23          | 매장코드 생성    | :white_check_mark:    |
 | 2024-12-24          | 회원가입 API 연결    | :white_check_mark:    |
 | 2024-12-26          | 로그인 API 연결    | :white_check_mark:     |
-| 2025-12-11          | 관리자 페이지 API 연결    | :white_check_mark:     |
-| 2025-01-11          | 카테고리 코드 생성   | :white_check_mark:    |
-| 2025-01-11          | 색상 코드 생성   | :white_check_mark:    |
+| 2025-12-26          | 관리자 페이지 API 연결    | :white_check_mark:     |
+| 2024-12-27          | 카테고리 코드 생성   | :white_check_mark:    |
+| 2025-01-03          | 색상 코드 생성   | :white_check_mark:    |
 | 2025-01-14          | 카테고리 코드 API 연결   | ⏳  |
 | 2025-01-15         | 색상 코드 API 연결  | :x:  |
 | 2025-01-15         | 세션정보 저장  | :x:  |
 | 2025-01-18          | 매장 정보 수정,삭제  | :x:  |
-| 2025-01-11          | 매장코드 이메일 전송 | :x:  |
+| 2025-01-21          | 매장코드 이메일 전송 | :x:  |
 
 
 
