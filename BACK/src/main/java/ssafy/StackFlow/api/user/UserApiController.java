@@ -89,19 +89,6 @@ public class UserApiController {
         return ResponseEntity.ok("로그아웃되었습니다."); // 로그아웃 메시지 반환
     }
 
-    // 유저 정보 불러오기
-    // @GetMapping("/api/user/info")
-    // public ResponseEntity<Signup> getUserInfo(Principal principal) {
-    //     if (principal != null) {
-    //         // Principal에서 사용자 이름을 가져와서 유저 정보를 조회
-    //         String username = principal.getName();
-    //         Signup signup = userService.findByUsername(username); // 유저 정보를 가져오는 서비스 메서드 호출
-
-    //         return ResponseEntity.ok(signup);
-    //     } else {
-    //         return ResponseEntity.status(401).body(null);
-    //     }
-    // }
 
     @GetMapping("/api/user/info")
     public ResponseEntity<Signup> getUserInfo(HttpServletRequest request, HttpServletResponse response) {
