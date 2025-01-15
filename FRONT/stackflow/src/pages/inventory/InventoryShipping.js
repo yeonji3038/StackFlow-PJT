@@ -1,22 +1,33 @@
-import React, { useState, useEffect } from 'react';
 import styles from './InventoryShipping.module.css';
+
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+
+import useToken from "../../store/tokenManage";
+import { useConfig } from "../../store";
+
 
 const InventoryShipping = () => {
-  const [selectAll, setSelectAll] = useState(false);
-  const [checkedItems, setCheckedItems] = useState({
-    item1: false,
-    item2: false,
-    item3: false
+
+    // 상태 변수 정의
+  const [products, setProducts] = useState([]);  // 조회된 상품 데이터 저장
+  const [selectedProduct, setSelectedProduct] = useState([]); // 선택된 상품 목록
+  const [selectOptions, setSelectOptions] = useState([]); // 옵션 데이터를 저장
+  const [userInput, setUserInput] = useState({ // 사용자 입력 필터 데이터
+    categoryGroup: "",  
+    categoryCode: "",
+    colorCode: "",
+    size: "",
+    input: "",
   });
-  const [products, setProducts] = useState([]);
-  const state = useSelector( (state) => (state))
-  const csrfToken = state.csrfToken // CSRF 토큰
-  const BASE_URL = state.BASE_URL
+
+  // 인증 및 설정 관련 변수
+  const { getToken } = useToken();
+  const csrfToken = getToken(); // CSRF 토큰
+  const { BASE_URL } = useConfig(); // 기본 URL
 
 
-  // async func
+  // 서버에서 데이터 가져오는 함수
   const fetchData = async (url, setData) => {
     try {
       const response = await axios.get(url, {
@@ -30,6 +41,51 @@ const InventoryShipping = () => {
       console.error("Error:", err);
     }
   };
+
+   // select box에 표시될 옵션 데이터 매핑
+  const mapSelectOptions = (data) => {
+    if (selectOptions[data]) {
+      const entry = Object.entries(selectOptions[data]);
+      return entry
+        .filter((_, index) => index !== 0) // 첫 번째 항목 제외
+        .map(([key, value]) => (
+          <option itemID={key} key={key} value={value}>
+            {value}
+          </option>
+      ));
+    }
+    return null; // 옵션이 없을 경우 null 반환
+  };
+  
+  // 컴포넌트 로드 시 데이터 가져오기
+  useEffect(() => {
+    fetchData(`${BASE_URL}/api/rt/all`, setSelectOptions);
+    fetchData(`${BASE_URL}/notice/api`, setProducts)
+  }, []);
+  
+
+
+
+
+  const [selectAll, setSelectAll] = useState(false);
+  const [checkedItems, setCheckedItems] = useState({
+    item1: false,
+    item2: false,
+    item3: false
+  });
+
+
+  
+  
+ 
+
+
+
+
+
+
+
+
 
 // 
   // async func
@@ -85,9 +141,8 @@ const InventoryShipping = () => {
       [id]: !prev[id]
     }));
   };
-  // http://localhost:8080/
+  
 
-  console.log(products)
   return (
     <div className={styles.container}>
       <h1 className={styles.header}>출고</h1>
@@ -95,27 +150,55 @@ const InventoryShipping = () => {
       <div className={styles.searchSection}>
         <form className={styles.searchForm}>
           <div className={styles.inputRow}>
-            <select>
-              <option value="">카테고리 그룹</option>
-              {/* 카테고리 그룹 옵션들 */}
+          <select
+              name="categoryGroup"
+              value={userInput.categoryGroup}
+              onChange={(e) => 
+                setUserInput({ ...userInput, categoryGroup: e.target.value })
+              }>
+              <option value={""}>카테고리 그룹</option>
+              {mapSelectOptions("category_group_code")}
             </select>
-            <select>
-              <option value="">카테고리 코드</option>
-              {/* 카테고리 코드 옵션들 */}
+            <select
+              name="categoryCode"
+              value={userInput.categoryCode}
+              onChange={(e) =>
+                setUserInput({ ...userInput, categoryCode: e.target.value })
+              }>
+              <option value={""}>카테고리 코드</option>
+              {mapSelectOptions("category_code")}
             </select>
+              
           </div>
           <div className={styles.inputRow}>
-            <select>
-              <option value="">색상 코드</option>
-              {/* 색상 코드 옵션들 */}
+            <select
+                name="colorCode"
+                value={userInput.colorCode}
+                onChange={(e) =>
+                  setUserInput({ ...userInput, colorCode: e.target.value })
+                }>
+                <option value={""}>색상 코드</option>
+                {mapSelectOptions("color_code")}
+        
             </select>
-            <select>
-              <option value="">사이즈</option>
-              {/* 사이즈 옵션들 */}
+            <select
+              name="size"
+              value={userInput.size}
+              onChange={(e) => setUserInput({ ...userInput, size: e.target.value })}>
+              <option value={""}>사이즈</option>
+              {mapSelectOptions("size")}
             </select>
           </div>
           <div className={styles.lastRow}>
-            <input type="text" placeholder="상품 코드를 입력하세요." />
+            <input
+              type="text"
+              className="userSearchInput"
+              placeholder="상품 코드를 입력하세요"
+              name="input"
+              maxLength= "20"
+              onChange={(e) =>
+                setUserInput({ ...userInput, input: e.target.value })
+            }/>
             <button type="submit" className={styles.searchButton}>검색</button>
           </div>
         </form>

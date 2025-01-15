@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';
-import useAuth from '../../store/tokenManage'
+import useToken from '../../store/tokenManage'
 import styles from './Login.module.css';
 import axios from 'axios';
 import { useConfig } from '../../store';
 
 import Swal from 'sweetalert2';
-
-
-
 
 
 function Login() {
@@ -25,7 +22,7 @@ function Login() {
   )  
   const [showPassword, setShowPassword] = useState(false)  // 비밀번호 보기
   const dispatch = useDispatch();
-  const { saveToken } = useAuth()
+  const { saveToken } = useToken()
   const { BASE_URL } = useConfig()
   // function ================================================
 
@@ -49,9 +46,8 @@ function Login() {
         });
         // 서버 응답 처리
         if (response.status === 200) {
-          console.log(response)
           // 리디렉션 처리 (예: 메인 페이지로 이동)
-          const csrfToken = 'B44D4F899BE99B43F4248AD3D546FBC9'
+          const csrfToken = response.data.jsessionId
           saveToken(csrfToken)
           dispatch(login(response.data));
           navigate('/main')

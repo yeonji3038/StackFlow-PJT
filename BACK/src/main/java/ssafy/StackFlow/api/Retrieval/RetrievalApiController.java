@@ -1,6 +1,7 @@
 package ssafy.StackFlow.api.Retrieval;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssafy.StackFlow.Domain.Retrieval.Retrieval;
@@ -8,6 +9,7 @@ import ssafy.StackFlow.Domain.Store;
 import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Domain.product.ProductStore;
 import ssafy.StackFlow.Repository.Retrieval.RetrievalRepository;
+import ssafy.StackFlow.Repository.StoreRepository;
 import ssafy.StackFlow.Repository.product.ProductRepo;
 import ssafy.StackFlow.Repository.product.ProductStoreRepository;
 import ssafy.StackFlow.Service.Retrieval.RetrievalService;
@@ -31,24 +33,30 @@ public class RetrievalApiController {
     private final RetrievalRepository retrievalRepository;
     private final StoreService storeService;
     private final ProductService productService;
+    private final StoreRepository storeRepository;
+
 
     @GetMapping("/api/retrieval/product")
     public List<RetrievalProdDto> RetProdListApi() {
         Long headOfficeId = 1L;
-        Store loginStore = retrievalService.getUserStore();
-
         List<Product> products = productRepo.findAll();
-
+        List<Store> stores = storeRepository.findAll();
         List<RetrievalProdDto> result = products.stream()
                 .map(product -> {
                     int headOfficeStock = getProductStore(headOfficeId, product.getId(), true).getStockQuantity();
-                    int storeStock = getProductStore(loginStore.getId(), product.getId(), false).getStockQuantity();
-                    ProductStockDto productStockDto = new ProductStockDto(product, headOfficeStock, storeStock);
-                    return new RetrievalProdDto(product, productStockDto);
+
+                    List<StoreStockDto> storeStocks = stores.stream()
+                            .map(store -> {
+                                int storeStock = getProductStore(store.getId(), product.getId(), false).getStockQuantity();
+                                return new StoreStockDto(store.getId(), store.getStoreName(), storeStock);
+                            })
+                            .collect(Collectors.toList());
+                    return new RetrievalProdDto(product, headOfficeStock, storeStocks);
                 })
                 .collect(Collectors.toList());
         return result;
     }
+
 
     private ProductStore getProductStore(Long storeId, Long productId, boolean isMandatory) {
         return productStoreRepository.findByStoreAndProduct(
@@ -79,47 +87,77 @@ public class RetrievalApiController {
     @PostMapping("/api/retrieval/submit/admin")
     public ResponseEntity<RetrievalResponseDto> createInstructions(@RequestBody RetrievalRequestDto request) {
         try {
+            if (request == null || request.getInstructions() == null || request.getInstructions().isEmpty()) {
+                throw new IllegalArgumentException("Request or instructions cannot be null or empty");
+            }
+
             List<Long> retIds = new ArrayList<>();
             for (RetrievalInstructionDto instruction : request.getInstructions()) {
+                if (instruction.getProductId() == null || instruction.getStoreId() == null) {
+                    throw new IllegalArgumentException("Product ID and Store ID cannot be null");
+                }
                 Long retId = retrievalService.createRetrievalInstruction(
                         instruction.getProductId(),
                         instruction.getStoreId(),
                         instruction.getRetrivalQuantity()
                 ).getId();
-                retrievalService.retrievalAdmin(instruction.getProductId(),1L,instruction.getStoreId(),instruction.getRetrivalQuantity());
+
+                retrievalService.retrievalAdmin(
+                        instruction.getProductId(),
+                        1L,
+                        instruction.getStoreId(),
+                        instruction.getRetrivalQuantity()
+                );
                 retIds.add(retId);
             }
+
             return ResponseEntity.ok(new RetrievalResponseDto("success", retIds));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
                     .body(new RetrievalResponseDto("error", e.getMessage()));
         } catch (Exception e) {
+            e.printStackTrace(); // 스택 트레이스 로깅
             return ResponseEntity.internalServerError()
-                    .body(new RetrievalResponseDto("error", "Unexpected error occurred"));
+                    .body(new RetrievalResponseDto("error", "Unexpected error occurred: " + e.getMessage()));
         }
     }
 
+
     @PostMapping("/api/retrieval/submit/user")
-    public ResponseEntity<RetrievalResponseDto> createInstructionsUser(@RequestBody RetrievalRequestUserDto request) {
-        try {
-            List<Long> retIds = new ArrayList<>();
-            for (RetrievalInstructionUserDto instruction : request.getInstructions()) {
+    public ResponseEntity<ApiResponse<List<Long>>> createInstructionsUser(@RequestBody RetrievalRequestUserDto request) {
+        if (request == null || request.getInstructions() == null || request.getInstructions().isEmpty()) {
+            throw new IllegalArgumentException("Request or instructions cannot be null or empty");
+        }
+
+        List<Long> retIds = new ArrayList<>();
+
+        for (RetrievalInstructionUserDto instruction : request.getInstructions()) {
+            if (instruction.getProductId() == null) {
+                throw new IllegalArgumentException("Product ID cannot be null");
+            }
+            if (instruction.getRetrivalQuantity() <= 0) {
+                throw new IllegalArgumentException("Retrieval quantity must be greater than 0");
+            }
+            try {
                 Long retId = retrievalService.createRetrievalInstruction_User(
                         instruction.getProductId(),
                         instruction.getRetrivalQuantity()
                 ).getId();
-                retrievalService.retrievalUser(instruction.getProductId(),1L,instruction.getRetrivalQuantity());
+                retrievalService.retrievalUser(
+                        instruction.getProductId(),
+                        1L,
+                        instruction.getRetrivalQuantity()
+                );
                 retIds.add(retId);
+            } catch (InsufficientStockException e) { // 재고 부족 시 예외 처리
+                return ResponseEntity.ok(
+                        new ApiResponse<>("error", "Insufficient stock for product: " + instruction.getProductId(), null)
+                );
             }
-            return ResponseEntity.ok(new RetrievalResponseDto("success", retIds));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(new RetrievalResponseDto("error", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body(new RetrievalResponseDto("error", "Unexpected error occurred"));
         }
+        return ResponseEntity.ok(new ApiResponse<>("success", "Instructions processed successfully", retIds));
     }
+
 }
 
 
