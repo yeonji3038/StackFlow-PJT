@@ -1,5 +1,5 @@
-import "./RtMain.css";
-import "./RtRegister.css";
+import MainStyle from "./RtMain.module.css"
+import customStyle from "./RtRegister.module.css";
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -133,6 +133,7 @@ const RtRegister = () => {
       }
     });
   };
+ 
 
   // 전체 선택/해제 핸들러
   const [selectAll, setSelectAll] = useState(false); // 전체 선택 상태
@@ -220,30 +221,28 @@ const RtRegister = () => {
   }, []);
   
 
-
-
   return (
     <>
-      <header className="mainTop">
-        <div className="buttonSet">
+      <header className={MainStyle.mainTop}>
+        <div className={MainStyle.buttonSet}>
           <button 
-            className="button allSearchButton" 
+            className={`${MainStyle.button} ${customStyle.allSearchButton}`} 
             onClick={() => userInputData('all')}>
               전체조회
           </button>
           <button 
-            className="button navButton"
+            className={`button ${customStyle.navButton}`}
             onClick={goSearch}>취소
           </button>
           <button
-          className="button orderCommitButton" 
+          className={`button ${customStyle.orderCommitButton}`} 
           onClick={onSubmit}>마감처리</button>
         </div>
       </header>
 
-      <section className="userInputSection">
-        <div className="userInputContainer">
-          <div className="userSearchSelect">
+      <section className={customStyle.inputSection}>
+        <div className={customStyle.inputContainer}>
+          <div className={customStyle.searchSelect}>
             <select
               name="categoryGroup"
               value={userInput.categoryGroup}
@@ -283,10 +282,10 @@ const RtRegister = () => {
             </select>
           </div>
 
-          <div className="SearchInputPart">
+          <div className={customStyle.searchInputPart}>
             <input
               type="text"
-              className="userSearchInput"
+              className={customStyle.searchInput}
               placeholder="상품명을 입력해주세요"
               name="input"
               maxLength= "20"
@@ -294,19 +293,20 @@ const RtRegister = () => {
                 setUserInput({ ...userInput, input: e.target.value })
               }
             />
-            <button type="submit" className="submitButton" onClick={userInputData}>
+            <button type="submit" className={customStyle.submitButton} onClick={userInputData}>
               검색
             </button>
           </div>
         </div>
       </section>
 
-      <article className="table">
-        <table>
+      <section className={MainStyle.RtTableSection}>
+        <table className={MainStyle.RtTable}>
           <thead>
             <tr>
-              <th className="chooseProduct">
+              <th className={MainStyle.allCheck}>
                 <input
+                  className={MainStyle.checkbox}
                   type="checkbox"
                   checked={selectAll}
                   onChange={(e) => handleSelectAll(e.target.checked)}
@@ -326,6 +326,7 @@ const RtRegister = () => {
                 <tr key={item.prod_id}>
                   <td>
                     <input
+                      className={MainStyle.checkbox}
                       type="checkbox"
                       checked={selectedProduct.some((data) => data.productId === item.prod_id)}
                       onChange={() => onChangeCheckBox(item)}
@@ -355,15 +356,15 @@ const RtRegister = () => {
                 </tr>
               ))
             ) : (
-              <tr className="noDataTr">
-                    <td className="noData">
+              <tr className={MainStyle.noDataTr}>
+                    <td className={MainStyle.noData}>
                       데이터가 없습니다
                     </td>
               </tr>
             )}
          </tbody>
         </table>
-      </article>
+      </section>
     </>
   );
 };

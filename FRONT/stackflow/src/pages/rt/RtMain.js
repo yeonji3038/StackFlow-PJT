@@ -1,4 +1,4 @@
-import "./RtMain.css";
+import MainStyle from "./RtMain.module.css"
 import { Outlet, useLocation } from "react-router-dom";
 
 
@@ -14,12 +14,12 @@ const RtMain = () => {
     }
   }
   return(
-    <div className="rtMainPage">
-      <h1 className="title">{getTitle()} </h1>
+    <div className={MainStyle.rtMainPage}>
+      <h1 className={MainStyle.title}>{getTitle()} </h1>
       <hr />
-      <div className="mainContent">
+      <article className={MainStyle.mainContent}>
         <Outlet/> {/* 중첩 라우트 설정 */}
-      </div> 
+      </article> 
     </div>
   )
 }
