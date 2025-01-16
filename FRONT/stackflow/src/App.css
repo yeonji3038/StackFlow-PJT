@@ -20,3 +20,24 @@ html, body {
   display: flex;
   flex-direction: column;
 }
+
+/* 테이블 관련 */
+table {
+  width: 100%;
+  border-spacing: 5px 5px; 
+  border-collapse: separate;
+}
+
+table th{
+  font-weight: 600;
+  background-color: #bad2f9;
+  padding: 8px;
+  border-radius: 7px;
+  font-size: 12px;
+  position: sticky;
+  top: 0px;
+  height: 10px;
+  z-index: 1;
+  margin-bottom: 5px ;
+}
+

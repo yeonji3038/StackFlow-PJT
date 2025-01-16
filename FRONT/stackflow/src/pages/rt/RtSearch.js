@@ -1,4 +1,4 @@
-import "./RtMain.css"
+import MainStyle from "./RtMain.module.css"
 import "./RtSearch.css"
 
 import { useState, useEffect } from 'react'
@@ -163,7 +163,7 @@ const RtSearch = () => {
    
   return (
     <>
-      <section className="mainTop">
+      <section className={MainStyle.mainTop}>
         <div className="RtFilterBox">
           <div className="dateSelector">
               <label className="deteSelectorName">지시기간</label>
@@ -207,18 +207,18 @@ const RtSearch = () => {
           </div>
       </div>
           
-          <div className="buttonSet">
+          <div className={MainStyle.buttonSet}>
             <button id="searchButton" 
               onClick={filteredData}>조회</button>
             <button id="createButton" onClick={goRegister}>등록</button>
           </div>
       </section>
         
-        <section className="RtTableSection">
-          <div className="tableName">
+        <section className={MainStyle.RtTableSection}>
+          <div className={MainStyle.tableName}>
             <h3>지시요청 조회</h3>  
           </div>
-          <div className="table">
+          <div className={MainStyle.RtTable}>
             <table>
               <thead>
                 <tr>
@@ -248,8 +248,8 @@ const RtSearch = () => {
                     </tr>
                   ))
                 ) : ( 
-                  <tr className="noDataTr" style={{ height: "100%" }}>
-                    <td className="noData">
+                  <tr className={MainStyle.noDataTr}>
+                    <td className={MainStyle.noData}>
                       데이터가 없습니다
                     </td>
                 </tr>
@@ -259,23 +259,24 @@ const RtSearch = () => {
           </div>
         </section>
 
-        <section className="RtTableSection otherRtTable">
+        <section className={`${MainStyle.RtTableSection} otherRtTable`}>
           <div className="otherRtTableTop">  
-            <div className="tableName">
+            <div className={MainStyle.tableName}>
               <h3>타매장 지시요청</h3>  
-              <div className="buttonSet otherRtButton">
-                <button>취소</button>
-                <button>승인</button>
+              <div className={`${MainStyle.buttonSet} otherRtButton`}>
+                <button className="RtCancel">요청취소</button>
+                <button className="RtApprove">요청승인</button>
             </div>
             </div>
           </div>
-          <div className="table">   
+          <div className={MainStyle.RtTable}>   
             <table>
               <thead>
                 <tr>
-                  <th className="chooseProduct">
+                  <th className={MainStyle.allCheck}>
                     <input
                       type="checkbox"
+                      className={MainStyle.checkbox}
                       checked={selectAll}
                       onChange={(e) => handleSelectAll(e.target.checked)}
                     />
@@ -297,25 +298,26 @@ const RtSearch = () => {
                     <tr key={item.rt_id}>
                       <td>
                       <input
+                        className={MainStyle.checkbox}
                         type="checkbox"
                         checked={selectedProduct.some((data) => data.productId === item.prod_id)}
                         onChange={() => onChangeCheckBox(item)}
                       />
                       </td>
-                      <td>{item.rt_products[0].request_quantity}</td>
+                      <td>{item.request_store}</td>
                       <td>{item.product_code}</td>
                       <td>{item.product_name}</td>
                       <td>{item.color_code}</td>
                       <td>{item.product_size}</td>
-                      <td>{item.request_store}</td>
+                      <td>{item.rt_products[0].request_quantity}</td>
                       <td>{formatDate(item.request_date)}</td>
                     </tr>
                   )
                 })                  
               ): (
-                <tr>
-                  <td className="noData">
-                  데이터가 없습니다
+                <tr className="noDataTr">
+                  <td className={`${MainStyle.noData} noData`}>
+                    데이터가 없습니다
                   </td>
                 </tr>
                 )
