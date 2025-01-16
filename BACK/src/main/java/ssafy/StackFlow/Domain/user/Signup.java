@@ -6,10 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import ssafy.StackFlow.Domain.Store;
-import ssafy.StackFlow.api.user.DTO.StoreDto;
 import ssafy.StackFlow.user.UserRole;
 
-import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
 @Setter
@@ -50,9 +48,6 @@ public class Signup {
         return store != null ? store.getStoreCode() : null; // Store가 null이 아닐 경우 storeCode 반환
 
     }
-//    // storeCode 필드 추가
-//    @Transient // JPA에서 관리하지 않는 필드
-//    private String storeName;
 
     // Store의 storeCode를 가져오는 메서드
     public String getStoreName() {
