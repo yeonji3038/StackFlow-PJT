@@ -6,7 +6,7 @@ const PrivateRoute = () => {
   const token = getToken();
 
   // return token ? <Outlet /> : <Navigate to="/login" />;
-  return <Outlet/>
+  return <Outlet />;
 };
 
 export default PrivateRoute;
