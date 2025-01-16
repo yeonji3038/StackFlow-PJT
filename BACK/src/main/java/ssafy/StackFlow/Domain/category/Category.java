@@ -18,8 +18,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="category_id")
     private Long id;
-
+    @Column(name = "cate_code", nullable = false)
     private String cateCode;
+    @Column(name = "cate_name", nullable = false)
     private String cateName;
 
     @ManyToOne(fetch = LAZY)
