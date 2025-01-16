@@ -59,8 +59,9 @@ const ManagementStore = () => {
               <th>매장명</th>
               <th>이메일</th>
               <th>매장코드</th>
-              {/* <th>승인 날짜</th>
-              <th>승인 상태</th> */}
+              <th>승인 날짜</th>
+              <th>승인 상태</th>
+
               {/* <th>승인 변경</th> */}
               <th>삭제</th>
             </tr>
@@ -72,8 +73,9 @@ const ManagementStore = () => {
                 <td>{customer.store}</td>
                 <td>{customer.email}</td>
                 <td>{customer.storeCode}</td>
-                {/* <td>{customer.approvalDate}</td>
-                <td>{customer.accountStatus}</td> */}
+                <td>{customer.approvalDate}</td>
+                <td>{customer.accountStatus}</td>
+
                 {/* <td>
                   <label className={styles.switch}>
                     <input 

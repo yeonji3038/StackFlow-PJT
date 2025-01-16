@@ -47,6 +47,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/admin/**", "/store/**").hasRole("ADMIN") // admin과 store 관련 URL은 ADMIN 권한 필요
                         .requestMatchers("/admin/registerStore", "/admin/registerStore/**").hasRole("ADMIN") // 매장 등록 URL 명시적 허용
+                        .requestMatchers("/api/admin/category/**").hasRole("ADMIN") // 카테고리 등록
                         .requestMatchers("/chat/**").permitAll()
                         .anyRequest().authenticated()) // 나머지 요청은 인증 필요
 

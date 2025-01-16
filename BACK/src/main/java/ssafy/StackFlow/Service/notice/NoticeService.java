@@ -12,11 +12,9 @@ import ssafy.StackFlow.Domain.notice.Notice;
 import ssafy.StackFlow.Domain.user.Signup;
 import ssafy.StackFlow.Repository.notice.NoticeRepository;
 import ssafy.StackFlow.Repository.notice.FileRepository;
-import ssafy.StackFlow.Service.notice.DataNotFoundException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
