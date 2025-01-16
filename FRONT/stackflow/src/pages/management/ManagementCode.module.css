@@ -64,6 +64,9 @@
 }
 
 .registrationForm {
+  margin: auto;
+  margin-top: 10px;
+  width: 600px;
   background: #ffffff;
   padding: 30px;
   border-radius: 10px;
@@ -132,9 +135,9 @@
 }
 
 .submitButton {
+  background: linear-gradient(to right, #b0cbf1, #678dc3);
   width: 100%;
   padding: 12px;
-  background-color: #789EDC;
   color: white;
   border: 1px solid #3f6cb1;
   border-radius: 5px;

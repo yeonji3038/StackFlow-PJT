@@ -1,11 +1,10 @@
-.content {
+.container {
   width: 100%;
-  height: 100%;
 }
 
 .searchSection {
   background: white;
-  padding: 30px 0;
+  padding: 30px;
   border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   margin: 20px auto;
@@ -79,16 +78,75 @@
   font-family: 'NanumSquare', sans-serif !important;
 }
 
-.tableBody td {
-  text-align: center;
-  padding: 4px 10px !important;
+.tableContainer {
   background: white;
-  border: none;
-  vertical-align: middle;
+  border-radius: 25px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  width: 800px;
+  outline: none;
 }
 
-.tableBody td:first-child {
-  width: 30px;
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px;
+  background-color: #ffffff;
+  border: none;
+  outline: none;
+}
+
+.table * {
+  border: none !important;
+  outline: none !important;
+}
+
+.tableHeader th {
+  background: rgb(186, 210, 249, 0.8);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.207);
+  color: rgb(0, 0, 0);
+  padding: 8px 20px !important;
+  text-align: center;
+  font-weight: normal;
+  border-radius: 5px;
+}
+
+.tableBody td {
+  text-align: center;
+  padding: 2px 10px !important
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.submitButton,
+.resetButton {
+  width: 100px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'NanumSquare', sans-serif !important;
+}
+
+.submitButton {
+  background: #80a6e5;
+  color: white;
+  border: 1px solid #3f6cb1;
+}
+
+.resetButton {
+  background: #cacaca;
+  color: rgb(255, 255, 255);
+  border: 1px solid #3e3e3e;
 }
 
 .inputRow select {
@@ -112,6 +170,32 @@
   display: none;
 }
 
+.tableHeader th,
+.tableBody td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 12px 15px;
+  text-align: center;
+}
+
+.tableBody tr {
+  cursor: default;
+}
+
+.tableBody td:first-child {
+  cursor: pointer;
+}
+
+.tableBody td:first-child:hover {
+  background-color: rgba(120, 158, 220, 0.1);
+}
+
+.tableBody tr:hover {
+  background-color: transparent;
+}
+
+.tableBody td .inputQuantity,
 .inputQuantity {
   width: 110px !important;
   height: 30px;
@@ -121,64 +205,8 @@
   padding: 0 10px;
   font-size: 14px;
   color: #666;
+  margin-top: 8px;
   box-sizing: border-box;
-  vertical-align: middle;
-  margin-top: 10px;
-}
-
-.storeSelect {
-  width: 120px !important;
-  height: 30px;
-  border: 1px solid #7e7e7e !important;
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 0 10px;
-  font-size: 14px;
-  color: #666;
-  box-sizing: border-box;
-  vertical-align: middle;
-  margin-top: 0;
-}
-
-.storeSelect {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 30px;
-}
-
-.buttonContainer {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.submitButton, .resetButton {
-  width: 100px;
-  height: 40px;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'NanumSquare', sans-serif !important;
-}
-
-.submitButton {
-  background: #80a6e5;
-  color: white;
-  border: 1px solid #3f6cb1;
-}
-
-.resetButton {
-  background: #cacaca;
-  color: rgb(255, 255, 255);
-  border: 1px solid #3e3e3e;
 }
 
 .table input[type="checkbox"] {

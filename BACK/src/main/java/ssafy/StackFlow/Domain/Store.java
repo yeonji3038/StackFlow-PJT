@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import ssafy.StackFlow.Domain.product.Product;
 import ssafy.StackFlow.Domain.product.ProductStore;
+import ssafy.StackFlow.Domain.user.Signup;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String storeName;
 
@@ -26,6 +29,7 @@ public class Store {
 
     @Column(nullable = false, unique = true)
     private String storeCode; // 매장 코드
+
 
     @ManyToMany
     @JoinTable(
@@ -39,4 +43,21 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ProductStore> storeProducts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store")
+    private List<Signup> signups;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id") // signup 테이블의 user_id를 참조
+//    private Signup signup; // signup 도메인 엔티티와 연결
+//
+//    // Signup에서 username 가져오기
+//    public String getUsername() {
+//        return signup != null ? signup.getUsername() : null;
+//    }
+//
+//    // Signup에서 email 가져오기
+//    public String getEmail() {
+//        return signup != null ? signup.getEmail() : null;
+//    }
 }

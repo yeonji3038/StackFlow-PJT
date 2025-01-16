@@ -69,7 +69,7 @@
 }
 
 .submitButton {
-  background-color: #789EDC;
+  background: linear-gradient(to right, #b0cbf1, #678dc3);
   border: 1px solid #2e4c79;
   color: white;
   border: none;
