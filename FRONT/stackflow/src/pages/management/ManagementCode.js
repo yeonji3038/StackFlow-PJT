@@ -111,6 +111,7 @@ const ManagementCode = () => {
             </button>
           </form>
         </div>
+      </div>
 
       {/* 주소 찾기 모달 */}
       {modalState && (
@@ -161,5 +162,4 @@ const ManagementCode = () => {
     </div>
   );
 };
-
 export default ManagementCode;

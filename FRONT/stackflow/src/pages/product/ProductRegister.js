@@ -1,6 +1,37 @@
 import React, { useState } from 'react';
 import styles from './ProductRegister.module.css';
 
+const Modal = ({ isOpen, onClose, onRegister, type }) => {
+  const [code, setCode] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onRegister(code);
+    setCode('');
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
+        <h2>{type} 등록</h2>
+        <form onSubmit={handleSubmit}>
+          <input 
+            type="text" 
+            placeholder={`새로운 ${type} 코드를 입력하세요.`}
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
+          <button type="submit">등록</button>
+          <button type="button" onClick={onClose}>닫기</button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const ProductRegister = () => {
   const [formData, setFormData] = useState({
     productName: '',
@@ -15,9 +46,31 @@ const ProductRegister = () => {
     description: ''
   });
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState('');
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // API 호출 로직 추가
+  };
+
+  const openModal = (type) => {
+    setModalType(type);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleRegister = (code) => {
+    if (modalType === '브랜드 코드') {
+      setFormData({ ...formData, brandCode: code });
+    } else if (modalType === '카테고리') {
+      setFormData({ ...formData, categoryCode: code });
+    } else if (modalType === '색상 코드') {
+      setFormData({ ...formData, color: code });
+    }
   };
 
   return (
@@ -38,38 +91,38 @@ const ProductRegister = () => {
         <div className={styles.formGroup}>
           <label>브랜드 코드</label>
           <div className={styles.inputWithButton}>
-            <select defaultValue="">
+            <select value={formData.brandCode} onChange={(e) => setFormData({...formData, brandCode: e.target.value})}>
               <option value="" disabled>등록된 브랜드 코드가 없습니다.</option>
             </select>
-            <button type="button" className={styles.registerButton}>브랜드코드 등록</button>
+            <button type="button" className={styles.registerButton} onClick={() => openModal('브랜드 코드')}>브랜드코드 등록</button>
           </div>
         </div>
 
         <div className={styles.formGroup}>
           <label>카테고리</label>
           <div className={styles.categoryInputs}>
-            <select defaultValue="">
+            <select value={formData.categoryGroup} onChange={(e) => setFormData({...formData, categoryGroup: e.target.value})}>
               <option value="" disabled>카테고리 그룹</option>
             </select>
-            <select defaultValue="">
+            <select value={formData.categoryCode} onChange={(e) => setFormData({...formData, categoryCode: e.target.value})}>
               <option value="" disabled>카테고리 코드</option>
             </select>
-            <button type="button" className={styles.registerButton}>카테고리 등록</button>
+            <button type="button" className={styles.registerButton} onClick={() => openModal('카테고리')}>카테고리 등록</button>
           </div>
+        </div>
+
+        <div className={styles.formGroup}>
+          <label>색상</label>
+          <select value={formData.color} onChange={(e) => setFormData({...formData, color: e.target.value})}>
+            <option value="" disabled>색상 코드</option>
+          </select>
+          <button type="button" className={styles.registerButton} onClick={() => openModal('색상 코드')}>색상코드 등록</button>
         </div>
 
         {/* 나머지 입력 필드들 */}
         <div className={styles.formGroup}>
-          <label>색상</label>
-          <select defaultValue="">
-            <option value="" disabled>색상 코드</option>
-          </select>
-          <button type="button" className={styles.registerButton}>색상코드 등록</button>
-        </div>
-
-        <div className={styles.formGroup}>
           <label>사이즈</label>
-          <select defaultValue="">
+          <select value={formData.size} onChange={(e) => setFormData({...formData, size: e.target.value})}>
             <option value="" disabled>사이즈</option>
           </select>
         </div>
@@ -114,6 +167,13 @@ const ProductRegister = () => {
 
         <button type="submit" className={styles.submitButton}>등록</button>
       </form>
+
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+        onRegister={handleRegister} 
+        type={modalType} 
+      />
     </div>
   );
 };

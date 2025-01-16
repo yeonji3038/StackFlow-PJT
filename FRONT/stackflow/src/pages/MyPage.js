@@ -90,7 +90,7 @@ const MyPage = () => {
               />
             </div>
             <div className={styles.inputGroup}>
-              <label htmlFor="storeName">지점명</label>
+              <label htmlFor="storeName">매장명</label>
               <input
                 id="storeName"
                 className={styles.input}

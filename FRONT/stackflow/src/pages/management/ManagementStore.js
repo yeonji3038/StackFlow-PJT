@@ -9,8 +9,6 @@ const ManagementStore = () => {
       businessNumber: "453453254545",
       email: "hellohi@naver.com",
       storeCode: "ST001",
-      approvalDate: "2024-12-04",
-      accountStatus: "approve",
       storeCount: 5,
     },
     {
@@ -19,8 +17,6 @@ const ManagementStore = () => {
       businessNumber: "578365435472",
       email: "stackoverflow12@naver.com",
       storeCode: "ST002",
-      approvalDate: "X",
-      accountStatus: "inactive",
       storeCount: 2,
     },
     {
@@ -29,8 +25,6 @@ const ManagementStore = () => {
       businessNumber: "1235645634357",
       email: "godls0215@naver.com",
       storeCode: "ST003",
-      approvalDate: "2024-12-01",
-      accountStatus: "denied",
       storeCount: 6,
     },
   ]);
@@ -65,8 +59,8 @@ const ManagementStore = () => {
               <th>매장명</th>
               <th>이메일</th>
               <th>매장코드</th>
-              <th>승인 날짜</th>
-              <th>승인 상태</th>
+              {/* <th>승인 날짜</th>
+              <th>승인 상태</th> */}
               {/* <th>승인 변경</th> */}
               <th>삭제</th>
             </tr>
@@ -78,8 +72,8 @@ const ManagementStore = () => {
                 <td>{customer.store}</td>
                 <td>{customer.email}</td>
                 <td>{customer.storeCode}</td>
-                <td>{customer.approvalDate}</td>
-                <td>{customer.accountStatus}</td>
+                {/* <td>{customer.approvalDate}</td>
+                <td>{customer.accountStatus}</td> */}
                 {/* <td>
                   <label className={styles.switch}>
                     <input 
