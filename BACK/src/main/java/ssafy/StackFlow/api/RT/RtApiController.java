@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import ssafy.StackFlow.Domain.RT.RT;
+import ssafy.StackFlow.Domain.RT.RtStatus;
 import ssafy.StackFlow.Domain.Store;
 import ssafy.StackFlow.Domain.category.Category;
 import ssafy.StackFlow.Domain.category.CategoryGroup;
@@ -211,4 +212,19 @@ public Map<String, Map<Long, String>> RtAllListApi() {
                 .collect(toList());
         return result;
     }
+
+    @PutMapping("/api/rt/RTstatus")
+    public ResponseEntity<?> updateRtStatus(
+            @RequestBody RtStatusUpdateRequest request) {
+        try {
+            rtService.updateRtStatus(request.getSelectedRequests(), RtStatus.valueOf(request.getAction()));
+            return ResponseEntity.ok(Map.of(
+                    "message", RtStatus.valueOf(request.getAction()) == RtStatus.APPROVAL ?
+                            "승인 처리가 완료되었습니다." : "거절 처리가 완료되었습니다."
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
 }
