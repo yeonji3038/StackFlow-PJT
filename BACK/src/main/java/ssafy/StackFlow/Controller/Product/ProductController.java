@@ -118,4 +118,90 @@ public class ProductController {
         model.addAttribute("product", product);
         return "product/productDetail";
     }
+
+    // 제품 업데이트 폼을 보여주는 get 메서드
+    @GetMapping("update/{id}")
+    public String productUpdate(@PathVariable("id") Long id, Model model) {
+        Product product = productService.findProductById(id);
+
+        // 기존 제품의 카테고리, 색상, 사이즈 정보 불러오기
+        List<CategoryGroup> categoryGroups = categoryGroupService.findAllCategoryGroups();
+        List<Category> categories = categoryService.findAllCategories();
+        List<Color> colors = colorService.findAllColors();
+        List<Size> sizes = sizeService.findAllSizes();
+
+        // 디버깅용 출력
+//        System.out.println("Category Groups: " + categoryGroups);
+//        System.out.println("Categories: " + categories);
+        System.out.println("Category Groups:");
+        for (CategoryGroup cg : categoryGroups) {
+            System.out.println(" - " + cg.getGroupName());  // ✅ `groupName` 출력 확인
+        }
+
+        System.out.println("Categories:");
+        for (Category c : categories) {
+            System.out.println(" - " + c.getCateCode());  // ✅ `cateCode` 출력 확인
+        }
+        System.out.println("Colors: " + colors);
+        System.out.println("Sizes: " + sizes);
+
+        // 제품 정보 폼에 전달
+        model.addAttribute("product", product);
+        model.addAttribute("categoryGroups", categoryGroups);
+        model.addAttribute("categories", categories);
+        model.addAttribute("colors", colors);
+        model.addAttribute("sizes", sizes);
+
+        return "product/productUpdate";  // 업데이트 폼으로 이동
+    }
+
+    // 제품 업데이트 요청을 처리하는 post 메서드
+    @PostMapping("/update/{id}")
+    public String productUpdate(@PathVariable("id") Long id,
+                                @RequestParam String prodName,
+                                @RequestParam String prodCode,
+                                @RequestParam String categorygroup,
+                                @RequestParam String categoryCode,
+                                @RequestParam String colorCode,
+                                @RequestParam String size,
+                                @RequestParam int stockPrice,
+                                @RequestParam int stockQuantity,
+                                @RequestParam int sellPrice,
+                                @RequestParam String prodDetail) {
+
+        // 기존 제품 조회
+        Product existingProduct = productService.findProductById(id);
+
+        // 기존 제품의 정보 업데이트
+        existingProduct.setProdName(prodName);
+        existingProduct.setProdCode(prodCode);
+        existingProduct.setProdDetail(prodDetail);
+        existingProduct.setStockPrice(stockPrice);
+        existingProduct.setStockQuantity(stockQuantity);
+        existingProduct.setSellPrice(sellPrice);
+        existingProduct.setProdDetail(prodDetail);
+
+        // 카테고리, 색상, 사이즈 정보 업데이트
+        CategoryGroup categoryGroupObj = productService.findByGroupName(categorygroup);
+        Category categoryObj = productService.findByCateCode(categoryCode);
+        Color colorObj = productService.findByColorCode(colorCode);
+        Size sizeObj = productService.findBySize(size);
+
+        existingProduct.setCateGroup(categoryGroupObj);
+        existingProduct.setProdCate(categoryObj);
+        existingProduct.setColorCode(colorObj);
+        existingProduct.setSize(sizeObj);
+
+        // 변경된 제품 정보 저장
+        productService.saveProduct(existingProduct);
+
+        // 제품 리스트 페이지로 리다이렉트
+        return "redirect:/product/{id}";  // 제품 리스트 페이지로 이동
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String productDelete(@PathVariable("id") Long id) {
+        productService.deleteProduct(id);
+        return "redirect:/product/list";
+    }
 }

@@ -101,6 +101,38 @@ public class ProductService {
         Product savedProd =  productRepo.save(p);
 
         return savedProd;
-}
+    }
+
+    @Transactional
+    public CategoryGroup findByGroupName(String groupName) {
+        return categoryGroupRepository.findByGroupName(groupName)
+                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리 그룹 없음: " + groupName));
+    }
+
+    @Transactional
+    public Category findByCateCode(String cateCode) {
+        return categoryRepository.findByCateCode(cateCode)
+                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리 없음: " + cateCode));
+    }
+
+    @Transactional
+    public Color findByColorCode(String colorCode) {
+        return colorRepository.findByColorCode(colorCode)
+                .orElseThrow(() -> new IllegalArgumentException("해당 색상 없음: " + colorCode));
+    }
+
+    @Transactional
+    public Size findBySize(String size) {
+        return sizeRepository.findBySize(size)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사이즈 없음: " + size));
+    }
+
+    @Transactional
+    public void deleteProduct(Long id) {
+        if (productRepo.existsById(id)) {
+            productRepo.deleteById(id);
+        }
+    }
+
 }
 

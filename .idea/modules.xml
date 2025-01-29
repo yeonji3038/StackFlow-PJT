@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/StackFlow.iml" filepath="$PROJECT_DIR$/.idea/modules/StackFlow.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/StackFlow.main.iml" filepath="$PROJECT_DIR$/.idea/modules/StackFlow.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/stackflow-ud.iml" filepath="$PROJECT_DIR$/.idea/stackflow-ud.iml" />
     </modules>
