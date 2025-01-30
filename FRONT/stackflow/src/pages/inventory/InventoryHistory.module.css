@@ -138,24 +138,8 @@
     width: 900px;
 }
 
-.table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 8px;
-    background-color: #ffffff;
-    border: none;
-    outline: none;
-  }
 
-.tableHeader th {
-    background: rgb(186, 210, 249, 0.8);
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.207);
-    color: rgb(0, 0, 0);
-    padding: 6px 15px;
-    text-align: center;
-    font-weight: normal;
-    border-radius: 5px;
-}
+
 
 .tableBody td {
     text-align: center;

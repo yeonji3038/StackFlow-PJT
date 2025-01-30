@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ssafy.StackFlow.Domain.*;
 import ssafy.StackFlow.Domain.RT.RT;
+import ssafy.StackFlow.Domain.RT.RtStatus;
 import ssafy.StackFlow.Domain.category.Category;
 import ssafy.StackFlow.Domain.category.CategoryGroup;
 import ssafy.StackFlow.Domain.product.Color;
@@ -118,18 +120,24 @@ public String list(Model model,
     }
 
     @PostMapping("/processRtRequests")
-    public String processRtRequests(@RequestParam(value = "selectedRequests", required = false) List<Long> selectedRequests,
-                                    @RequestParam(value = "action", required = false) String action) {
-        if (action.equals("approve")) {
-            rtService.updateRtStatus(selectedRequests, "APPROVAL");
-        } else if (action.equals("reject")) {
-            rtService.updateRtStatus(selectedRequests, "REFUSE");
+    public String processRtRequests(
+            @RequestParam(value = "selectedRequests", required = false) List<Long> selectedRequests,
+            @RequestParam(value = "action", required = false) String action,
+            RedirectAttributes redirectAttributes) {
+
+        if (selectedRequests == null || selectedRequests.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "처리할 항목을 선택해주세요.");
+            return "redirect:/RT/list";
         }
-        return "redirect:/RT";
+        try {
+            RtStatus status = RtStatus.valueOf(action);
+            rtService.updateRtStatus(selectedRequests, status);
+            redirectAttributes.addFlashAttribute("message",
+                    status == RtStatus.APPROVAL ? "승인 처리가 완료되었습니다." : "거절 처리가 완료되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "처리 중 오류가 발생했습니다: " + e.getMessage());
+        }
+        return "redirect:/RT/list";
     }
-
-
-
-
 }
 

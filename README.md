@@ -27,7 +27,7 @@
 
 ## 🛠 TOOLS
 ### ✔️Frond-end
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"><img src="https://img.shields.io/badge/Css-1572B6?style=for-the-badge&logo=Css&logoColor=white"><img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=purple"><img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"><img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+<img src="https://img.shields.io/badge/JavaScript-grey?style=for-the-badge&logo=javascript"><img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"><img src="https://img.shields.io/badge/Css-1572B6?style=for-the-badge&logo=Css&logoColor=white"><img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=purple"><img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"><img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 
 ### ✔️Back-end
 <img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=Spring%20Boot&logoColor=yellow"><img src="https://img.shields.io/badge/IntelliJ%20IDEA-000000?style=for-the-badge&logo=IntelliJ%20IDEA&logoColor=white"><img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=MariaDB&logoColor=white"><img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
@@ -67,16 +67,22 @@
 |---------------------|----------------------|-------|
 | 2024-12-03          | git,프로젝트,ERD 생성           | :white_check_mark:  |
 | 2024-12-09          | ERD 생성 및 완료       |  :white_check_mark:   |
-| 2025-12-09 ~          | 회원가입        | :white_check_mark:     |
-| 2025-01-09          | 로그인           | :white_check_mark:    |
-| 2025-01-10          | 관리자         | :white_check_mark:     |
-| 2025-01-11          | 회원가입 API 연결    | :white_check_mark:    |
-| 2025-01-11          | 로그인 API 연결    | :white_check_mark:     |
-| 2025-01-11          | 관리자 페이지 API 연결    | :white_check_mark:     |
-| 2025-01-11          | 카테고리 코드 생성   | :white_check_mark:    |
-| 2025-01-11          | 색상 코드 생성   | ⏳    |
-| 2025-01-11          | 카테고리 코드 API 연결   | :x:  |
-| 2025-01-11          | 색상 코드 API 연결  | :x:  |
+| 2024-12-17         | 회원가입        | :white_check_mark:     |
+| 2024-12-18          | 로그인           | :white_check_mark:    |
+| 2024-12-20          | 관리자         | :white_check_mark:     |
+| 2024-12-23          | 매장코드 생성    | :white_check_mark:    |
+| 2024-12-24          | 회원가입 API 연결    | :white_check_mark:    |
+| 2024-12-26          | 로그인 API 연결    | :white_check_mark:     |
+| 2025-12-26          | 관리자 페이지 API 연결    | :white_check_mark:     |
+| 2024-12-27          | 카테고리 코드 생성   | :white_check_mark:    |
+| 2025-01-03          | 색상 코드 생성   | :white_check_mark:    |
+| 2025-01-14          | 카테고리 코드 API 연결   | ⏳  |
+| 2025-01-15         | 색상 코드 API 연결  | :x:  |
+| 2025-01-15         | 세션정보 저장  | :x:  |
+| 2025-01-18          | 매장 정보 수정,삭제  | :x:  |
+| 2025-01-21          | 매장코드 이메일 전송 | :x:  |
+
+
 
 ### :ocean: 권정민
 
@@ -88,9 +94,10 @@
 
 | 날짜                | 일정 내용            | 체크  |
 |---------------------|----------------------|-------|
-| 2024-12-02 ~ 2025-01 | 개발 회의            |  :white_check_mark:   |
-| 2025-01-08          | 코드 리뷰            | :x:   |
-| 2025-01-09          | 배포 작업            | :x:  |
+| 2025-12-07          |  WebSocket 학습    | :white_check_mark:  |
+| 2025-12-08          |  WebSocket 학습    | :white_check_mark:  |
+| 2025-12-09          | 실시간 채팅 구현   | ⏳    |
+| 2025-01-09          |  WebSocket 학습    | :x:  |
 | 2025-01-10          | 테스트 진행          | :x:   |
 | 2025-01-11          | 최종 점검 및 배포    | :x:   |
 
@@ -129,18 +136,28 @@
 ### :unicorn: 신해인
 
 #### -💼 ROLE
-- **역할**: 개발 회의, 코드 리뷰
+- **역할**: Figma, CSS 및 React 개발
 - **상태**: ⏳ 진행 중
-- **업무 설명**: 개발 회의 진행, 코드 리뷰 작업 완료
 
 
 | 날짜                | 일정 내용            | 체크  |
 |---------------------|----------------------|-------|
 | 2024-12-02 ~ 2025-01 | 개발 회의            |  :white_check_mark:   |
-| 2025-01-08          | 코드 리뷰            | :x:   |
-| 2025-01-09          | 배포 작업            | :x:  |
-| 2025-01-10          | 테스트 진행          | :x:   |
-| 2025-01-11          | 최종 점검 및 배포    | :x:   |
+| 2024-12-03          | Figma 생성            | :white_check_mark:   |
+| 2024-12-09          | Figma 메인, 상품관리 완성            | :white_check_mark:  |
+| 2024-12-11          | Figma RT, 게시판, 관리자 및 마이페이지 완성          | :white_check_mark:   |
+| 2024-12-20          | React 공통 레이아웃 구현    | :white_check_mark:   |
+| 2024-12-21          | React 메인 화면 구현    | :white_check_mark:   |
+| 2024-12-22          | React 상품 등록 구현    | :white_check_mark:   |
+| 2024-12-23          | React 입출고 구현    | :white_check_mark:   |
+| 2024-12-29          | React 관리자 및 마이페이지 구현    | :white_check_mark:   |
+| 2024-12-31          | React 매장 코드 생성 구현    | :white_check_mark:   |
+| 2025-01-03          | React 다음 지도 라이브러리 모달 구현    | :white_check_mark:   |
+| 2025-01-11          | React 관리자 페이지 피드백 수정    | :white_check_mark:   |
+| 2025-01-          | 코드 리뷰            | :x:   |
+| 2025-01-         | 배포 작업            | :x:  |
+| 2025-01-          | 테스트 진행          | :x:   |
+| 2025-01-12          | 최종 점검 및 배포    | :x:   
 
 
 ### :dog: 서현석
@@ -156,111 +173,9 @@
 | 2024-12-02 ~ 2025-01 | 개발 회의            |  :white_check_mark:   |
 | 2025-01-08          | 코드 리뷰            | :x:   |
 | 2025-01-09          | 배포 작업            | :x:  |
-| 2025-01-10          | 테스트 진행          | :x:   |
-| 2025-01-11          | 최종 점검 및 배포    | :x:   |
-
-
-*12/10 발표전 할일
-
--프론트
->[해인]
-> -[X] 12/8까지 리액트 공부
-> -[X] 피그마 생성
-
->[현석]
-> -[ ] 12/8까지 리액트 공부
-> -[ ] 피그마 생성
-
--백앤드
-> [정인]
-> -[X] 12/9 회의 ERD 생성 및 완료
-> -[ ] 공지사항 CR
-
-> [정민]
-> -[X] 12/9 회의 ERD 생성 및 완료
-> -[X] WebSocket 공부
-
-> [민]
-> -[X] 12/9 회의 ERD 생성 및 완료
-> -[ ] 카테고리 상품
-> -[ ] 날짜
-
-
-----
-
-### 1203(수)
-
-> [민]
-> -[ ] 카페고리 및 상품 모델 생성
-
-### 1212(목)
-> [연지]
-> -[X] 로그인,로그아웃
-
-### 1213(금)
-> [연지]
-> -[X] 관리자 페이지 생성
-
-### 1214(토)
-> [연지]
-> -[X] 매장 코드 키
-
-### 1215(일)
-> [연지]
-> -[ ] 매장 회원가입 승인
-
-### 1216(월)
-> [연지]
-> -[ ] 로그인,회원가입 겹치는 ID 메세지
+| 2025-12-20          | RT 페이지 컴포넌트 제작 완료       | :x:   |
+| 2025-12-22          | 스프링 부트 연동을 윈한 미들웨어와 axios 설치| :x:   |
+| 2025-12-22          | setupProxy.js 파일 생성| :x:   |
 
 
 
-=======
-> [연지]
-> -[X] 12/9 회의 ERD 생성 및 완료
-> -[ ] 회원가입
-----
-
-### 1203(수)
-> [연지]
-> -[X] git 생성
-> -[X] 프로젝트 생성
-> -[ ]  ERD 생성
-> -[ ] 회원가입
->
-> [해인]
-> -[X] 페이지 컨셉 설정
-> -[X] Figma 일부 완성
->
-> [민]
-> -[ ] 카페고리 및 상품 모델 생성
-
-### 1207(토)
-> [정민]
-> -[X] WebSocket 학습
-
-### 1208(일)
-> [정민]
-> -[X] WebSocket 학습
-
-### 1209(월)
-> [정민]
-> -[X] 실시간 채팅 구현
->
-> [해인]
-> -[X] Figma 일부 완성
-
-### 1211(수)
-> [해인]
-> -[] Figma RT, 입고, 카테고리 등록 페이지
-> -[] React 프로젝트 생성 및 공통 레이아웃 조정
-> -[] 관리자 페이지, 마이 페이지 정보 받으면 Figma 마저 완성
-
-### 1220(금)
-> [현석]
-> -[] RT 페이지 컴포넌트 제작 완료
-
-### 1222(일)
-> [현석]
-> -[] 리액트 - 스프링 부트 연동을 윈한 미들웨어와 axios 설치
-> -[] setupProxy.js 파일 생성

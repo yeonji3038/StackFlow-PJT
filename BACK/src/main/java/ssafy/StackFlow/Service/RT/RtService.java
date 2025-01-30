@@ -121,23 +121,16 @@ public class RtService {
         }
         return otherRTs;
     }
-    public void updateRtStatus(List<Long> requestIds, String status) {
-        final RtStatus rtStatus;
-        try {
-            rtStatus = RtStatus.valueOf(status);
-        } catch (IllegalArgumentException e) {
-            System.err.println("잘못된 상태 값입니다: " + status);
-            return;
-        }
 
-        for (Long requestId : requestIds) {
-            Optional<RT> rtRequestOpt = rtRepository.findById(requestId);
-            rtRequestOpt.ifPresent(rtRequest -> {
-                rtRequest.setStatus(rtStatus);
-                rtRepository.save(rtRequest);
-            });
+    @Transactional
+    public void updateRtStatus(List<Long> rtIds, RtStatus status) {
+        if (rtIds == null || rtIds.isEmpty()) {
+            throw new IllegalArgumentException("RT IDs cannot be null or empty");
         }
+        List<RT> rts = rtRepository.findAllById(rtIds);
+        for (RT rt : rts) {
+            rt.setStatus(status);
+        }
+        rtRepository.saveAll(rts);
     }
-
-
 }

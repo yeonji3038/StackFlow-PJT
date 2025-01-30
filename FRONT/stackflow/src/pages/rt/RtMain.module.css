@@ -1,0 +1,142 @@
+
+/* === Rt Main === */
+.rtMainPage {
+  width: 100%;
+  height: 100%;
+}
+
+.title {
+  font-size: 2rem;
+}
+
+.mainContent {
+  margin: 1.5rem auto 0 auto;
+  padding: 2.0rem 2.3rem;
+  min-height: 600px;
+  min-width: 900px;
+  width: 65vw;
+  height: 80vh;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: rgb(131, 139, 167) 0px 0px 3px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === Child Component ===  */
+.mainTop {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 50px;
+  position: relative;
+  font-size: 0.7rem;
+  align-items: center;
+}
+
+.buttonSet{
+  display: flex;
+  justify-self: end;
+  position: absolute;
+  right: 0;
+}
+
+.buttonSet button {
+  width: 4.4rem;
+  height: 2.45rem;
+  font-size: 0.9rem;
+  border-radius: 14px;
+  margin: 0;
+  padding: 0 ;
+  margin-left: 8px;
+  color: rgb(255, 248, 249);
+  font-weight: 600;
+  box-shadow: rgb(133, 138, 152) 0px 1px 3px;
+  line-height: 0.5rem;
+  text-align: center;
+}
+
+/* === table === */
+.RtTableSection {
+  Width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column; 
+  margin: 25px auto 0 0 ;
+  align-items: center;
+  text-align: center;
+
+}
+
+.RtTable {
+  width: 100%;
+  padding: 0 6px ;
+  font-size: 10px;
+  box-shadow: rgb(188, 193, 210) 0px 2px 3px;
+  border-radius: 10px;
+  overflow-x: scroll;
+  height: 100%;
+
+}
+
+.allCheck {
+  width: 20px;
+  background-color: white;
+  position: relative;
+}
+
+.checkbox {
+  position: absolute;
+  top: 31%;
+  right: 15%;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  background-color: white;
+}
+
+.tableName {
+  width: 100%;
+  text-align: left;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.tableName h3 {
+  margin-bottom: 10px;
+}
+
+table td {
+  height: 10px;
+  text-align: center;
+  position: relative;
+}
+
+tbody {
+  height: 100%;
+  width: 100%;
+  min-height: 80%;
+
+}
+
+tr {
+  width: 100%;
+  position: relative;
+}
+
+.noDataTr {
+  min-height: 100% !important;
+  position: relative;
+}
+
+
+.noData {
+  height: 100%;
+  position: absolute;
+  left: 37%;
+  top: 40%;
+  font-size: 30px;
+  font-weight: 800;
+}
+

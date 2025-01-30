@@ -1,3 +1,4 @@
+import './App.css'
 import React from 'react';
 import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
 
@@ -14,7 +15,7 @@ import ProductRegister from './pages/product/ProductRegister';
 import ProductManagement from './pages/product/ProductManagement';
 import ProductStockStatus from './pages/product/ProductStockStatus';
 import ProductCategoryRegister from './pages/product/ProductCategoryRegister';
-import InventoryReceiving from './pages/inventory/InventoryReceiving';
+import InventoryMain from './pages/inventory/inventoryMain';
 import InventoryShipping from './pages/inventory/InventoryShipping';
 import InventoryHistory from './pages/inventory/InventoryHistory';
 import MyPage from './pages/MyPage';
@@ -39,7 +40,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         
 
-        <Route element={<PrivateRoute />}>
+        {/* <Route element={<PrivateRoute />}> */}
         {/* MainLayout이 적용되는 라우트들 */}
         <Route
           path="/*"
@@ -47,10 +48,11 @@ function App() {
             <MainLayout>
               <Routes>
                 <Route path="main" element={<MainPage />} />
-                <Route path="inventory/*" element={<InventoryPages />} />
-                <Route path="/inventory/receiving" element={<InventoryReceiving />} />
-                <Route path="/inventory/shipping" element={<InventoryShipping />} />
-                <Route path="/inventory/history" element={<InventoryHistory />} />
+                <Route path="inventory/*" element={<InventoryMain/>}>
+                  <Route index element={<Navigate to="./history" replace />} />
+                  <Route path="shipping" element={<InventoryShipping />} />
+                  <Route path="history" element={<InventoryHistory />} />
+                </Route>
                 <Route path="notice/*" element={<Notice />} />
                 <Route path="product/*" element={<ProductPages />} />
                 <Route path="/product/register" element={<ProductRegister />} />
@@ -72,7 +74,7 @@ function App() {
             </MainLayout>
           }
         />
-        </Route>
+        {/* </Route> */}
       </Routes>
     </BrowserRouter>
   );

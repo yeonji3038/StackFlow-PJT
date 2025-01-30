@@ -26,7 +26,6 @@ const Sidebar = () => {
       title: '입출고 등록',
       path: '/inventory',
       subMenus: [
-        { title: '입고', path: '/inventory/receiving' },
         { title: '출고', path: '/inventory/shipping' },
         { title: '입출고 내역 조회', path: '/inventory/history' },
       ]

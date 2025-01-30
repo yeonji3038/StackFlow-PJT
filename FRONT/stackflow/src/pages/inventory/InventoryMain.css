@@ -1,0 +1,49 @@
+.inventoryMainPage {
+  width: 100%;
+  height: 100%;
+}
+
+
+.title {
+  font-size: 2rem;
+}
+
+.InventoryContent {
+  margin: 1.5rem auto 0 auto;
+  padding: 0;
+  min-height: 600px;
+  min-width: 900px;
+  box-sizing: border-box;
+}
+
+.InventoryTable {
+  width: 100%;
+  height: 40.2vh;
+  padding: 0 6px ;
+  font-size: 10px;
+  box-shadow: rgb(188, 193, 210) 0px 2px 3px;
+  border-radius: 10px;
+  overflow-x: scroll;
+}
+
+table {
+  min-width: 100%;
+  width: 100%;
+
+  border-spacing: 5px 5px; 
+  border-collapse: separate;
+  background-color: white;
+}
+
+table th{
+  font-weight: 600;
+  background-color: #bad2f9;
+  padding: 8px;
+  border-radius: 7px;
+  font-size: 13px;
+  position: sticky;
+  top: 0;
+  height: 10px;
+  z-index: 1;
+  margin-bottom: 5px ;
+}

@@ -1,6 +1,7 @@
 package ssafy.StackFlow.api.Retrieval;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssafy.StackFlow.Domain.Retrieval.Retrieval;
@@ -86,48 +87,77 @@ public class RetrievalApiController {
     @PostMapping("/api/retrieval/submit/admin")
     public ResponseEntity<RetrievalResponseDto> createInstructions(@RequestBody RetrievalRequestDto request) {
         try {
+            if (request == null || request.getInstructions() == null || request.getInstructions().isEmpty()) {
+                throw new IllegalArgumentException("Request or instructions cannot be null or empty");
+            }
+
             List<Long> retIds = new ArrayList<>();
             for (RetrievalInstructionDto instruction : request.getInstructions()) {
+                if (instruction.getProductId() == null || instruction.getStoreId() == null) {
+                    throw new IllegalArgumentException("Product ID and Store ID cannot be null");
+                }
                 Long retId = retrievalService.createRetrievalInstruction(
                         instruction.getProductId(),
                         instruction.getStoreId(),
                         instruction.getRetrivalQuantity()
                 ).getId();
-                retrievalService.retrievalAdmin(instruction.getProductId(),1L,instruction.getStoreId(),instruction.getRetrivalQuantity());
+
+                retrievalService.retrievalAdmin(
+                        instruction.getProductId(),
+                        1L,
+                        instruction.getStoreId(),
+                        instruction.getRetrivalQuantity()
+                );
                 retIds.add(retId);
             }
-            System.out.println(request);
+
             return ResponseEntity.ok(new RetrievalResponseDto("success", retIds));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
                     .body(new RetrievalResponseDto("error", e.getMessage()));
         } catch (Exception e) {
+            e.printStackTrace(); // 스택 트레이스 로깅
             return ResponseEntity.internalServerError()
-                    .body(new RetrievalResponseDto("error", "Unexpected error occurred"));
+                    .body(new RetrievalResponseDto("error", "Unexpected error occurred: " + e.getMessage()));
         }
     }
 
+
     @PostMapping("/api/retrieval/submit/user")
-    public ResponseEntity<RetrievalResponseDto> createInstructionsUser(@RequestBody RetrievalRequestUserDto request) {
-        try {
-            List<Long> retIds = new ArrayList<>();
-            for (RetrievalInstructionUserDto instruction : request.getInstructions()) {
+    public ResponseEntity<ApiResponse<List<Long>>> createInstructionsUser(@RequestBody RetrievalRequestUserDto request) {
+        if (request == null || request.getInstructions() == null || request.getInstructions().isEmpty()) {
+            throw new IllegalArgumentException("Request or instructions cannot be null or empty");
+        }
+
+        List<Long> retIds = new ArrayList<>();
+
+        for (RetrievalInstructionUserDto instruction : request.getInstructions()) {
+            if (instruction.getProductId() == null) {
+                throw new IllegalArgumentException("Product ID cannot be null");
+            }
+            if (instruction.getRetrivalQuantity() <= 0) {
+                throw new IllegalArgumentException("Retrieval quantity must be greater than 0");
+            }
+            try {
                 Long retId = retrievalService.createRetrievalInstruction_User(
                         instruction.getProductId(),
                         instruction.getRetrivalQuantity()
                 ).getId();
-                retrievalService.retrievalUser(instruction.getProductId(),1L,instruction.getRetrivalQuantity());
+                retrievalService.retrievalUser(
+                        instruction.getProductId(),
+                        1L,
+                        instruction.getRetrivalQuantity()
+                );
                 retIds.add(retId);
+            } catch (InsufficientStockException e) { // 재고 부족 시 예외 처리
+                return ResponseEntity.ok(
+                        new ApiResponse<>("error", "Insufficient stock for product: " + instruction.getProductId(), null)
+                );
             }
-            return ResponseEntity.ok(new RetrievalResponseDto("success", retIds));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(new RetrievalResponseDto("error", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body(new RetrievalResponseDto("error", "Unexpected error occurred"));
         }
+        return ResponseEntity.ok(new ApiResponse<>("success", "Instructions processed successfully", retIds));
     }
+
 }
 
 
