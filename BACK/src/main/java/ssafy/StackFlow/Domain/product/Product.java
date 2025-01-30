@@ -31,7 +31,7 @@ public class Product {
 
     private int stockPrice;     // 입고 가격
     private int sellPrice;      // 출고 가격
-//    private int stockQuantity;  // 입고 수량
+    private int stockQuantity;  // 입고 수량
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_id")
