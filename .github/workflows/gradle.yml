@@ -38,7 +38,9 @@ jobs:
 
     # Gradle Build(test 제외)
     - name: Build with Gradle
-      run: ./BACK/gradlew clean bootJar --exclude-task test
+      run: |
+        cd ./BACK
+        ./gradlew clean bootJar --exclude-task test
 
     # DockerHub 로그인
     - name: DockerHub Login
