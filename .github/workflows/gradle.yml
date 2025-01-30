@@ -38,7 +38,7 @@ jobs:
 
     # Gradle Build(test 제외)
     - name: Build with Gradle
-      run: ./gradlew clean bootJar --exclude-task test
+      run: ./BACK/gradlew clean bootJar --exclude-task test
 
     - name: Run Gradle Wrapper
       run: ./BACK/gradlew build
