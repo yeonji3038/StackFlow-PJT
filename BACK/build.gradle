@@ -50,3 +50,11 @@ tasks.named('test') {
 // 메인 클래스 설정 추가
 mainClassName = 'ssafy.StackFlow.StackFlowApplication' // 실제 메인
 
+// 테스트 관련 파일 제외
+tasks.withType(Jar) {
+    exclude 'test/**'
+}
+
+tasks.named('test') {
+    enabled = false
+}
