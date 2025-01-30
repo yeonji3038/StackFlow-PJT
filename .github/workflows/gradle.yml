@@ -8,6 +8,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 # 위 이벤트 발생 시 실행될 작업들
 jobs:
@@ -34,6 +35,9 @@ jobs:
     # Gradle Build(test 제외)
     - name: Build with Gradle
       run: ./gradlew clean bootJar --exclude-task test
+
+    - name: Run Gradle Wrapper
+      run: ./gradlew build
 
     # DockerHub 로그인
     - name: DockerHub Login
