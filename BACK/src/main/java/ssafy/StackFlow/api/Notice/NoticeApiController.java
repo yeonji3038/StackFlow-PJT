@@ -17,15 +17,27 @@ import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequestMapping("/notice")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController  // 프론트 API 넘겨주기 (json 응답 반환)
 public class NoticeApiController {
     private final NoticeService noticeService;
     private final UserService userService;
 
+    // 공지사항 생성 (API)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/notice/create")
+    public ResponseEntity<Notice> createNotice(@RequestBody NoticeDto request, Principal principal) {
+
+        // 로그인한 사용자의 정보를 바탕으로 공지 생성
+        Signup signup = this.userService.getUser(principal.getName());
+        Notice notice = this.noticeService.create(request.getTitle(), request.getContent(), signup);
+        return new ResponseEntity<>(notice, HttpStatus.CREATED);
+    }
+
     // 공지사항 목록 조회 (API)
-    @GetMapping("/api")
+    @GetMapping("/notice/list")
     public ResponseEntity<List<NoticeDto>> getNoticeList() {
         List<Notice> notices = this.noticeService.getList();
 
@@ -45,7 +57,7 @@ public class NoticeApiController {
     }
 
     // 공지사항 상세 조회 (API)
-    @GetMapping("/api/{id}")
+    @GetMapping("/notice/{id}")
     public ResponseEntity<NoticeDto> getNotice(@PathVariable("id") Long id) {
         Notice notice = this.noticeService.getNotice(id);
 
@@ -60,34 +72,21 @@ public class NoticeApiController {
         return new ResponseEntity<>(noticeDto, HttpStatus.OK);
     }
 
-    // 공지사항 생성 (API)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/api/create")
-    public ResponseEntity<Notice> createNotice(@RequestParam("title") String title,
-                                               @RequestParam("content") String content,
-                                               Principal principal) {
-        // 로그인한 사용자의 정보를 바탕으로 공지 생성
-        Signup signup = this.userService.getUser(principal.getName());
-        Notice notice = this.noticeService.create(title, content, signup);
-        return new ResponseEntity<>(notice, HttpStatus.CREATED);
-    }
-
     // 공지사항 수정 (API)
-    @PutMapping("/api/modify/{id}")
+    @PutMapping("/notice/{id}")
     public ResponseEntity<Notice> modifyNotice(@PathVariable("id") Long id,
-                                               @RequestParam("title") String title,
-                                               @RequestParam("content") String content,
+                                               @RequestBody NoticeDto request,
                                                Principal principal) {
         Notice notice = this.noticeService.getNotice(id);
         if (!notice.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "수정 권한이 없습니다.");
         }
-        this.noticeService.modify(notice, title, content);
+        this.noticeService.modify(notice, request.getTitle(), request.getContent());
         return new ResponseEntity<>(notice, HttpStatus.OK);
     }
 
     // 공지사항 삭제 (API)
-    @DeleteMapping("/api/delete/{id}")
+    @DeleteMapping("/notice/{id}")
     public ResponseEntity<Void> deleteNotice(@PathVariable("id") Long id,
                                              Principal principal) {
         Notice notice = this.noticeService.getNotice(id);

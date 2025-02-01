@@ -26,7 +26,6 @@
 <p><strong>입고 수량:</strong> <span th:text="${product.quantity}"></span></p>
 <p><strong>출고 가격:</strong> <span th:text="${product.sellPrice}"></span></p>
 <p><strong>설명:</strong> <span th:text="${product.prodDetail}"></span></p>
-<p><strong>가격:</strong> <span th:text="${product.sellPrice}"></span></p>
 
 <div>
   <a th:href="@{/product/update/{id}(id=${product.id})}"
