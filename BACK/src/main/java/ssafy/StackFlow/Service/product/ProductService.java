@@ -12,8 +12,10 @@ import ssafy.StackFlow.Repository.StoreRepository;
 import ssafy.StackFlow.Repository.category.CategoryGroupRepository;
 import ssafy.StackFlow.Repository.category.CategoryRepository;
 import ssafy.StackFlow.Repository.product.*;
+import ssafy.StackFlow.api.prod.dto.ProductUpdateDto;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -127,12 +129,55 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 사이즈 없음: " + size));
     }
 
-    @Transactional
-    public void deleteProduct(Long id) {
-        if (productRepo.existsById(id)) {
-            productRepo.deleteById(id);
-        }
+    // ✅ 전체 상품 조회
+    public List<Product> findAll() {
+        return productRepo.findAll();
     }
 
+    // ✅ 상세 상품 조회
+    public Optional<Product> findById(Long id) {
+        return productRepo.findById(id);
+    }
+
+    // ✅ 상품 수정 메서드
+    @Transactional
+    public Optional<Product> updateProduct(Long id, ProductUpdateDto updateDto) {
+        return productRepo.findById(id).map(product -> {
+            product.setProdName(updateDto.getProdName());
+            product.setProdCode(updateDto.getProdCode());
+            product.setProdDetail(updateDto.getProdDetail());
+            product.setStockPrice(updateDto.getStockPrice());
+            product.setSellPrice(updateDto.getSellPrice());
+            product.setStockQuantity(updateDto.getStockQuantity());
+
+            // 카테고리 업데이트 (존재하는 경우만)
+            categoryRepository.findById(updateDto.getCategoryId())
+                    .ifPresent(product::setProdCate);
+
+            // 카테고리 그룹 업데이트 (존재하는 경우만)
+            categoryGroupRepository.findById(updateDto.getCategoryGroupId())
+                    .ifPresent(product::setCateGroup);
+
+            // 색상 업데이트 (존재하는 경우만)
+            colorRepository.findById(updateDto.getColorId())
+                    .ifPresent(product::setColorCode);
+
+            // 사이즈 업데이트 (존재하는 경우만)
+            sizeRepository.findById(updateDto.getSizeId())
+                    .ifPresent(product::setSize);
+
+            return product;
+        });
+    }
+
+    // ✅ 상품 삭제 메서드
+    @Transactional
+    public boolean deleteProduct(Long id) {
+        if (productRepo.existsById(id)) {  // ✅ 상품이 존재하는지 확인
+            productRepo.deleteById(id);
+            return true;
+        }
+        return false;  // ✅ 존재하지 않으면 false 반환
+    }
 }
 
