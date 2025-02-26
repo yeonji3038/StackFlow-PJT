@@ -7,7 +7,7 @@ import ssafy.StackFlow.Domain.store.service.StoreService;
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
-public class StoreAPIController {
+public class StoreController {
     private final StoreService storeService;
 
     //매장 등록

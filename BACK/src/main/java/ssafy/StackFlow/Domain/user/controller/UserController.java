@@ -22,7 +22,7 @@ import java.net.URLEncoder;
 
 @RestController
 @RequiredArgsConstructor
-public class UserApiController {
+public class UserController {
 
     private final UserService userService; // UserService 주입
 
