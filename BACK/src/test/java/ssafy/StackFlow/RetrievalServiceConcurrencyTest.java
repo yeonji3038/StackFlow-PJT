@@ -4,11 +4,11 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ssafy.StackFlow.Domain.product.ProductStore;
-import ssafy.StackFlow.Repository.product.ProductStoreRepository;
-import ssafy.StackFlow.Service.Retrieval.RetrievalService;
-import ssafy.StackFlow.Service.product.ProductService;
-import ssafy.StackFlow.Service.store.StoreService;
+import ssafy.StackFlow.Domain.product.entity.ProductStore;
+import ssafy.StackFlow.Domain.product.repository.ProductStoreRepository;
+import ssafy.StackFlow.Domain.Retrieval.service.RetrievalService;
+import ssafy.StackFlow.Domain.product.service.ProductService;
+import ssafy.StackFlow.Domain.store.service.StoreService;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
