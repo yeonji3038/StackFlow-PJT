@@ -6,15 +6,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ssafy.StackFlow.Domain.user.entity.Signup;
 import ssafy.StackFlow.Domain.user.service.UserService;
 import ssafy.StackFlow.Domain.user.DTO.LoginDto;
 import ssafy.StackFlow.Domain.user.DTO.UserDto;
 import ssafy.StackFlow.Domain.user.DTO.LoginResponse;
+import ssafy.StackFlow.global.docs.UserApiSpecification;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -22,19 +20,20 @@ import java.net.URLEncoder;
 
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+@RequestMapping("/users")
+public class UserController implements UserApiSpecification {
 
     private final UserService userService; // UserService 주입
 
     //회원가입 APi 연결
-    @PostMapping("/api/user/signup")
+    @PostMapping("/signup")
     public ResponseEntity<Signup> signup(@RequestBody UserDto userDto) {
         Signup createdUser = userService.signup(userDto); // 생성된 사용자 정보 반환
         return ResponseEntity.ok(createdUser); // 생성된 사용자 정보 반환
     }
 
     //일반, 관리자 로그인
-    @PostMapping("/api/user/login")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginDto loginDto, HttpServletResponse response, HttpServletRequest request) {
         boolean loginSuccess = userService.login(loginDto); // 로그인 처리
 
@@ -82,7 +81,7 @@ public class UserController {
     }
 
     // 로그아웃 API
-    @PostMapping("/api/user/logout")
+    @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute("loginMember"); // 세션에서 사용자 정보 삭제
@@ -90,7 +89,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/api/user/info")
+    @GetMapping("/info")
     public ResponseEntity<Signup> getUserInfo(HttpServletRequest request, HttpServletResponse response) {
         // 현재 로그인한 사용자 정보 가져오기
         Signup signup = userService.getCurrentUser();
