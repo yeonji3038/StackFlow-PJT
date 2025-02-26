@@ -26,30 +26,34 @@ import java.io.IOException;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource)) // CORS 설정 적용
-                .csrf(csrf->csrf.disable()) // CSRF 비활성화 (API 사용 시 필수)
+                .csrf(csrf -> csrf.disable()) // CSRF 비활성화 (API 사용 시 필수)
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+                        // Swagger 관련 경로들을 허용
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll() // Swagger UI 관련 경로 허용
                         .requestMatchers("/api/rt/submit").permitAll()
                         .requestMatchers("/user/signup/**").permitAll()  // 회원가입 URL 허용
                         .requestMatchers("/api/user/signup/**").permitAll()  // API 회원가입 URL 허용
-
                         .requestMatchers("/api/admin/**").hasRole("ADMIN") // ADMIN 역할만 접근 가능
                         .requestMatchers("/notice/create").hasRole("ADMIN")  // ADMIN 역할만 공지사항 글쓰기 가능
                         .requestMatchers("/notice/api").permitAll() // 공지사항 목록 조회
                         .requestMatchers("/notice/api/**").permitAll() // 공지사항 상세 조회
                         .requestMatchers("/notice/api/create").permitAll() // 공지사항 생성 API 로그인 없이 접근 허용
-
                         .requestMatchers("/api/user/login/**").permitAll()  // API 로그인 URL 허용
-
                         .requestMatchers("/admin/**", "/store/**").hasRole("ADMIN") // admin과 store 관련 URL은 ADMIN 권한 필요
                         .requestMatchers("/admin/registerStore", "/admin/registerStore/**").hasRole("ADMIN") // 매장 등록 URL 명시적 허용
                         .requestMatchers("/api/admin/category/**").hasRole("ADMIN") // 카테고리 등록
                         .requestMatchers("/chat/**").permitAll()
-                        .anyRequest().authenticated()) // 나머지 요청은 인증 필요
+                        .anyRequest().authenticated()) // 나머지 요청은 인증 필요// 나머지 요청은 인증 필요
 
 //                .csrf((csrf) -> csrf
 //                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"),

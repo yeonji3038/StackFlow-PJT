@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -34,12 +34,26 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 //    implementation group: 'com.h2database', name: 'h2', version: '2.1.214'
-	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'//DB
-	implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0' // servlet
+//	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'//DB
+//        runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' //DB
 
+    //DB
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // servlet
+	implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+
+    //lombok
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' //DB
     annotationProcessor 'org.projectlombok:lombok'
+
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
