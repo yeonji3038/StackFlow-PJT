@@ -54,19 +54,11 @@ public class SwaggerConfig {
     }
 
 
-//    @Bean
-//    public GroupedOpenApi homeApi() {
-//        return GroupedOpenApi.builder()
-//                .group("3. 홈 화면")
-//                .pathsToMatch("/**/dashboard/**")
-//                .build();
-//    }
-
 
     @Bean
     public GroupedOpenApi adminApi() {
         return GroupedOpenApi.builder()
-                .group("0. 관리자")
+                .group("관리자")
                 .pathsToMatch("/admin/**")
                 .build();
     }

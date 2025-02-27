@@ -150,14 +150,11 @@ public class RetrievalApiController {
                 retIds.add(retId);
             } catch (InsufficientStockException e) { // 재고 부족 시 예외 처리
                 return ResponseEntity.ok(
-                        new ApiResponse<>("error", "Insufficient stock for product: " + instruction.getProductId(), null)
+                        new ApiResponse<>(400, "Insufficient stock for product: " + instruction.getProductId(), null)
                 );
             }
         }
-        return ResponseEntity.ok(new ApiResponse<>("success", "Instructions processed successfully", retIds));
+        return ResponseEntity.ok(new ApiResponse<>(200, "Instructions processed successfully", retIds));
     }
 
 }
-
-
-
