@@ -37,29 +37,25 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .addServersItem(new Server().url("/api"))
-                .addSecurityItem(new SecurityRequirement().
-                        addList("Bearer Authentication"))
-                .components(new Components().addSecuritySchemes
-                        ("Bearer Authentication", createAPIKeyScheme()))
+                .addSecurityItem(new SecurityRequirement()
+                        .addList("Bearer Authentication"))
+                .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
                 .info(apiInfo());
     }
 
+    // 매장 관리 그룹
     @Bean
     public GroupedOpenApi signupApi() {
         return GroupedOpenApi.builder()
                 .group("매장 관리")
-                .pathsToMatch("/users/**")
-                .pathsToExclude("/users/**")
+                .pathsToMatch("/users/**") // 매장 관리 경로만 문서화
                 .build();
     }
 
-
-
-    @Bean
-    public GroupedOpenApi adminApi() {
-        return GroupedOpenApi.builder()
-                .group("관리자")
-                .pathsToMatch("/admin/**")
-                .build();
+//    @Bean
+//    public GroupedOpenApi adminApi() {
+//        return GroupedOpenApi.builder()
+//                .group("관리자")
+//                .pathsToMatch("/admin/**")
+//                .build();
     }
-}
