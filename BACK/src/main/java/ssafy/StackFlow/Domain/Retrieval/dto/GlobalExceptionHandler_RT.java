@@ -13,7 +13,7 @@ public class GlobalExceptionHandler_RT {
     public ResponseEntity<ApiResponse<Object>> handleAllExceptions(Exception ex, WebRequest request) {
         ex.printStackTrace(); // 로그 기록
         ApiResponse<Object> response = new ApiResponse<>(
-                "error",
+                400,
                 "Unexpected error occurred: " + ex.getMessage(),
                 null
         );
@@ -23,7 +23,7 @@ public class GlobalExceptionHandler_RT {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<Object>> handleBadRequest(Exception ex, WebRequest request) {
         ApiResponse<Object> response = new ApiResponse<>(
-                "error",
+                400,
                 ex.getMessage(),
                 null
         );

@@ -1,20 +1,55 @@
 package ssafy.StackFlow.Domain.user.DTO;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import ssafy.StackFlow.Domain.user.entity.Role;
+import ssafy.StackFlow.Domain.user.entity.Signup;
 
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserDto {
     private Long id;
     private String username;
     private String password;
+    private String password2;
     private String email;
-    private String role;
-    private String storeCode;
+    private Timestamp createdAt;
+    private Role role;
+    private Long storeId;  // StoreId 필드
 
+    // UserDto -> Signup Entity 변환
+    public static Signup toEntity(UserDto userDto, PasswordEncoder passwordEncoder) {
+        // storeId 유무에 따라 role 자동 설정
+        Role role = (userDto.getStoreId() != null) ? Role.ROLE_USER : Role.ROLE_ADMIN;
+
+        return Signup.builder()
+                .username(userDto.getUsername())
+                .password(passwordEncoder.encode(userDto.getPassword()))  // 🔹 비밀번호 암호화
+                .email(userDto.getEmail())
+                .role(role)  // 🔹 자동 설정된 Role 적용
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .build();
+    }
+
+    // Entity -> DTO 변환
+    public static UserDto fromEntity(Signup signup) {
+        return UserDto.builder()
+                .id(signup.getId())
+                .username(signup.getUsername())
+                .email(signup.getEmail())
+                .role(signup.getRole())
+                .createdAt(signup.getCreatedAt())
+                .storeId(signup.getStore() != null ? signup.getStore().getId() : null)  // Store 정보에서 storeId 가져오기
+                .build();
+    }
 }
 
 
