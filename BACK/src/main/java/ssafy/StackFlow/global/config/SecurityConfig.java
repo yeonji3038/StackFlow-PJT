@@ -27,39 +27,28 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        boolean isDevMode = "dev".equals(System.getenv("SPRING_PROFILES_ACTIVE"));
-
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> {
-                    if (isDevMode) {
-                        auth.anyRequest().permitAll();
-                    } else {
-                        auth
-                                .requestMatchers(
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui/**",
-                                        "/swagger-ui.html",
-                                        "/swagger-resources/**",
-                                        "/api/v3/api-docs/**",
-                                        "/api-docs/**",
-                                        "/webjars/**",
-                                        "/api/rt/submit",
-                                        "/user/signup/**",
-                                        "/notice/create",
-                                        "/notice/api/**",
-                                        "/store/**",
-                                        "/api/admin/category/**",
-                                        "/chat/**",
-                                        "/swagger-ui/index.html" // 추가된 부분
-                                ).permitAll()
-                                .requestMatchers("/admin/**").permitAll()
-                                .anyRequest().authenticated();
-                    }
-                })
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/api/v3/api-docs/**",        // 변경: 정확한 경로 매칭
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/api/rt/submit",
+                                "/user/signup/**",
+                                "/notice/create",
+                                "/notice/api/**",
+                                "/store/**",
+                                "/api/admin/category/**",
+                                "/chat/**"
+                        ).permitAll()
+                        .requestMatchers("/admin/**").permitAll()
+                        .anyRequest().permitAll() // 로컬 개발 중에는 모든 요청 허용
+                )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
 }

@@ -15,6 +15,7 @@ import ssafy.StackFlow.Domain.product.repository.ProductStoreRepository;
 import ssafy.StackFlow.Domain.Retrieval.service.RetrievalService;
 import ssafy.StackFlow.Domain.product.service.ProductService;
 import ssafy.StackFlow.Domain.store.service.StoreService;
+import ssafy.StackFlow.global.docs.RetrievalApiSpecification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,9 @@ import static java.util.stream.Collectors.toList;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@RequestMapping("/retrieval")
 @RequiredArgsConstructor
-public class RetrievalApiController {
+public class RetrievalApiController implements RetrievalApiSpecification {
     private final RetrievalService retrievalService;
     private final ProductStoreRepository productStoreRepository;
     private final ProductRepo productRepo;
@@ -35,7 +37,7 @@ public class RetrievalApiController {
     private final StoreRepository storeRepository;
 
 
-    @GetMapping("/api/retrieval/product")
+    @GetMapping("/product")
     public List<RetrievalProdDto> RetProdListApi() {
         Long headOfficeId = 1L;
         List<Product> products = productRepo.findAll();
@@ -74,7 +76,7 @@ public class RetrievalApiController {
     }
 
 
-    @GetMapping("/api/retrieval/list")
+    @GetMapping("/list")
     public List<RetrievalListDto> RetList1Api() {
         List<Retrieval> retList = retrievalRepository.findAll();
         List<RetrievalListDto> result = retList.stream()
@@ -83,7 +85,7 @@ public class RetrievalApiController {
         return result;
     }
 
-    @PostMapping("/api/retrieval/submit/admin")
+    @PostMapping("/submit/admin")
     public ResponseEntity<RetrievalResponseDto> createInstructions(@RequestBody RetrievalRequestDto request) {
         try {
             if (request == null || request.getInstructions() == null || request.getInstructions().isEmpty()) {
@@ -122,7 +124,7 @@ public class RetrievalApiController {
     }
 
 
-    @PostMapping("/api/retrieval/submit/user")
+    @PostMapping("/submit/user")
     public ResponseEntity<ApiResponse<List<Long>>> createInstructionsUser(@RequestBody RetrievalRequestUserDto request) {
         if (request == null || request.getInstructions() == null || request.getInstructions().isEmpty()) {
             throw new IllegalArgumentException("Request or instructions cannot be null or empty");

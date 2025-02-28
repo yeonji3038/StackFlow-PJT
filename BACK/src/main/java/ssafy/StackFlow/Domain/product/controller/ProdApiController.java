@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssafy.StackFlow.Domain.product.dto.*;
 import ssafy.StackFlow.Domain.product.service.ProductService;
+import ssafy.StackFlow.global.docs.ProductApiSpecification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,12 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
-public class ProdApiController {
+@RequestMapping("/product")
+public class ProdApiController implements ProductApiSpecification {
 
     private final ProductService productService;
 
-    @PostMapping("/api/product/create")
+    @PostMapping("/create")
     public ResponseEntity<ProductResponseDto> createProductions(@RequestBody ProductRequestDto request) {
         try {
             List<Long> prodIds = new ArrayList<>();
@@ -48,7 +50,7 @@ public class ProdApiController {
     }
 
     // ✅ 상품 전체 조회
-    @GetMapping("/api/product/list")
+    @GetMapping("/list")
     public ResponseEntity<List<ProductListDto>> getAllProducts() {
         List<ProductListDto> products = productService.findAll().stream()
                 .map(product -> new ProductListDto(
@@ -84,7 +86,7 @@ public class ProdApiController {
     }
 
     // ✅ 상품 상세 조회
-    @GetMapping("/api/product/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ProductDetailDto> getProductById(@PathVariable Long id) {
         return productService.findById(id)
                 .map(product -> ResponseEntity.ok(new ProductDetailDto(
@@ -118,7 +120,7 @@ public class ProdApiController {
     }
 
     // ✅ 상품 수정 API (PUT /api/product/{id})
-    @PutMapping("/api/product/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProductDetailDto> updateProduct(
             @PathVariable Long id,
             @RequestBody ProductUpdateDto updateDto) {
@@ -154,8 +156,8 @@ public class ProdApiController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // ✅ 상품 삭제 API (DELETE /api/product/{id})
-    @DeleteMapping("/api/product/{id}")
+    // ✅ 상품 삭제 API (/{id})
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         boolean deleted = productService.deleteProduct(id);
         if (deleted) {
