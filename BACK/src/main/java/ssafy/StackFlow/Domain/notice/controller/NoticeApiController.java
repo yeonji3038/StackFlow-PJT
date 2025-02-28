@@ -12,22 +12,23 @@ import ssafy.StackFlow.Domain.notice.service.NoticeService;
 import ssafy.StackFlow.Domain.user.service.UserService;
 import ssafy.StackFlow.Domain.notice.DTO.FileDto;
 import ssafy.StackFlow.Domain.notice.DTO.NoticeDto;
+import ssafy.StackFlow.global.docs.NoticeApiSpecification;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api")
+@RequestMapping("/notice")
 @RequiredArgsConstructor
 @RestController  // 프론트 API 넘겨주기 (json 응답 반환)
-public class NoticeApiController {
+public class NoticeApiController implements NoticeApiSpecification {
     private final NoticeService noticeService;
     private final UserService userService;
 
     // 공지사항 생성 (API)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/notice/create")
+    @PostMapping("/create")
     public ResponseEntity<Notice> createNotice(@RequestBody NoticeDto request, Principal principal) {
 
         // 로그인한 사용자의 정보를 바탕으로 공지 생성
@@ -37,7 +38,7 @@ public class NoticeApiController {
     }
 
     // 공지사항 목록 조회 (API)
-    @GetMapping("/notice/list")
+    @GetMapping("/list")
     public ResponseEntity<List<NoticeDto>> getNoticeList() {
         List<Notice> notices = this.noticeService.getList();
 
@@ -57,7 +58,7 @@ public class NoticeApiController {
     }
 
     // 공지사항 상세 조회 (API)
-    @GetMapping("/notice/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<NoticeDto> getNotice(@PathVariable("id") Long id) {
         Notice notice = this.noticeService.getNotice(id);
 
@@ -73,7 +74,7 @@ public class NoticeApiController {
     }
 
     // 공지사항 수정 (API)
-    @PutMapping("/notice/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Notice> modifyNotice(@PathVariable("id") Long id,
                                                @RequestBody NoticeDto request,
                                                Principal principal) {
@@ -86,7 +87,7 @@ public class NoticeApiController {
     }
 
     // 공지사항 삭제 (API)
-    @DeleteMapping("/notice/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNotice(@PathVariable("id") Long id,
                                              Principal principal) {
         Notice notice = this.noticeService.getNotice(id);

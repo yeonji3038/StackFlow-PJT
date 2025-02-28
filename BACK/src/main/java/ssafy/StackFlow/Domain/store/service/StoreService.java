@@ -76,7 +76,5 @@ public class StoreService {
         return storeRepository.findAll(); // 모든 매장 정보를 반환
     }
 
-    public Store getStoreByUser(String username) {
-        return storeRepository.findByStoreCode(username);
-    }
+
 }

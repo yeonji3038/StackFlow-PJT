@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler_RT {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleAllExceptions(Exception ex, WebRequest request) {
         ex.printStackTrace(); // 로그 기록
         ApiResponse<Object> response = new ApiResponse<>(
-                "error",
+                400,
                 "Unexpected error occurred: " + ex.getMessage(),
                 null
         );
@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<Object>> handleBadRequest(Exception ex, WebRequest request) {
         ApiResponse<Object> response = new ApiResponse<>(
-                "error",
+                400,
                 ex.getMessage(),
                 null
         );

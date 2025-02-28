@@ -24,6 +24,7 @@ import ssafy.StackFlow.Domain.product.repository.SizeRepository;
 import ssafy.StackFlow.Domain.RT.service.RtService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ssafy.StackFlow.global.docs.RtApiSpecification;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +39,8 @@ import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequiredArgsConstructor
-public class RtApiController {
+@RequestMapping("/rt")
+public class RtApiController implements RtApiSpecification {
 
     private final RtService rtService;
     private final RtApiRepository rtApiRepository;
@@ -55,7 +57,7 @@ public class RtApiController {
         return (CsrfToken) request.getAttribute(CsrfToken.class.getName());
     }
 
-    @GetMapping("/api/rt/product")
+    @GetMapping("/product")
     public List<RtProdDto> RtProdListApi() {
         List<Product> products = productRepo.findAll();
         List<RtProdDto> result = products.stream()
@@ -64,7 +66,7 @@ public class RtApiController {
         return result;
     }
 
-    @GetMapping("/api/rt/category")
+    @GetMapping("/category")
     public List<RtCategoryDto> RtCateListApi() {
         List<Category> categories = categoryRepository.findAll();
         List<RtCategoryDto> result = categories.stream()
@@ -73,7 +75,7 @@ public class RtApiController {
         return result;
     }
 
-    @GetMapping("/api/rt/categoryGroup")
+    @GetMapping("/categoryGroup")
     public List<RtCategoryGroupDto> RtCateGroupListApi() {
         List<CategoryGroup> categorieGroups = categoryGroupRepository.findAll();
         List<RtCategoryGroupDto> result = categorieGroups.stream()
@@ -82,7 +84,7 @@ public class RtApiController {
         return result;
     }
 
-    @GetMapping("/api/rt/color")
+    @GetMapping("/color")
     public List<RtColorDto> RtColorListApi() {
         List<Color> colors = colorRepository.findAll();
         List<RtColorDto> result = colors.stream()
@@ -90,7 +92,7 @@ public class RtApiController {
                 .collect(toList());
         return result;
     }
-    @GetMapping("/api/rt/store")
+    @GetMapping("/store")
     public List<RtStoreDto> RtStoreListApi() {
         List<Store> stores = storeRepository.findAll();
         List<RtStoreDto> result = stores.stream()
@@ -98,7 +100,7 @@ public class RtApiController {
                 .collect(toList());
         return result;
     }
-    @GetMapping("/api/rt/size")
+    @GetMapping("/size")
     public List<RtSizeDto> RtSizeListApi() {
         List<Size> sizes = sizeRepository.findAll();
         List<RtSizeDto> result = sizes.stream()
@@ -108,7 +110,7 @@ public class RtApiController {
     }
 
 
-@GetMapping("/api/rt/all")
+@GetMapping("/all")
 public Map<String, Map<Long, String>> RtAllListApi() {
     List<Color> colors = colorRepository.findAll();
     List<CategoryGroup> categoryGroups = categoryGroupRepository.findAll();
@@ -151,7 +153,7 @@ public Map<String, Map<Long, String>> RtAllListApi() {
 }
 
 
-    @PostMapping("/api/rt/submit")
+    @PostMapping("/submit")
     public ResponseEntity<RtResponseDto> createInstructions(@RequestBody RtRequestDto request) {
         try {
             List<Long> rtIds = new ArrayList<>();
@@ -175,7 +177,7 @@ public Map<String, Map<Long, String>> RtAllListApi() {
         }
     }
 
-    @GetMapping("/api/rt/meToOtherRtlist")
+    @GetMapping("/meToOtherRtlist")
     public List<MyRtDto> RtList1Api() {
         Store loginStore = rtService.getUserStore();
         if (loginStore == null) {
@@ -189,7 +191,7 @@ public Map<String, Map<Long, String>> RtAllListApi() {
         return result;
     }
 
-    @GetMapping("/api/rt/OtherToMeRtlist")
+    @GetMapping("/OtherToMeRtlist")
     public List<OtherRtDto> RtList2Api() {
         Store loginStore = rtService.getUserStore();
         if (loginStore == null) {
@@ -204,7 +206,7 @@ public Map<String, Map<Long, String>> RtAllListApi() {
     }
 
 
-    @GetMapping("/api/rt/RTAlllist")
+    @GetMapping("/RTAlllist")
     public List<RTAllDto> RtList3Api() {
         List<RT> rtList = rtApiRepository.findAllWithItem();
         List<RTAllDto> result = rtList.stream()
@@ -213,7 +215,7 @@ public Map<String, Map<Long, String>> RtAllListApi() {
         return result;
     }
 
-    @PutMapping("/api/rt/RTstatus")
+    @PutMapping("/RTstatus")
     public ResponseEntity<?> updateRtStatus(
             @RequestBody RtStatusUpdateRequest request) {
         try {

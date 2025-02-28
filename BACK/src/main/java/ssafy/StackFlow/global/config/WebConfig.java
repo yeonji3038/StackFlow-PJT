@@ -1,4 +1,4 @@
-package ssafy.StackFlow;
+package ssafy.StackFlow.global.config;
 
 import jakarta.servlet.MultipartConfigElement;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
@@ -17,8 +17,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:3000") // React 클라이언트 URL
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
                 .allowedHeaders("*") // 모든 헤더 허용
-                .allowCredentials(true) // 인증 정보 허용
-                .maxAge(3600); // 캐싱 시간 (초)
+                .allowCredentials(true); // 인증 정보 허용
+
     }
 
     // 파일 업로드 크기 설정
