@@ -1,91 +1,113 @@
-import axios from "axios"
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import styles from './Notice.module.css';
+
+const BASE_URL = process.env.REACT_APP_API_URL;
 
 const Notice = () => {
-  const BASE_URL = "http://localhost:8080"
-  const csrfToken = "72900BBA49A02D53A893D789E339F216"; // CSRF 토큰
+  const navigate = useNavigate();
+  const [notices, setNotices] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-   // userInput func
-   const GETTEST = async (commend) => {
+  useEffect(() => {
+    fetchNotices();
+  }, []);
+
+  const fetchNotices = async () => {
     try {
-      const response = await axios({
-        method: "GET",
-        url: `${BASE_URL}/notice/api`,
-        withCredentials: true,
-        headers: {
-          "X-CSRF-TOKEN": csrfToken,
-        },
-      })
-      console.log(response)
-      } catch (err) {
-        console.error("Error fetching or filtering data:", err);
-        }
-    } 
-    
-    const GETDETAILTEST = async (commend) => {
-      try {
-        const response = await axios({
-          method: "GET",
-          url: `${BASE_URL}/notice/api/1`,
-          withCredentials: true,
-          headers: {
-            "X-CSRF-TOKEN": csrfToken,
-          },
-        })
-        console.log(response)
-        } catch (err) {
-          console.error("Error fetching or filtering data:", err);
-          }
-      } 
-      const DELETETEST = async (commend) => {
-        try {
-          const response = await axios({
-            method: "DELETE",
-            url: `${BASE_URL}/notice/api/delete/3`,
-            withCredentials: true,
-            maxRedirects: 0,
-            headers: {
-              "x-www-form-urlencoded": csrfToken,
-            }
-           
-          })
-          console.log(response)
-          } catch (err) {
-            console.error("Error fetching or filtering data:", err);
-            }
-        } 
-  
+      const response = await axios.get(`${BASE_URL}/api/notice/list`, {
+        withCredentials: true
+      });
+      setNotices(response.data);
+    } catch (error) {
+      console.error('공지사항 목록 조회 실패:', error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${BASE_URL}/api/notice/${id}`, {
+        withCredentials: true
+      });
+      fetchNotices();
+    } catch (error) {
+      console.error('공지사항 삭제 실패:', error);
+    }
+  };
+
+  const filteredNotices = notices.filter(notice =>
+    notice.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <>
-      <h1>공지사항</h1>
-      <hr />
-      <div className="content">
-        <div className="inputData">
-          <input type="text" /> 
-          <button>검색</button>
+    <div className={styles.container}>
+      <h1 className={styles.title}>공지사항</h1>
+      <div className={styles.divider} />
+      
+      <div className={styles.searchSection}>
+        <div className={styles.searchBar}>
+          <input
+            type="text"
+            placeholder="검색어를 입력하세요"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={styles.searchInput}
+          />
+          <button className={styles.searchButton}>검색</button>
         </div>
-        <button>글쓰기</button>
+        <button 
+          className={styles.writeButton}
+          onClick={() => navigate('/notice/create')}
+        >
+          글쓰기
+        </button>
       </div>
-      <table>
-        <thead>
-          <th>No</th>
-          <th>제목</th>
-          <th>등록일</th>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>기존 고객 추가 매장 등록</td>
-            <td>2024-12-10</td>
-          </tr>
-        
-        </tbody>
+      image.png
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
+          <thead className={styles.tableHeader}>
+            <tr>
+              <th>NO</th>
+              <th>제목</th>
+              <th>등록일</th>
+            </tr>
+          </thead>
+          <tbody className={styles.tableBody}>
+            {filteredNotices.map((notice, index) => (
+              <tr key={notice.id}>
+                <td>{notices.length - index}</td>
+                <td>{notice.title}</td>
+                <td>{new Date(notice.createdAt).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      </table>
-      <button onClick={DELETETEST}>test</button>
-    </>
+      <div className={styles.pagination}>
+        <button className={styles.pageArrow}>≪</button>
+        <button className={styles.pageArrow}>＜</button>
+        <div className={styles.pageNumbers}>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+            <span 
+              key={num} 
+              className={`${styles.pageNumber} ${num === 1 ? styles.active : ''}`}
+            >
+              {num}
+            </span>
+          ))}
+        </div>
+        <button className={styles.pageArrow}>＞</button>
+        <button className={styles.pageArrow}>≫</button>
+        <select className={styles.dropdown}>
+          <option>10개씩 보기</option>
+          <option>20개씩 보기</option>
+          <option>30개씩 보기</option>
+        </select>
+      </div>
+    </div>
+  );
+};
 
-  )
-}
-
-export default Notice
+export default Notice;
