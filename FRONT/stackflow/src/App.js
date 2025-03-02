@@ -10,6 +10,8 @@ import RtSearch from './pages/rt/RtSearch';
 import RtRegister from './pages/rt/RtRegister';
 import ChatHistory from './pages/chatbot/ChatHistory';
 import Notice from './pages/notice/Notice';
+import NoticeCreate from './pages/notice/NoticeCreate';
+import NoticeEdit from './pages/notice/NoticeEdit';
 import ProductRegister from './pages/product/ProductRegister';
 import ProductManagement from './pages/product/ProductManagement';
 import ProductStockStatus from './pages/product/ProductStockStatus';
@@ -52,6 +54,8 @@ function App() {
                 <Route path="/inventory/shipping" element={<InventoryShipping />} />
                 <Route path="/inventory/history" element={<InventoryHistory />} />
                 <Route path="notice/*" element={<Notice />} />
+                <Route path="/notice/create" element={<NoticeCreate />} />
+                <Route path="/notice/edit/:id" element={<NoticeEdit />} />
                 <Route path="product/*" element={<ProductPages />} />
                 <Route path="/product/register" element={<ProductRegister />} />
                 <Route path="/product/management" element={<ProductManagement />} />
