@@ -18,23 +18,22 @@ import java.sql.Timestamp;
 public class UserDto {
     private Long id;
     private String username;
+    private String name;
     private String password;
     private String password2;
     private String email;
     private Timestamp createdAt;
-    private Role role;
+    private Role role = Role.USER; // 기본값을 USER로 설정
     private Long storeId;  // StoreId 필드
 
     // UserDto -> Signup Entity 변환
     public static Signup toEntity(UserDto userDto, PasswordEncoder passwordEncoder) {
-        // storeId 유무에 따라 role 자동 설정
-        Role role = (userDto.getStoreId() != null) ? Role.ROLE_USER : Role.ROLE_ADMIN;
-
         return Signup.builder()
                 .username(userDto.getUsername())
+                .name(userDto.getName())
                 .password(passwordEncoder.encode(userDto.getPassword()))  // 🔹 비밀번호 암호화
                 .email(userDto.getEmail())
-                .role(role)  // 🔹 자동 설정된 Role 적용
+                .role(userDto.getRole())
                 .createdAt(new Timestamp(System.currentTimeMillis()))
                 .build();
     }
@@ -43,6 +42,7 @@ public class UserDto {
     public static UserDto fromEntity(Signup signup) {
         return UserDto.builder()
                 .id(signup.getId())
+                .name(signup.getName())
                 .username(signup.getUsername())
                 .email(signup.getEmail())
                 .role(signup.getRole())

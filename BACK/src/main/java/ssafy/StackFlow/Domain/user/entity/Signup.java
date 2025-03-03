@@ -19,13 +19,16 @@ public class Signup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;  // 사용자 고유 ID
 
-    @Column
-    private String username; // 사용자 이름
+    @Column(nullable = false, unique = true)
+    private String username; // ID
 
-    @Column
+    @Column(nullable = false)
+    private String name; // 이름
+
+    @Column(nullable = false)
     private String password; // 비밀번호
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email; // 이메일
 
     @Enumerated(EnumType.STRING)  // Enum 값을 문자열로 저장
