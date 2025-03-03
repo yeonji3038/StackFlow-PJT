@@ -6,14 +6,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import ssafy.StackFlow.Domain.user.DTO.AdminSignupDto;
-import ssafy.StackFlow.Domain.user.DTO.AdminSignupResponseDto;
+import ssafy.StackFlow.Domain.user.DTO.*;
 import ssafy.StackFlow.Domain.user.entity.Role;
 import ssafy.StackFlow.Domain.user.entity.Signup;
 import ssafy.StackFlow.Domain.store.repository.StoreRepository;
 import ssafy.StackFlow.Domain.user.repository.UserRepository;
 import ssafy.StackFlow.Domain.notice.service.DataNotFoundException;
-import ssafy.StackFlow.Domain.user.DTO.UserDto;
 import ssafy.StackFlow.global.config.JwtTokenProvider;
 import ssafy.StackFlow.global.utill.SecurityUtil;
 
@@ -99,43 +97,27 @@ public class UserService {
         }
     }
 
-    //로그인
+    //본사 로그인
+    public AdminLoginResponseDto loginAdmin(AdminLoginRequestDto adminLoginRequestDto) {
+
+        // username으로 관리자 찾기
+        Signup admin = (Signup) userRepository.findByUsername(adminLoginRequestDto.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("사용자 이름을 찾을 수 없습니다."));
+
+        // 비밀번호 일치 여부 확인
+        if (!passwordEncoder.matches(adminLoginRequestDto.getPassword(), admin.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // JWT 토큰 생성
+        String token = jwtTokenProvider.createToken(admin.getUsername()); // username을 사용하여 토큰 생성
+
+        // AdminLoginResponseDto 생성하여 반환
+        return AdminLoginResponseDto.fromEntity(admin, token);
+    }
 
 
 
-////로그인 API 연결
-//    public boolean login(LoginDto loginDto) {
-//        // username으로 사용자 정보 조회
-//        Optional<Signup> optionalSignup = userRepository.findByusername(loginDto.getUsername());
-//
-//        // 사용자 존재 여부 확인
-//        if (optionalSignup.isPresent()) {
-//            Signup signup = optionalSignup.get();
-//
-//            // 비밀번호 검증
-//            if (passwordEncoder.matches(loginDto.getPassword(), signup.getPassword())) {
-//                return true; // 로그인 성공
-//            }
-//        }
-//
-//        return false; // 로그인 실패
-//    }
 
-//    //관리자 API  연결
-//    public boolean Admin(LoginDto loginDto) {
-//        Optional<Signup> optionalSignup = userRepository.findByusername(loginDto.getUsername());
-//
-//        if (optionalSignup.isPresent()) {
-//            Signup signup = optionalSignup.get();
-//
-//            if (passwordEncoder.matches(loginDto.getPassword(), signup.getPassword())) {
-//                // 관리자 여부 확인
-//                if ("ROLE_ADMIN".equals(signup.getRole())) {
-//                    return true; // 관리자 로그인 성공
-//                }
-//            }
-//        }
-//
-//        return false; // 로그인 실패
-//    }
+
 }
