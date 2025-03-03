@@ -1,4 +1,3 @@
-import './App.css'
 import React from 'react';
 import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
 
@@ -11,11 +10,13 @@ import RtSearch from './pages/rt/RtSearch';
 import RtRegister from './pages/rt/RtRegister';
 import ChatHistory from './pages/chatbot/ChatHistory';
 import Notice from './pages/notice/Notice';
+import NoticeCreate from './pages/notice/NoticeCreate';
+import NoticeEdit from './pages/notice/NoticeEdit';
 import ProductRegister from './pages/product/ProductRegister';
 import ProductManagement from './pages/product/ProductManagement';
 import ProductStockStatus from './pages/product/ProductStockStatus';
 import ProductCategoryRegister from './pages/product/ProductCategoryRegister';
-import InventoryMain from './pages/inventory/inventoryMain';
+import InventoryReceiving from './pages/inventory/InventoryReceiving';
 import InventoryShipping from './pages/inventory/InventoryShipping';
 import InventoryHistory from './pages/inventory/InventoryHistory';
 import MyPage from './pages/MyPage';
@@ -40,7 +41,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         
 
-        {/* <Route element={<PrivateRoute />}> */}
+        <Route element={<PrivateRoute />}>
         {/* MainLayout이 적용되는 라우트들 */}
         <Route
           path="/*"
@@ -48,12 +49,13 @@ function App() {
             <MainLayout>
               <Routes>
                 <Route path="main" element={<MainPage />} />
-                <Route path="inventory/*" element={<InventoryMain/>}>
-                  <Route index element={<Navigate to="./history" replace />} />
-                  <Route path="shipping" element={<InventoryShipping />} />
-                  <Route path="history" element={<InventoryHistory />} />
-                </Route>
+                <Route path="inventory/*" element={<InventoryPages />} />
+                <Route path="/inventory/receiving" element={<InventoryReceiving />} />
+                <Route path="/inventory/shipping" element={<InventoryShipping />} />
+                <Route path="/inventory/history" element={<InventoryHistory />} />
                 <Route path="notice/*" element={<Notice />} />
+                <Route path="/notice/create" element={<NoticeCreate />} />
+                <Route path="/notice/edit/:id" element={<NoticeEdit />} />
                 <Route path="product/*" element={<ProductPages />} />
                 <Route path="/product/register" element={<ProductRegister />} />
                 <Route path="/product/management" element={<ProductManagement />} />
@@ -74,7 +76,7 @@ function App() {
             </MainLayout>
           }
         />
-        {/* </Route> */}
+        </Route>
       </Routes>
     </BrowserRouter>
   );
