@@ -23,18 +23,18 @@ public class UserDto {
     private String password2;
     private String email;
     private Timestamp createdAt;
-    private Role role = Role.USER; // 기본값을 USER로 설정
-    private Long storeId;  // StoreId 필드
+//    private Long storeId;  // StoreId 필드
+//    private String storeCode;
 
     // UserDto -> Signup Entity 변환
-    public static Signup toEntity(UserDto userDto, PasswordEncoder passwordEncoder) {
+    public static Signup toEntity(UserDto userDto, PasswordEncoder passwordEncoder, Role role) {
         return Signup.builder()
                 .username(userDto.getUsername())
                 .name(userDto.getName())
                 .password(passwordEncoder.encode(userDto.getPassword()))  // 🔹 비밀번호 암호화
                 .email(userDto.getEmail())
-                .role(userDto.getRole())
                 .createdAt(new Timestamp(System.currentTimeMillis()))
+                .role(role)
                 .build();
     }
 
@@ -45,9 +45,8 @@ public class UserDto {
                 .name(signup.getName())
                 .username(signup.getUsername())
                 .email(signup.getEmail())
-                .role(signup.getRole())
                 .createdAt(signup.getCreatedAt())
-                .storeId(signup.getStore() != null ? signup.getStore().getId() : null)  // Store 정보에서 storeId 가져오기
+//                .storeId(signup.getStore() != null ? signup.getStore().getId() : null)  // Store 정보에서 storeId 가져오기
                 .build();
     }
 }

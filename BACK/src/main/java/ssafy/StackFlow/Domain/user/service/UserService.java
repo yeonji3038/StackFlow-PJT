@@ -28,36 +28,6 @@ public class UserService {
     private final SecurityUtil securityUtil;
 
 
-    // 현재 사용자 조회
-    public Signup getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new IllegalArgumentException("로그인된 사용자 없음");
-        }
-
-        String username = authentication.getName();
-        return userRepository.findByusername(username)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자 찾지 못함: " + username));
-    }
-
-
-
-    //매장 회원가입
-    public UserDto signupUser(UserDto userDto) {
-        // 비밀번호 확인
-        if (!userDto.getPassword().equals(userDto.getPassword2())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
-
-        // UserDto -> Signup 엔티티 변환 (비밀번호 암호화 포함)
-        Signup user = UserDto.toEntity(userDto, passwordEncoder);
-
-        Signup savedUser = userRepository.save(user);
-
-        // Signup 엔티티 -> UserDto 변환 후 반환
-        return UserDto.fromEntity(savedUser);
-    }
-
     // 본사 회원가입
     public AdminSignupResponseDto signupAdmin(AdminSignupDto adminSignupDTO) {
         // 중복 이메일 체크
@@ -87,15 +57,7 @@ public class UserService {
         return AdminSignupResponseDto.fromEntity(admin); // fromEntity 메서드를 사용
     }
 
-    // 사용자 조회
-    public Signup getUser(String username) {
-        Optional<Signup> signup = this.userRepository.findByusername(username);
-        if (signup.isPresent()) {
-            return signup.get();
-        } else {
-            throw new DataNotFoundException("사용자를 찾을 수 없습니다.");
-        }
-    }
+
 
     //본사 로그인
     public AdminLoginResponseDto loginAdmin(AdminLoginRequestDto adminLoginRequestDto) {
@@ -117,7 +79,73 @@ public class UserService {
     }
 
 
+    //매장 회원가입
+    public UserDto signupUser(UserDto userDto) {
+        // 비밀번호 확인
+        if (!userDto.getPassword().equals(userDto.getPassword2())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
 
+        // 필수 입력값 확인
+        if (userDto.getUsername() == null || userDto.getUsername().isEmpty()) {
+            throw new IllegalArgumentException("아이디를 입력해야 합니다.");
+        }
+//        if (userDto.getStoreCode() == null || userDto.getStoreCode().isEmpty()) {
+//            throw new IllegalArgumentException("매장 코드를 입력해야 합니다.");
+//        }
+
+        // 아이디(이메일) 중복 검사
+        if (userRepository.existsByUsername(userDto.getUsername())) {
+            throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
+        }
+
+//        // 매장 코드 존재 여부 검사 (없는 코드일 경우 예외 발생)
+//        if (!storeRepository.existsByCode(userDto.getStoreCode())) {
+//            throw new IllegalArgumentException("존재하지 않는 매장 코드입니다.");
+//        }
+
+        // 무조건 USER 역할로 설정
+        Role role = Role.USER;
+
+        // UserDto -> Signup 엔티티 변환 (비밀번호 암호화 포함)
+        Signup user = UserDto.toEntity(userDto, passwordEncoder, role);
+
+        Signup savedUser = userRepository.save(user);
+
+        // Signup 엔티티 -> UserDto 변환 후 반환
+        return UserDto.fromEntity(savedUser);
+    }
+
+    //본사 로그인
+    public UserLoginResponseDto loginUser(UserLoginRequestDto userLoginRequestDto) {
+
+        // username으로 관리자 찾기
+        Signup user = (Signup) userRepository.findByUsername(userLoginRequestDto.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("사용자 이름을 찾을 수 없습니다."));
+
+        // 비밀번호 일치 여부 확인
+        if (!passwordEncoder.matches(userLoginRequestDto.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // JWT 토큰 생성
+        String token = jwtTokenProvider.createToken(user.getUsername()); // username을 사용하여 토큰 생성
+
+        // AdminLoginResponseDto 생성하여 반환
+        return UserLoginResponseDto.fromEntity(user, token);
+    }
+
+
+
+    // 사용자 조회
+    public Signup getUser(String username) {
+        Optional<Signup> signup = this.userRepository.findByusername(username);
+        if (signup.isPresent()) {
+            return signup.get();
+        } else {
+            throw new DataNotFoundException("사용자를 찾을 수 없습니다.");
+        }
+    }
 
 
 }
