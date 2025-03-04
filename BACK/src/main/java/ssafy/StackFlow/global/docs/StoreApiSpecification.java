@@ -15,7 +15,24 @@ import java.util.List;
 @Tag(name = "[본사] 매장관리", description = "매장관리 API")
 public interface StoreApiSpecification {
 
-    @Operation(summary = "매장 등록", description = "💡매장 등록")
+    @Operation(
+            summary = "매장 등록",
+            description = """
+        💡매장 등록
+        
+        **[ 요청 필드 ]**
+        - **storeName**: 매장 이름
+        - **location**: 매장 위치
+        - 생성된 매장은 자동으로 `storeCode`가 부여됩니다.
+        
+        **[ 응답 필드 ]**
+        - **id**: 매장 ID
+        - **storeName**: 매장 이름
+        - **storeCode**: 자동 생성된 매장 코드
+        - **createdAt**: 매장 생성일
+    """
+    )
+
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<StoreResponseDto>> registerStore(@RequestBody StoreDto storeDto);
 
