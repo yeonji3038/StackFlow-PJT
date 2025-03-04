@@ -29,7 +29,7 @@ public class Store {
     @Column(nullable = false)
     private String location; // 매장 위치
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String storeCode; // 매장 코드
 
     @Column
