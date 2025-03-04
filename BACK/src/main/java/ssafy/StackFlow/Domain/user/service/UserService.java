@@ -91,19 +91,19 @@ public class UserService {
         if (userDto.getUsername() == null || userDto.getUsername().isEmpty()) {
             throw new IllegalArgumentException("아이디를 입력해야 합니다.");
         }
-//        if (userDto.getStoreCode() == null || userDto.getStoreCode().isEmpty()) {
-//            throw new IllegalArgumentException("매장 코드를 입력해야 합니다.");
-//        }
+        if (userDto.getStoreCode() == null || userDto.getStoreCode().isEmpty()) {
+            throw new IllegalArgumentException("매장 코드를 입력해야 합니다.");
+        }
 
         // 아이디(이메일) 중복 검사
         if (userRepository.existsByUsername(userDto.getUsername())) {
             throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
         }
 
-//        // 매장 코드 존재 여부 검사 (없는 코드일 경우 예외 발생)
-//        if (!storeRepository.existsByCode(userDto.getStoreCode())) {
-//            throw new IllegalArgumentException("존재하지 않는 매장 코드입니다.");
-//        }
+        // 매장 코드 존재 여부 검사 (없는 코드일 경우 예외 발생)
+        if (!storeRepository.existsByStoreCode(userDto.getStoreCode())) {
+            throw new IllegalArgumentException("존재하지 않는 매장 코드입니다.");
+        }
 
         // 무조건 USER 역할로 설정
         Role role = Role.USER;
@@ -137,7 +137,7 @@ public class UserService {
     }
 
 
-    // 사용자 조회
+//    // 사용자 조회
     public Signup getUser(String username) {
         Optional<Signup> signup = this.userRepository.findByusername(username);
         if (signup.isPresent()) {

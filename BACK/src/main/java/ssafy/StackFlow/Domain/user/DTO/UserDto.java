@@ -23,8 +23,8 @@ public class UserDto {
     private String password2;
     private String email;
     private Timestamp createdAt;
-//    private Long storeId;  // StoreId 필드
-//    private String storeCode;
+    private Long storeId;  // StoreId 필드
+    private String storeCode;
 
     // UserDto -> Signup Entity 변환
     public static Signup toEntity(UserDto userDto, PasswordEncoder passwordEncoder, Role role) {

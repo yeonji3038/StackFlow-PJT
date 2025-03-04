@@ -8,9 +8,8 @@ import java.util.Optional;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
-    List<Store> findByLocationOrderByStoreCodeDesc(String location);
-
     long countByLocation(String storeLocation);
 
-//    boolean existsByCode(String storeCode);
+    boolean existsByStoreCode(String storeCode);
+
 }

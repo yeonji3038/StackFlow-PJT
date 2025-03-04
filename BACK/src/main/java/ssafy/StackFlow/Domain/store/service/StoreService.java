@@ -8,6 +8,10 @@ import ssafy.StackFlow.Domain.store.DTO.StoreDto;
 import ssafy.StackFlow.Domain.store.DTO.StoreResponseDto;
 import ssafy.StackFlow.Domain.store.entity.Store;
 import ssafy.StackFlow.Domain.store.repository.StoreRepository;
+import ssafy.StackFlow.Domain.user.DTO.UserDto;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -18,7 +22,6 @@ public class StoreService {
 
 
     // 매장 등록 및 코드 생성
-// 매장 등록 및 코드 생성
     @Transactional
     public StoreResponseDto registerStore(StoreDto storeDto) {
         // DTO -> Entity 변환 후 저장 (매장 코드는 저장 시 자동 생성)
@@ -65,4 +68,13 @@ public class StoreService {
         // 예시로 KoreanRomanizer.romanize(korean)을 호출 (해당 로직은 필요에 따라 구현)
         return KoreanRomanizer.romanize(korean);
     }
+
+    //매장 전체 조회
+    public List<StoreResponseDto> getAllStores() {
+        List<Store> stores = storeRepository.findAll();
+        return stores.stream()
+                .map(StoreResponseDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
 }
