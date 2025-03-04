@@ -27,7 +27,7 @@ public class NoticeApiController implements NoticeApiSpecification {
     private final UserService userService;
 
     // 공지사항 생성 (API)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<Notice> createNotice(@RequestBody NoticeDto request, Principal principal) {
 

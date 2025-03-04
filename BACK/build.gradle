@@ -25,16 +25,17 @@ repositories {
 }
 
 dependencies {
+    // Spring 관련 의존성
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-    // Spring security
+    // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
 
-    //DB
+    // DB 관련 의존성
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     runtimeOnly 'com.mysql:mysql-connector-j'
@@ -42,7 +43,7 @@ dependencies {
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
-    //lombok
+    // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -51,23 +52,26 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-    //test
+    // 테스트 관련 의존성
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // 한글 -> 로마 변환 의존성
+    implementation 'net.crizin:korean-romanizer:2.0.1'
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+    useJUnitPlatform() // JUnit 5 사용 설정
 }
 
-// 메인 클래스 설정 추가
+tasks.named('test') {
+    enabled = true // 테스트를 실행할 수 있도록 설정
+}
+
+// 메인 클래스 설정
 mainClassName = 'ssafy.StackFlow.StackFlowApplication'
 
-// 테스트 관련 파일 제외
+// 테스트 관련 파일 제외 (JAR 파일 생성 시)
 tasks.withType(Jar) {
     exclude 'test/**'
-}
-
-tasks.named('test') {
-    enabled = false
 }
