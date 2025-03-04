@@ -52,17 +52,5 @@ public class Store {
     @OneToMany(mappedBy = "store")
     private List<Signup> signups;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id") // signup 테이블의 user_id를 참조
-//    private Signup signup; // signup 도메인 엔티티와 연결
-//
-//    // Signup에서 username 가져오기
-//    public String getUsername() {
-//        return signup != null ? signup.getUsername() : null;
-//    }
-//
-//    // Signup에서 email 가져오기
-//    public String getEmail() {
-//        return signup != null ? signup.getEmail() : null;
-//    }
+
 }

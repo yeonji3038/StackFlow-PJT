@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import ssafy.StackFlow.Domain.store.entity.Store;
 import ssafy.StackFlow.Domain.user.DTO.*;
 import ssafy.StackFlow.Domain.user.entity.Role;
 import ssafy.StackFlow.Domain.user.entity.Signup;
@@ -81,7 +82,8 @@ public class UserService {
 
 
     //매장 회원가입
-    public UserDto signupUser(UserDto userDto) {
+// 매장 회원가입
+    public UserSignupResponseDto signupUser(UserDto userDto) {
         // 비밀번호 확인
         if (!userDto.getPassword().equals(userDto.getPassword2())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
@@ -101,9 +103,8 @@ public class UserService {
         }
 
         // 매장 코드 존재 여부 검사 (없는 코드일 경우 예외 발생)
-        if (!storeRepository.existsByStoreCode(userDto.getStoreCode())) {
-            throw new IllegalArgumentException("존재하지 않는 매장 코드입니다.");
-        }
+        Store store = (Store) storeRepository.findByStoreCode(userDto.getStoreCode())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 매장 코드입니다."));
 
         // 무조건 USER 역할로 설정
         Role role = Role.USER;
@@ -111,12 +112,15 @@ public class UserService {
         // UserDto -> Signup 엔티티 변환 (비밀번호 암호화 포함)
         Signup user = UserDto.toEntity(userDto, passwordEncoder, role);
 
+        // 매장 정보 설정
+        user.setStore(store);
+
+        // 회원 정보 저장
         Signup savedUser = userRepository.save(user);
 
-        // Signup 엔티티 -> UserDto 변환 후 반환
-        return UserDto.fromEntity(savedUser);
+        // Signup 엔티티 -> UserSignupResponseDto 변환 후 반환
+        return UserSignupResponseDto.fromEntity(savedUser);
     }
-
     //본사 로그인
     public UserLoginResponseDto loginUser(UserLoginRequestDto userLoginRequestDto) {
 

@@ -22,11 +22,11 @@ public class UserController implements UserApiSpecification {
 
     //매장 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<UserDto>> signupUser(@RequestBody UserDto userDto) {
-        UserDto createdUser = userService.signupUser(userDto); // 생성된 사용자 정보 반환
-        return ResponseEntity.ok(ApiResponse.success(createdUser)); // 생성된 사용자 정보 반환
-
+    public ResponseEntity<ApiResponse<UserSignupResponseDto>> signupUser(@RequestBody UserDto userDto) {
+        UserSignupResponseDto signupUser = userService.signupUser(userDto);
+        return ResponseEntity.ok(ApiResponse.success(signupUser));
     }
+
 
     // 매장 로그인
     @PostMapping("/login")

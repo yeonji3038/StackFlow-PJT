@@ -10,6 +10,7 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     long countByLocation(String storeLocation);
 
-    boolean existsByStoreCode(String storeCode);
+//    boolean existsByStoreCode(String storeCode);
 
+    Optional<Object> findByStoreCode(String storeCode);
 }

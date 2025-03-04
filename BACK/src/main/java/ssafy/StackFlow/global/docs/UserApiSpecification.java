@@ -16,7 +16,7 @@ import java.util.List;
 public interface UserApiSpecification {
     @Operation(summary = "매장 회원가입", description = "💡매장 회원가입 합니다.")
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<UserDto>> signupUser(@RequestBody UserDto userDto);
+    public ResponseEntity<ApiResponse<UserSignupResponseDto>> signupUser(@RequestBody UserDto userDto) ;
 
 
     @Operation(summary = "매장 로그인", description = "💡매장 회원가입 합니다.")
