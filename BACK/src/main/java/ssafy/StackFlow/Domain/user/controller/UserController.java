@@ -9,6 +9,8 @@ import ssafy.StackFlow.Domain.user.service.UserService;
 import ssafy.StackFlow.global.docs.UserApiSpecification;
 import ssafy.StackFlow.global.response.ApiResponse;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +35,14 @@ public class UserController implements UserApiSpecification {
 
         // 로그인 성공 후 응답
         return ResponseEntity.ok(ApiResponse.success(loginUser));
+    }
+
+
+    //가입한 매니저 전체 조회
+    @GetMapping("/list/all")
+    public ResponseEntity<ApiResponse<List<UserDto>>> getAllUsers() {
+        List<UserDto> userDtoList = userService.getAllUsers();
+        return ResponseEntity.ok(ApiResponse.success(userDtoList));
     }
 
 

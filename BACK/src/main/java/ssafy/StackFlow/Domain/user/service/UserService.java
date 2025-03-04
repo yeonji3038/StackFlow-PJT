@@ -16,7 +16,9 @@ import ssafy.StackFlow.global.config.JwtTokenProvider;
 import ssafy.StackFlow.global.utill.SecurityUtil;
 
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -56,7 +58,6 @@ public class UserService {
         // Entity를 AdminSignupResponseDto로 변환하여 반환
         return AdminSignupResponseDto.fromEntity(admin); // fromEntity 메서드를 사용
     }
-
 
 
     //본사 로그인
@@ -136,7 +137,6 @@ public class UserService {
     }
 
 
-
     // 사용자 조회
     public Signup getUser(String username) {
         Optional<Signup> signup = this.userRepository.findByusername(username);
@@ -147,5 +147,12 @@ public class UserService {
         }
     }
 
-
+    // 가입한 매니저 전체 조회
+    public List<UserDto> getAllUsers() {
+        // role이 USER인 회원만 조회
+        List<Signup> users = userRepository.findAllByRole(Role.USER);
+        return users.stream()
+                .map(UserDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 }
