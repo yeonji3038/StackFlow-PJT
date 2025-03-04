@@ -1,12 +1,14 @@
 package ssafy.StackFlow.Domain.store.service;
 
 import lombok.RequiredArgsConstructor;
+import net.crizin.KoreanRomanizer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.StackFlow.Domain.store.DTO.StoreDto;
+import ssafy.StackFlow.Domain.store.DTO.StoreResponseDto;
 import ssafy.StackFlow.Domain.store.entity.Store;
 import ssafy.StackFlow.Domain.store.repository.StoreRepository;
 
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true) // 이 서비스의 모든 메서드는 기본적으로 읽기 전용 트랜잭션을 사용
@@ -14,67 +16,53 @@ import java.util.List;
 public class StoreService {
     private final StoreRepository storeRepository; // StoreRepository 주입
 
-    public Store findStoreById(Long id) {
-        return storeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 매장이 없습니다."));
-    }
 
+    // 매장 등록 및 코드 생성
+// 매장 등록 및 코드 생성
     @Transactional
-    public Store save(Store store) {
-        return storeRepository.save(store);
+    public StoreResponseDto registerStore(StoreDto storeDto) {
+        // DTO -> Entity 변환 후 저장 (매장 코드는 저장 시 자동 생성)
+        Store store = StoreDto.toEntity(storeDto);
+
+        // 매장 코드 자동 생성
+        String generatedCode = generateStoreCode(storeDto.getLocation());
+
+        store.setStoreCode(generatedCode);  // Entity에 생성된 매장 코드를 설정
+
+        Store savedStore = storeRepository.save(store);
+
+        // Entity -> StoreResponseDto 변환 후 반환
+        return StoreResponseDto.fromEntity(savedStore);  // 매장 코드 포함된 StoreResponseDto 반환
     }
 
-    @Transactional // 데이터를 수정하는 메서드이므로 @Transactional 추가
-    public void saveStore(Store store) {
-        // 매장 위치를 기반으로 매장 코드 생성
-        String storeCode = generateStoreCode(store.getLocation());
-        store.setStoreCode(storeCode); // 생성된 매장 코드를 설정
+    private String generateStoreCode(String storeLocation) {
+        // 공백으로 분리하여 첫번째와 두번째 토큰만 사용 (예: "충청남도 천안시 서북구" -> ["충청남도", "천안시", ...])
+        String[] tokens = storeLocation.trim().split(" ");
 
-        // DB에 저장
-        storeRepository.save(store); // 매장 정보를 데이터베이스에 저장
+        // 첫번째 토큰: 행정구역 (예: "부산광역시" 또는 "충청남도")
+        String adminArea = tokens[0];
+        // 두번째 토큰: 해당 행정구역 뒤에 나오는 도시/군/구 (예: "해운대구" 또는 "천안시")
+        String subArea = (tokens.length >= 2) ? tokens[1] : "";
+
+        // 로마자 변환 (예: "부산광역시" -> "BUSAN", "천안시" -> "CHEONAN")
+        String romanAdmin = convertToRoman(adminArea);
+        String romanSub = convertToRoman(subArea);
+
+        // 각 부분의 첫 두 글자만 추출
+        romanAdmin = (romanAdmin.length() >= 2) ? romanAdmin.substring(0, 2).toUpperCase() : romanAdmin.toUpperCase();
+        romanSub = (romanSub.length() >= 2) ? romanSub.substring(0, 2).toUpperCase() : romanSub.toUpperCase();
+
+        // 해당 지역의 매장 수를 기반으로 번호 생성 (01부터 시작)
+        long storeCount = storeRepository.countByLocation(storeLocation.trim());
+        String storeNumber = String.format("%02d", storeCount + 1);
+
+        // 최종 코드 생성 (예: "BUHD01" 또는 "CNCA01")
+        return romanAdmin + romanSub + storeNumber;
     }
 
-    public String generateStoreCode(String location) {
-        String prefix = ""; // 매장 코드의 접두사 초기화
-
-        switch (location) {
-            case "서면":
-                prefix = "BSSM";
-                break;
-            case "해운대":
-                prefix = "BSHD";
-                break;
-            case "강남":
-                prefix = "SEGN";
-                break;
-            case "수원":
-                prefix = "GYSW";
-                break;
-            case "대전":
-                prefix = "CHDJ";
-                break;
-            case "광주":
-                prefix = "JLGJ";
-                break;
-            default:
-                throw new IllegalArgumentException("유효하지 않은 매장 위치입니다.");
-        }
-        // 해당 위치의 마지막 매장 번호를 찾아서 +1
-        List<Store> existingStores = storeRepository.findByLocationOrderByStoreCodeDesc(location);
-        String number = "01"; // 기본 매장 번호 설정
-
-        if (!existingStores.isEmpty()) {
-            String lastCode = existingStores.get(0).getStoreCode(); // 가장 최근 매장 코드 가져오기
-            int lastNumber = Integer.parseInt(lastCode.substring(lastCode.length() - 2)); // 마지막 두 자리 숫자 추출
-            number = String.format("%02d", lastNumber + 1); // 번호 +1 후 두 자리 형식으로 포맷
-        }
-
-        return prefix + number; // 최종 매장 코드 반환
+    private String convertToRoman(String korean) {
+        // 한글 -> 로마자 변환하는 로직 구현 (예: "부산광역시" -> "BUSAN", "천안시" -> "CHEONAN")
+        // 예시로 KoreanRomanizer.romanize(korean)을 호출 (해당 로직은 필요에 따라 구현)
+        return KoreanRomanizer.romanize(korean);
     }
-
-    public List<Store> findAllStores() {
-        return storeRepository.findAll(); // 모든 매장 정보를 반환
-    }
-
-
 }

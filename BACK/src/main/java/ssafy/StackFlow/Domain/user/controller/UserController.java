@@ -3,6 +3,7 @@ package ssafy.StackFlow.Domain.user.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ssafy.StackFlow.Domain.user.DTO.*;
 import ssafy.StackFlow.Domain.user.service.UserService;

@@ -10,5 +10,7 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     List<Store> findByLocationOrderByStoreCodeDesc(String location);
 
+    long countByLocation(String storeLocation);
+
 //    boolean existsByCode(String storeCode);
 }
