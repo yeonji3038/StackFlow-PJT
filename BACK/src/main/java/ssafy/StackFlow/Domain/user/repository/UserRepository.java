@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<Signup, Long> { //Signup �
     Optional<Object> findByEmail(String email);
 
     Optional<Object> findByUsername(String username);
+
+    boolean existsByUsername(String username);  // 아이디 중복 검사
 }

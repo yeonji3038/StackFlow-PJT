@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
     List<Store> findByLocationOrderByStoreCodeDesc(String location);
-    Optional<Store> findByStoreCode(String storeCode);
 
+//    boolean existsByCode(String storeCode);
 }
