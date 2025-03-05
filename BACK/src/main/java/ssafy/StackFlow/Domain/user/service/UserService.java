@@ -82,7 +82,6 @@ public class UserService {
 
 
     //매장 회원가입
-// 매장 회원가입
     public UserSignupResponseDto signupUser(UserDto userDto) {
         // 비밀번호 확인
         if (!userDto.getPassword().equals(userDto.getPassword2())) {
@@ -121,6 +120,7 @@ public class UserService {
         // Signup 엔티티 -> UserSignupResponseDto 변환 후 반환
         return UserSignupResponseDto.fromEntity(savedUser);
     }
+
     //본사 로그인
     public UserLoginResponseDto loginUser(UserLoginRequestDto userLoginRequestDto) {
 

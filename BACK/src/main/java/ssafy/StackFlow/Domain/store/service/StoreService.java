@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.crizin.KoreanRomanizer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.StackFlow.Domain.mail.MailService;
 import ssafy.StackFlow.Domain.store.DTO.StoreDto;
 import ssafy.StackFlow.Domain.store.DTO.StoreResponseDto;
 import ssafy.StackFlow.Domain.store.entity.Store;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor // 생성자 주입을 위한 Lombok 어노테이션
 public class StoreService {
     private final StoreRepository storeRepository; // StoreRepository 주입
-
+    private final MailService mailService; // MailService 주입
 
     // 매장 등록 및 코드 생성
     @Transactional
@@ -33,6 +34,10 @@ public class StoreService {
         store.setStoreCode(generatedCode);  // Entity에 생성된 매장 코드를 설정
 
         Store savedStore = storeRepository.save(store);
+
+        // 매장 코드가 생성되면 이메일 전송
+        String emailContent = "안녕하세요, 귀하의 매장 코드: " + generatedCode;
+        mailService.sendSimpleMail(storeDto.getEmail(), emailContent); // 이메일 전송
 
         // Entity -> StoreResponseDto 변환 후 반환
         return StoreResponseDto.fromEntity(savedStore);  // 매장 코드 포함된 StoreResponseDto 반환
