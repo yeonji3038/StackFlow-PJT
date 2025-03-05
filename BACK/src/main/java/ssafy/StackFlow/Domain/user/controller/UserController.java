@@ -1,12 +1,16 @@
 package ssafy.StackFlow.Domain.user.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ssafy.StackFlow.Domain.user.DTO.*;
 import ssafy.StackFlow.Domain.user.service.UserService;
-import ssafy.StackFlow.Domain.user.DTO.UserDto;
 import ssafy.StackFlow.global.docs.UserApiSpecification;
 import ssafy.StackFlow.global.response.ApiResponse;
+
+import java.util.List;
 
 
 @RestController
@@ -16,101 +20,31 @@ public class UserController implements UserApiSpecification {
 
     private final UserService userService; // UserService 주입
 
-    //회원가입 APi 연결
+    //매장 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<UserDto>> registerUser(@RequestBody UserDto userDto) {
-        UserDto createdUser = userService.signup(userDto); // 생성된 사용자 정보 반환
-        return ResponseEntity.ok(ApiResponse.success(createdUser)); // 생성된 사용자 정보 반환
+    public ResponseEntity<ApiResponse<UserSignupResponseDto>> signupUser(@RequestBody UserDto userDto) {
+        UserSignupResponseDto signupUser = userService.signupUser(userDto);
+        return ResponseEntity.ok(ApiResponse.success(signupUser));
     }
 
-//
-//    //일반, 관리자 로그인
-//    @PostMapping("/login")
-//    public ResponseEntity<LoginResponse> login(@RequestBody LoginDto loginDto, HttpServletResponse response, HttpServletRequest request) {
-//        boolean loginSuccess = userService.login(loginDto); // 로그인 처리
-//
-//        if (loginSuccess) {
-//            String username = loginDto.getUsername();
-//            Signup signup = userService.getUser(username); // 사용자 정보 조회
-////            Cookie cookie = new Cookie("message", URLEncoder.encode("한글입니다.", "UTF-8"));
-////            cookie.setMaxAge(60 * 60 * 24 * 30); // 30일
-////            response.addCookie(cookie);
-//            try {
-//                Cookie cookie = new Cookie("message", URLEncoder.encode("한글입니다.", "UTF-8"));
-//                cookie.setMaxAge(60 * 60 * 24 * 30); // 30일
-//                response.addCookie(cookie);
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//                return ResponseEntity.status(500).body(null); // 인코딩 오류 발생 시 응답 처리
-//            }
-//
-//            HttpSession session = request.getSession();
-//            session.setAttribute("loginMember", signup); // 세션에 사용자 정보 저장
-//            session.setAttribute("storeName", signup.getStoreName()); // 매장 이름 세션에 저장
-//
-//            System.out.println("JSESSIONID 값: " + session.getId());
-//            System.out.println("사용자 이름: " + signup.getUsername());
-//            System.out.println("세션에 저장된 매장 이름: " + session.getAttribute("storeName"));
-//
-//            LoginResponse loginResponse = new LoginResponse();  // 이름 변경
-//            loginResponse.setUser(signup);
-//            loginResponse.setStore(signup.getStore());
-//            loginResponse.setJsessionId(session.getId());
-//
-//            // 관리자와 일반 사용자 분기 처리
-//            if ("ROLE_ADMIN".equals(signup.getRole())) {
-//                loginResponse.setMessage("관리자 로그인이 완료되었습니다."); // 관리자 로그인 성공 메시지
-//            } else {
-//                loginResponse.setMessage("로그인이 완료되었습니다."); // 일반 사용자 로그인 성공 메시지
-//            }
-//            return ResponseEntity.ok(loginResponse);
-//        }
-//
-//        // 로그인 실패 시
-//        LoginResponse errorResponse = new LoginResponse();
-//        errorResponse.setMessage("비밀번호 또는 아이디가 올바르지 않습니다.");
-//        return ResponseEntity.status(401).body(errorResponse); // 로그인 실패 메시지 반환
-//    }
-//
-//    // 로그아웃 API
-//    @PostMapping("/logout")
-//    public ResponseEntity<String> logout(HttpServletRequest request) {
-//        HttpSession session = request.getSession();
-//        session.removeAttribute("loginMember"); // 세션에서 사용자 정보 삭제
-//        return ResponseEntity.ok("로그아웃되었습니다."); // 로그아웃 메시지 반환
-//    }
-//
-//
-//    @GetMapping("/info")
-//    public ResponseEntity<Signup> getUserInfo(HttpServletRequest request, HttpServletResponse response) {
-//        // 현재 로그인한 사용자 정보 가져오기
-//        Signup signup = userService.getCurrentUser();
-//
-//        if (signup == null) {
-//            return ResponseEntity.status(401).body(null); // 로그인되지 않은 경우
-//        }
-//
-//        // 쿠키 생성 및 응답에 추가
-//        try {
-//            Cookie userInfoCookie = new Cookie("user_info", URLEncoder.encode(signup.getUsername(), "UTF-8"));
-//            userInfoCookie.setMaxAge(60 * 60 * 24); // 1일 동안 유지
-//            userInfoCookie.setHttpOnly(true); // HTTP 전용 쿠키 설정
-//            response.addCookie(userInfoCookie); // 응답에 쿠키 추가
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(500).body(null); // 쿠키 생성 중 오류 발생
-//        }
-//
-//        // 요청에서 모든 쿠키 가져오기 (디버깅 또는 추가 작업)
-//        Cookie[] cookies = request.getCookies();
-//        if (cookies != null) {
-//            for (Cookie cookie : cookies) {
-//                System.out.println("쿠키 이름: " + cookie.getName());
-//                System.out.println("쿠키 값: " + cookie.getValue());
-//            }
-//        }
-//
-//        // 사용자 정보 반환
-//        return ResponseEntity.ok(signup);
-//    }
+
+    // 매장 로그인
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<UserLoginResponseDto>> loginUser(@RequestBody @Valid UserLoginRequestDto userLoginRequestDto) {
+        // 로그인 서비스 호출
+        UserLoginResponseDto loginUser = userService.loginUser(userLoginRequestDto);
+
+        // 로그인 성공 후 응답
+        return ResponseEntity.ok(ApiResponse.success(loginUser));
+    }
+
+
+    //가입한 매니저 전체 조회
+    @GetMapping("/list/all")
+    public ResponseEntity<ApiResponse<List<UserDto>>> getAllUsers() {
+        List<UserDto> userDtoList = userService.getAllUsers();
+        return ResponseEntity.ok(ApiResponse.success(userDtoList));
+    }
+
+
 }
