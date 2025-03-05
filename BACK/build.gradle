@@ -58,6 +58,9 @@ dependencies {
 
     // 한글 -> 로마 변환 의존성
     implementation 'net.crizin:korean-romanizer:2.0.1'
+
+    //메일
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {
