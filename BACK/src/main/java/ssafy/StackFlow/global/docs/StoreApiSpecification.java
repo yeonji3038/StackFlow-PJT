@@ -23,6 +23,7 @@ public interface StoreApiSpecification {
         **[ 요청 필드 ]**
         - **storeName**: 매장 이름
         - **location**: 매장 위치
+        - **email**: 매장 코드 받을 주소
         - 생성된 매장은 자동으로 `storeCode`가 부여됩니다.
         
         **[ 응답 필드 ]**

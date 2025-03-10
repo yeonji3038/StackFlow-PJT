@@ -74,7 +74,7 @@ public class UserService {
         }
 
         // JWT 토큰 생성
-        String token = jwtTokenProvider.createToken(admin.getUsername()); // username을 사용하여 토큰 생성
+        String token = jwtTokenProvider.createToken(admin.getUsername(), Role.ADMIN, null);
 
         // AdminLoginResponseDto 생성하여 반환
         return AdminLoginResponseDto.fromEntity(admin, token);
@@ -121,7 +121,7 @@ public class UserService {
         return UserSignupResponseDto.fromEntity(savedUser);
     }
 
-    //본사 로그인
+    //매장 로그인
     public UserLoginResponseDto loginUser(UserLoginRequestDto userLoginRequestDto) {
 
         // username으로 관리자 찾기
@@ -134,7 +134,7 @@ public class UserService {
         }
 
         // JWT 토큰 생성
-        String token = jwtTokenProvider.createToken(user.getUsername()); // username을 사용하여 토큰 생성
+        String token = jwtTokenProvider.createToken(user.getUsername(), Role.USER, user.getStore());
 
         // AdminLoginResponseDto 생성하여 반환
         return UserLoginResponseDto.fromEntity(user, token);
