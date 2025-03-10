@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import io.jsonwebtoken.security.Keys;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ import ssafy.StackFlow.Domain.store.entity.Store;
 import ssafy.StackFlow.Domain.user.entity.Role;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -106,7 +109,11 @@ public class JwtTokenProvider{
         String roleStr = claims.get("role", String.class);
         Role role = (roleStr != null) ? Role.valueOf(roleStr) : Role.USER;
 
-        UserDetails userDetails = new User(username, "", new ArrayList<>());
+//        UserDetails userDetails = new User(username, "", new ArrayList<>());
+//        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_" + role.name());
+
+        UserDetails userDetails = new User(username, "", authorities);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
