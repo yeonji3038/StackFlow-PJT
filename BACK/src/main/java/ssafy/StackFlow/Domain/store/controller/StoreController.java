@@ -21,7 +21,7 @@ public class StoreController implements StoreApiSpecification {
 
     //매장 등록
     @PostMapping("/register")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<StoreResponseDto>> registerStore(@RequestBody StoreDto storeDto) {
         StoreResponseDto registeredStore = storeService.registerStore(storeDto);
         return ResponseEntity.ok(ApiResponse.success(registeredStore));
@@ -29,7 +29,7 @@ public class StoreController implements StoreApiSpecification {
 
     // 모든 매장 조회
     @GetMapping("/list/all")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<StoreResponseDto>>> getAllStores() {
         List<StoreResponseDto> userDtoList = storeService.getAllStores();
         return ResponseEntity.ok(ApiResponse.success(userDtoList));
