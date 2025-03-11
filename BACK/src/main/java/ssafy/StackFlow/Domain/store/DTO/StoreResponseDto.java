@@ -13,14 +13,12 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 public class StoreResponseDto {
-    private Long id;
-    private String storeName;
-    private String storeCode;
-    private Timestamp createdAt;
+    private String storeName;  //매장 이름
+    private String storeCode;  //매장 코드
+    private Timestamp createdAt; //생성일
 
     public static StoreResponseDto fromEntity(Store store) {
         return StoreResponseDto.builder()
-                .id(store.getId())
                 .storeName(store.getStoreName())
                 .storeCode(store.getStoreCode())
                 .createdAt(store.getCreatedAt())
