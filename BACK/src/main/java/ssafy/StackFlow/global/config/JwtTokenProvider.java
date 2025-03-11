@@ -30,11 +30,11 @@ public class JwtTokenProvider{
         this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
-    // 로그인할 때마다 새로운 JWT 토큰 발급 (username 사용)
+    // 로그인할 때마다 새로운 JWT 토큰 발급
     public String createToken(String username, Role role, Store store) {
         Claims claims = Jwts.claims().setSubject(username); // 사용자 ID 저장
 
-        claims.put("role", role.getRole());  // 역할(role) 추가
+        claims.put("role", role.getRole());  // 역할(role)
 
         if (role == Role.USER && store != null) {
             claims.put("store_code", store.getStoreCode());

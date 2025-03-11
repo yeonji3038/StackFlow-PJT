@@ -47,9 +47,9 @@ public class StoreService {
         // 공백으로 분리하여 첫번째와 두번째 토큰만 사용 (예: "충청남도 천안시 서북구" -> ["충청남도", "천안시", ...])
         String[] tokens = storeLocation.trim().split(" ");
 
-        // 첫번째 토큰: 행정구역 (예: "부산광역시" 또는 "충청남도")
+        // 첫번째 토큰: 행정구역 (ex: "부산광역시" or "충청남도")
         String adminArea = tokens[0];
-        // 두번째 토큰: 해당 행정구역 뒤에 나오는 도시/군/구 (예: "해운대구" 또는 "천안시")
+        // 두번째 토큰: 도시/군/구 (ex: "해운대구" or "천안시")
         String subArea = (tokens.length >= 2) ? tokens[1] : "";
 
         // 로마자 변환 (예: "부산광역시" -> "BUSAN", "천안시" -> "CHEONAN")
@@ -61,7 +61,9 @@ public class StoreService {
         romanSub = (romanSub.length() >= 2) ? romanSub.substring(0, 2).toUpperCase() : romanSub.toUpperCase();
 
         // 해당 지역의 매장 수를 기반으로 번호 생성 (01부터 시작)
-        long storeCount = storeRepository.countByLocation(storeLocation.trim());
+        long storeCount = storeRepository.countByAdminAreaAndSubArea(adminArea, subArea);
+
+
         String storeNumber = String.format("%02d", storeCount + 1);
 
         // 최종 코드 생성 (예: "BUHD01" 또는 "CNCA01")
@@ -70,7 +72,6 @@ public class StoreService {
 
     private String convertToRoman(String korean) {
         // 한글 -> 로마자 변환하는 로직 구현 (예: "부산광역시" -> "BUSAN", "천안시" -> "CHEONAN")
-        // 예시로 KoreanRomanizer.romanize(korean)을 호출 (해당 로직은 필요에 따라 구현)
         return KoreanRomanizer.romanize(korean);
     }
 

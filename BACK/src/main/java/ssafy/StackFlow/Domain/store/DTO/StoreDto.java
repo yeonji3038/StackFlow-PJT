@@ -24,9 +24,15 @@ public class StoreDto {
     private Timestamp createdAt;
 
     public static Store toEntity(StoreDto storeDto) {
+        String[] tokens = storeDto.getLocation().trim().split(" ");
+        String adminArea = tokens[0]; // 시·도
+        String subArea = (tokens.length >= 2) ? tokens[1] : ""; // 시·군·구
+
         return Store.builder()
                 .storeName(storeDto.getStoreName())
                 .location(storeDto.getLocation())
+                .adminArea(adminArea)
+                .subArea(subArea)
                 .createdAt(new Timestamp(System.currentTimeMillis()))
                 .build();
     }
