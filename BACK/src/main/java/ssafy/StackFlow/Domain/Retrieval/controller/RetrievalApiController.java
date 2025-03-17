@@ -1,34 +1,21 @@
 package ssafy.StackFlow.Domain.Retrieval.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ssafy.StackFlow.Domain.Retrieval.entity.Retrieval;
-import ssafy.StackFlow.Domain.Retrieval.dto.*;
-import ssafy.StackFlow.Domain.store.entity.Store;
-import ssafy.StackFlow.Domain.product.entity.Product;
-import ssafy.StackFlow.Domain.product.entity.ProductStore;
 import ssafy.StackFlow.Domain.Retrieval.repository.RetrievalRepository;
 import ssafy.StackFlow.Domain.store.repository.StoreRepository;
 import ssafy.StackFlow.Domain.product.repository.ProductRepo;
 import ssafy.StackFlow.Domain.product.repository.ProductStoreRepository;
-import ssafy.StackFlow.Domain.Retrieval.service.RetrievalService;
 import ssafy.StackFlow.Domain.product.service.ProductService;
 import ssafy.StackFlow.Domain.store.service.StoreService;
 import ssafy.StackFlow.global.docs.RetrievalApiSpecification;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/retrieval")
 @RequiredArgsConstructor
 public class RetrievalApiController implements RetrievalApiSpecification {
-    private final RetrievalService retrievalService;
+//    private final RetrievalService retrievalService;
     private final ProductStoreRepository productStoreRepository;
     private final ProductRepo productRepo;
     private final RetrievalRepository retrievalRepository;

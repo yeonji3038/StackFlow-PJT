@@ -82,5 +82,10 @@ public class StoreService {
                 .map(StoreResponseDto::fromEntity)
                 .collect(Collectors.toList());
     }
+    // 특정 ID로 매장 조회
+    public Store findStoreById(Long storeId) {
+        return storeRepository.findById(storeId)
+                .orElseThrow(() -> new IllegalArgumentException("매장을 찾을 수 없습니다: " + storeId));
+    }
 
 }

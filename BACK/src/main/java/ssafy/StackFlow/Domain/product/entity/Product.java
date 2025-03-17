@@ -1,8 +1,7 @@
 package ssafy.StackFlow.Domain.product.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import ssafy.StackFlow.Domain.category.entity.Category;
 import ssafy.StackFlow.Domain.category.entity.CategoryGroup;
 
@@ -11,9 +10,12 @@ import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Getter
-@Setter
+@Builder
+@Data
+@Table(name = "product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
