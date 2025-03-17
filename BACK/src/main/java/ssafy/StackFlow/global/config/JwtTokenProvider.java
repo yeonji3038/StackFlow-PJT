@@ -109,8 +109,6 @@ public class JwtTokenProvider{
         String roleStr = claims.get("role", String.class);
         Role role = (roleStr != null) ? Role.valueOf(roleStr) : Role.USER;
 
-//        UserDetails userDetails = new User(username, "", new ArrayList<>());
-//        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_" + role.name());
 
         UserDetails userDetails = new User(username, "", authorities);
