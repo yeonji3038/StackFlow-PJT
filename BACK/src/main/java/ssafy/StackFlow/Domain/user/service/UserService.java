@@ -120,7 +120,7 @@ public class UserService {
         // Signup 엔티티 -> UserSignupResponseDto 변환 후 반환
         return UserSignupResponseDto.fromEntity(savedUser);
     }
-
+//배포
     //매장 로그인
     public UserLoginResponseDto loginUser(UserLoginRequestDto userLoginRequestDto) {
 
