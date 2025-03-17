@@ -28,9 +28,11 @@ jobs:
     - name: Change directory to BACK
       run: cd BACK
 
-    # Gradle Build(test 제외)
+    # BACK 디렉토리로 이동 및 Gradle 빌드
     - name: Build with Gradle
-      run: ./BACK/gradlew clean bootJar --exclude-task test
+      run: |
+        cd BACK
+        ./gradlew clean bootJar --exclude-task test
 
     # DockerHub 로그인
     - name: DockerHub Login
