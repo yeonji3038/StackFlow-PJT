@@ -8,7 +8,8 @@ import java.util.Optional;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
-    List<Store> findByLocationOrderByStoreCodeDesc(String location);
-    Optional<Store> findByStoreCode(String storeCode);
 
+    Optional<Object> findByStoreCode(String storeCode); //매장 위치
+
+    long countByAdminAreaAndSubArea(String adminArea, String subArea);
 }

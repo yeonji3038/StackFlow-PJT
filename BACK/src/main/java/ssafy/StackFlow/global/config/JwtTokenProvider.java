@@ -7,11 +7,17 @@ import java.util.ArrayList;
 import io.jsonwebtoken.security.Keys;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import ssafy.StackFlow.Domain.store.entity.Store;
+import ssafy.StackFlow.Domain.user.entity.Role;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -24,9 +30,15 @@ public class JwtTokenProvider{
         this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
-    // 로그인할 때마다 새로운 JWT 토큰 발급 (username 사용)
-    public String createToken(String username) {
+    // 로그인할 때마다 새로운 JWT 토큰 발급
+    public String createToken(String username, Role role, Store store) {
         Claims claims = Jwts.claims().setSubject(username); // 사용자 ID 저장
+
+        claims.put("role", role.getRole());  // 역할(role)
+
+        if (role == Role.USER && store != null) {
+            claims.put("store_code", store.getStoreCode());
+        }
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
@@ -39,15 +51,34 @@ public class JwtTokenProvider{
                 .compact();
     }
 
-    // JWT 토큰에서 username(사용자 ID) 추출
-    public String getUsernameFromToken(String token) {
-        return Jwts.parserBuilder()
+
+
+    //  JWT 토큰에서 추출
+    public Map<String, Object> getTokenInfo(String token) {
+        Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
+
+        // role이 없는 경우 기본값 USER 설정
+        Role role;
+        try {
+            String roleStr = claims.get("role", String.class);
+            role = (roleStr != null) ? Role.valueOf(roleStr) : Role.USER;
+        } catch (IllegalArgumentException | NullPointerException e) {
+            role = Role.USER; // 예외 발생 시 기본값 USER
+        }
+
+        String storeCode = claims.get("store_code", String.class);
+
+        return Map.of(
+                "username", claims.getSubject(),
+                "role", role,
+                "store_code", (storeCode != null) ? storeCode : "" // store_code가 없으면 빈 문자열 반환
+        );
     }
+
 
     // JWT 토큰 검증
     public boolean validateToken(String token) {
@@ -75,8 +106,12 @@ public class JwtTokenProvider{
                 .getBody();
 
         String username = claims.getSubject(); //username 사용
+        String roleStr = claims.get("role", String.class);
+        Role role = (roleStr != null) ? Role.valueOf(roleStr) : Role.USER;
 
-        UserDetails userDetails = new User(username, "", new ArrayList<>());
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_" + role.name());
+
+        UserDetails userDetails = new User(username, "", authorities);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

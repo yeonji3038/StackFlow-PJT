@@ -45,6 +45,7 @@ public class SecurityConfig {
                                 "/chat/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").permitAll()
+                        .requestMatchers("/store/**").hasRole("ADMIN")
                         .anyRequest().permitAll() // 로컬 개발 중에는 모든 요청 허용
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

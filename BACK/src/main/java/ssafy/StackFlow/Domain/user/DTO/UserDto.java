@@ -23,32 +23,37 @@ public class UserDto {
     private String password2;
     private String email;
     private Timestamp createdAt;
-    private Role role = Role.USER; // 기본값을 USER로 설정
-    private Long storeId;  // StoreId 필드
+    private Long storeId;
+    private String storeCode;
 
     // UserDto -> Signup Entity 변환
-    public static Signup toEntity(UserDto userDto, PasswordEncoder passwordEncoder) {
+    public static Signup toEntity(UserDto userDto, PasswordEncoder passwordEncoder, Role role) {
         return Signup.builder()
                 .username(userDto.getUsername())
                 .name(userDto.getName())
                 .password(passwordEncoder.encode(userDto.getPassword()))  // 🔹 비밀번호 암호화
                 .email(userDto.getEmail())
-                .role(userDto.getRole())
                 .createdAt(new Timestamp(System.currentTimeMillis()))
+                .role(role)
                 .build();
     }
 
     // Entity -> DTO 변환
     public static UserDto fromEntity(Signup signup) {
-        return UserDto.builder()
+        UserDto.UserDtoBuilder builder = UserDto.builder()
                 .id(signup.getId())
-                .name(signup.getName())
                 .username(signup.getUsername())
+                .name(signup.getName())
                 .email(signup.getEmail())
-                .role(signup.getRole())
-                .createdAt(signup.getCreatedAt())
-                .storeId(signup.getStore() != null ? signup.getStore().getId() : null)  // Store 정보에서 storeId 가져오기
-                .build();
+                .createdAt(signup.getCreatedAt());
+
+        // Store 정보가 있을 경우 storeId, storeCode, storeName을 설정
+        if (signup.getStore() != null) {
+            builder.storeId(signup.getStore().getId())
+                    .storeCode(signup.getStore().getStoreCode());
+        }
+
+        return builder.build();
     }
 }
 
