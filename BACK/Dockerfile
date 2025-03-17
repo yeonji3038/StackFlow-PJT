@@ -3,6 +3,7 @@
 # ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 
 
+
 # OpenJDK 17을 베이스 이미지로 사용
 FROM openjdk:17-jdk-slim
 
