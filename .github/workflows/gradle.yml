@@ -24,6 +24,10 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x ./BACK/gradlew
 
+    # BACK 디렉토리로 이동
+    - name: Change directory to BACK
+      run: cd BACK
+
     # Gradle Build(test 제외)
     - name: Build with Gradle
       run: ./BACK/gradlew clean bootJar --exclude-task test
