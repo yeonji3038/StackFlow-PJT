@@ -35,15 +35,6 @@
 ### ✔️Infra
 <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white"> <img src="https://img.shields.io/badge/Argo%20CD-EF7B4D?style=for-the-badge&logo=ArgoCD&logoColor=white"> <img src="https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=Kubernetes&logoColor=white"> <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=GitHub%20Actions&logoColor=white">
 
-# 프로젝트 일정
-
-| 날짜       | 일정 내용           |
-|------------|---------------------|
-| 2024-12-02 ~ 2025-01-| 개발 회의           |
-| 2025-01-08 | 코드 리뷰           |
-| 2025-01-09 | 배포 작업           |
-| 2025-01-10 | 테스트 진행         |
-| 2025-01-11 | 최종 점검 및 배포   |
 
 
 
