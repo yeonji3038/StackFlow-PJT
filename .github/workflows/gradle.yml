@@ -53,7 +53,8 @@ jobs:
 
       # Docker 이미지 빌드
       - name: Docker Image Build
-        run: docker build -f ./BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} ./BACK
+        run: |
+          docker build --platform linux/amd64 -f ./BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} ./BACK
       
 
       # DockerHub Push
