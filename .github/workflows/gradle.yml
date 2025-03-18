@@ -1,22 +1,17 @@
-# StackFlow-PJT main wolkflow
+# StackFlow-PJT main workflow
 name: StackFlow-PJT CI/CD
 
-# 어떤 이벤트가 발생하면 workflow 실행할 지 명시
 on:
-  # main 브런치에 push나 pull request 발생 시
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
 
-# 위 이벤트 발생 시 실행될 작업들
 jobs:
   build:
-    # VM의 실행 환경 지정 -> ubuntu 최신 버전
     runs-on: ubuntu-latest
 
-    # 실행될 jobs를 순서대로 명시
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,7 +29,7 @@ jobs:
 
       # Gradle Build를 위한 권한 부여
       - name: Grant execute permission for gradlew
-        run:  |
+        run: |
           cd ./BACK
           chmod +x ./gradlew
 
@@ -51,16 +46,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+      # Docker Buildx 비활성화
+      - name: Disable Buildx (Optional)
+        run: docker buildx stop || true
+
       # Docker 이미지 빌드
       - name: Docker Image Build
         run: |
-          docker build --platform linux/amd64 -f ./BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} ./BACK
-      
+          docker build -f ./BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} ./BACK
 
       # DockerHub Push
       - name: DockerHub Push
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
-      
 
       # EC2 인스턴스 접속 및 애플리케이션 실행
       - name: Application Run
@@ -71,18 +68,18 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             echo "Stopping existing container..."
-            sudo docker kill ${{ secrets.PROJECT_NAME }}
-            sudo docker rm -f ${{ secrets.PROJECT_NAME }}
-            
+            sudo docker kill ${{ secrets.PROJECT_NAME }} || true
+            sudo docker rm -f ${{ secrets.PROJECT_NAME }} || true
+
             echo "Removing existing image..."
-            sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
-            
+            sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} || true
+
             echo "Pulling new image..."
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
-            
+
             echo "Running new container..."
             sudo docker run -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
             --name ${{ secrets.PROJECT_NAME }} \
             -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
-            
+
             echo "Done"
