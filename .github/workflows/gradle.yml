@@ -46,21 +46,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # 🛠️ **docker buildx 비활성화**
-      - name: Disable Buildx
-        run: |
-          docker buildx rm default || true
-          docker buildx create --use --name default-builder
-          docker buildx inspect --bootstrap || true
+      # 🛠️ **Docker Buildx 설정**
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-      # 🛠️ **Docker 이미지 빌드 (컨텍스트 명확히 지정)**
-      - name: Docker Image Build
+      # 🛠️ **Docker 이미지 빌드 및 푸시 (buildx 사용)**
+      - name: Build and Push Docker Image
         run: |
-          docker build --platform linux/amd64 -f ./BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} ./BACK
-
-      # DockerHub Push
-      - name: DockerHub Push
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
+          docker buildx build --platform linux/amd64 \
+          -f ./BACK/Dockerfile \
+          -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} \
+          --push ./BACK
 
       # EC2 인스턴스 접속 및 애플리케이션 실행
       - name: Application Run
