@@ -39,6 +39,11 @@ jobs:
           cd ./BACK
           ./gradlew clean bootJar --exclude-task test
 
+      # .jar 파일 존재 여부 확인
+      - name: Check if JAR file exists
+        run: |
+          ls -lh ./BACK/build/libs/
+
       # DockerHub 로그인
       - name: DockerHub Login
         uses: docker/login-action@v2
