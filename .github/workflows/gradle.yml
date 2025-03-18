@@ -46,14 +46,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # Docker Buildx 비활성화
-      - name: Disable Buildx (Optional)
-        run: docker buildx stop || true
+      # 🛠️ **docker buildx 비활성화**
+      - name: Disable Buildx
+        run: |
+          docker buildx rm default || true
+          docker buildx create --use --name default-builder
+          docker buildx inspect --bootstrap || true
 
-      # Docker 이미지 빌드
+      # 🛠️ **Docker 이미지 빌드 (컨텍스트 명확히 지정)**
       - name: Docker Image Build
         run: |
-          docker build -f ./BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} ./BACK
+          docker build --platform linux/amd64 -f ./BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} ./BACK
 
       # DockerHub Push
       - name: DockerHub Push
