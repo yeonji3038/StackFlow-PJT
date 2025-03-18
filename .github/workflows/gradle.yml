@@ -48,9 +48,9 @@ jobs:
     - name: Docker Image Build
       run: |
         cd BACK
-        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} .
-      
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} -f Dockerfile .
 
+      
     # DockerHub Push
     - name: DockerHub Push
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
