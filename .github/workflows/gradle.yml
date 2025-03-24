@@ -52,6 +52,7 @@ jobs:
         run: | 
           cd ./BACK
           pwd  
+          ls -l Dockerfile
           docker buildx build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} -f Dockerfile . --push
 
             
