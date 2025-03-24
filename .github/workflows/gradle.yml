@@ -53,7 +53,9 @@ jobs:
 
       # Docker 이미지 빌드
       - name: Docker Image Build
-        run: docker build -f BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} BACK
+        run: |
+          export DOCKER_CLI_EXPERIMENTAL=disabled
+          docker build -f BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} BACK
 
       # DockerHub Push
       - name: DockerHub Push
