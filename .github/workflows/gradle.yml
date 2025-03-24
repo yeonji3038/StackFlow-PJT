@@ -54,7 +54,6 @@ jobs:
             --push \
             -f BACK/Dockerfile \
             .
-
             
       - name: Application Run
         uses: appleboy/ssh-action@v0.1.6
