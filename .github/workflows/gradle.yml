@@ -65,16 +65,13 @@ jobs:
             echo "Stopping existing container..."
             sudo docker kill ${{ secrets.PROJECT_NAME }} || true
             sudo docker rm -f ${{ secrets.PROJECT_NAME }} || true
-
+      
             echo "Removing existing image..."
             sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} || true
-
-            echo "Pulling new image..."
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
-
+      
             echo "Running new container..."
             sudo docker run -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
               --name ${{ secrets.PROJECT_NAME }} \
               -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
-
+      
             echo "Done"
