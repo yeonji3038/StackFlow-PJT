@@ -46,12 +46,14 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-        
+
+
       - name: Build and Push Docker Image
         run: | 
           cd ./BACK
           pwd  
           docker buildx build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} -f Dockerfile . --push
+
             
       - name: Application Run
         uses: appleboy/ssh-action@v0.1.6
