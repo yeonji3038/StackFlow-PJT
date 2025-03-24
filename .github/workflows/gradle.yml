@@ -52,7 +52,6 @@ jobs:
             -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} \
             --push \
             -f ./BACK/Dockerfile ./BACK --progress=plain
-
             
       - name: Application Run
         uses: appleboy/ssh-action@v0.1.6
