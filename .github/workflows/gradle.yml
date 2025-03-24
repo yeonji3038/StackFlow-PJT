@@ -45,15 +45,15 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-
+        
       - name: Build and Push Docker Image
         run: |
+          cd ./BACK  # BACK 디렉토리로 이동
           docker buildx build --platform linux/amd64 \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} \
             --push \
-            -f BACK/Dockerfile \
-            BACK
-
+            -f Dockerfile . --progress=plain
+                        
       - name: Application Run
         uses: appleboy/ssh-action@v0.1.6
         with:
@@ -64,16 +64,13 @@ jobs:
             echo "Stopping existing container..."
             sudo docker kill ${{ secrets.PROJECT_NAME }} || true
             sudo docker rm -f ${{ secrets.PROJECT_NAME }} || true
-
+      
             echo "Removing existing image..."
             sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} || true
-
-            echo "Pulling new image..."
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
-
+      
             echo "Running new container..."
             sudo docker run -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
               --name ${{ secrets.PROJECT_NAME }} \
               -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
-
+      
             echo "Done"
