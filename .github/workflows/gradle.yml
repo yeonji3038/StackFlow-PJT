@@ -54,11 +54,15 @@ jobs:
           
           # BACK 디렉토리 내부 파일 확인
           ls -alh ./BACK
-
+      
+          # Dockerfile 파일 경로 확인
+          ls -alh ./BACK/Dockerfile
+      
+          # Docker 빌드 명령어
           docker buildx build --platform linux/amd64 \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} \
             --push \
-            -f ./BACK/Dockerfile ./BACK 
+            -f ./BACK/Dockerfile ./BACK
             
             
       - name: Application Run
