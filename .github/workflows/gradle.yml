@@ -24,6 +24,10 @@ jobs:
       - name: List project directory
         run: ls -alh
 
+      - name: Check current directory
+        run: pwd 
+        
+
       - name: Grant execute permission for gradlew
         run: |
           cd ./BACK
