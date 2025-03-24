@@ -24,12 +24,6 @@ jobs:
       - name: List project directory
         run: ls -alh
 
-      - name: Check current directory
-        run: pwd 
-
-      - name: List files in BACK directory
-        run: ls -alh ./BACK  
-
       
       - name: Grant execute permission for gradlew
         run: |
@@ -55,10 +49,17 @@ jobs:
         
       - name: Build and Push Docker Image
         run: |
+          # 현재 작업 디렉토리 확인
+          pwd  
+          
+          # BACK 디렉토리 내부 파일 확인
+          ls -alh ./BACK
+
           docker buildx build --platform linux/amd64 \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} \
             --push \
-            -f ./BACK/Dockerfile ./BACK --progress=plain
+            -f ./BACK/Dockerfile ./BACK 
+            
             
       - name: Application Run
         uses: appleboy/ssh-action@v0.1.6
