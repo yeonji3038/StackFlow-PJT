@@ -52,8 +52,8 @@ jobs:
         run: | 
           cd ./BACK
           pwd  
-          ls -l Dockerfile
-          docker buildx build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} -f Dockerfile . --push
+          docker buildx build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} -f /home/runner/work/StackFlow-PJT/StackFlow-PJT/BACK/Dockerfile /home/runner/work/StackFlow-PJT/StackFlow-PJT/BACK --push
+
 
             
       - name: Application Run
