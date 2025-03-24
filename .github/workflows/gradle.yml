@@ -59,7 +59,7 @@ jobs:
           ls -alh ./BACK/Dockerfile
       
           # Docker 빌드 명령어
-          docker buildx build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} -f ./BACK/Dockerfile ./BACK 
+          docker buildx build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} -f ./Dockerfile .
             
       - name: Application Run
         uses: appleboy/ssh-action@v0.1.6
