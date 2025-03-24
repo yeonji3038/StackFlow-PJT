@@ -48,11 +48,10 @@ jobs:
         
       - name: Build and Push Docker Image
         run: |
-          cd ./BACK  # BACK 디렉토리로 이동
           docker buildx build --platform linux/amd64 \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} \
             --push \
-            -f Dockerfile . --progress=plain
+            -f ./BACK/Dockerfile ./BACK --progress=plain
                         
       - name: Application Run
         uses: appleboy/ssh-action@v0.1.6
