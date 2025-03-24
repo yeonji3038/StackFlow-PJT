@@ -26,8 +26,11 @@ jobs:
 
       - name: Check current directory
         run: pwd 
-        
 
+      - name: List files in BACK directory
+        run: ls -alh ./BACK  
+
+      
       - name: Grant execute permission for gradlew
         run: |
           cd ./BACK
