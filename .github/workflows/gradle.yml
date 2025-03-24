@@ -62,7 +62,7 @@ jobs:
           docker buildx build --platform linux/amd64 \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} \
             --push \
-            -f ./BACK/Dockerfile .
+            -f ./BACK/Dockerfile ./BACK 
             
             
       - name: Application Run
