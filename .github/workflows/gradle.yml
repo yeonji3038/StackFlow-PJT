@@ -49,12 +49,6 @@ jobs:
         
       - name: Build and Push Docker Image
         run: |
-          # 현재 작업 디렉토리 확인
-          pwd  
-          
-          # BACK 디렉토리 내부 파일 확인
-          ls -alh ./BACK
-      
           # Dockerfile 파일 경로 확인
           ls -alh ./BACK/Dockerfile
       
