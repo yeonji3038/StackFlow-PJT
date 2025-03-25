@@ -68,7 +68,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
 
-            # 출력하여 host와 port 값 확인..
+            # 출력하여 host와 port 값 확인
             echo "Host: ${{ secrets.EC2_HOST }}"
             echo "Port: ${{ secrets.PORT }}"
             
