@@ -46,6 +46,12 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
+      - name: Debug Secret Variables
+        run: |
+          echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" | cut -c1-4
+          echo "PROJECT_NAME=${{ secrets.PROJECT_NAME }}" | cut -c1-4
+          echo "Full Tag: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}"
         
 
       - name: Docker Image Build and Push
