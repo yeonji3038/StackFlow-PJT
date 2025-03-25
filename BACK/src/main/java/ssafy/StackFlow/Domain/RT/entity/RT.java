@@ -32,20 +32,10 @@ public class RT {
     @OneToMany(mappedBy = "RT", cascade = CascadeType.ALL)
     private List<RtProduct> rtProducts = new ArrayList<>();
 
-    public void setStatus(RtStatus status) {
-        this.status = status;
-    }
-
-    public RtStatus getStatus() {
-        return status;
-    }
-
-
     public void addRtProduct(RtProduct rtProduct) {
         rtProducts.add(rtProduct);
         rtProduct.setRT(this);
     }
-
 
     public static RT createRT(Product product, Store store, Signup loginUser) {
         RT rt = new RT();
@@ -72,6 +62,4 @@ public class RT {
 
         return rt;
     }
-
-
 }
