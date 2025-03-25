@@ -60,7 +60,6 @@ jobs:
           pwd
           docker buildx build --platform linux/amd64 --push -f Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} .
 
-#run
       - name: Application Run
         uses: appleboy/ssh-action@v0.1.6
         with:
@@ -68,6 +67,11 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_KEY }}
           script: |
+
+            # 출력하여 host와 port 값 확인
+            echo "Host: ${{ secrets.EC2_HOST }}"
+            echo "Port: ${{ secrets.PORT }}"
+            
             echo "Stopping existing container..."
             sudo docker kill ${{ secrets.PROJECT_NAME }} || true
             sudo docker rm -f ${{ secrets.PROJECT_NAME }} || true
