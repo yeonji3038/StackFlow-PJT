@@ -51,7 +51,7 @@ jobs:
         run: |
           cd ./BACK
           pwd
-          docker buildx build --platform linux/amd64 --push -f BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} .
+          docker buildx build --platform linux/amd64 --push -f Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} .
 
       - name: Application Run
         uses: appleboy/ssh-action@v0.1.6
