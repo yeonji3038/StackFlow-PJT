@@ -47,7 +47,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Debug Secret Variables
+      - name: Debug Secret Variables #확인 작업
         run: |
           echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" | cut -c1-4
           echo "PROJECT_NAME=${{ secrets.PROJECT_NAME }}" | cut -c1-4
