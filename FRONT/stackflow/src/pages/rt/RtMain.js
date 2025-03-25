@@ -2,9 +2,10 @@ import MainStyle from "./RtMain.module.css"
 import { Outlet, useLocation } from "react-router-dom";
 
 
+
 const RtMain = () => {
   const location = useLocation().pathname  // 현재 URL 정보  
-  
+       
   // 현재 URL에 따라 title 값 바꾸기
   const getTitle = () => { 
     switch (location) {

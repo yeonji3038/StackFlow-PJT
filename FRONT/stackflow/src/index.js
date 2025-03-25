@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from 'axios';
+
 import ReactDOM from 'react-dom/client'
 import './index.css';
 import App from './App';
@@ -8,6 +10,8 @@ import store from './store/index'
 import { Provider } from "react-redux"
 import { ConfigProvider } from "./store/index";
 
+axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.withCredentials = true;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

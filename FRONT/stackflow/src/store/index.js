@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { createContext, useContext } from "react";
-// import { combineReducers } from 'redux';
 import authReducer from './authSlice';
+import { combineReducers } from 'redux';
 
 
 

@@ -135,6 +135,7 @@ const RtRegister = () => {
   };
  
 
+
   // 전체 선택/해제 핸들러
   const [selectAll, setSelectAll] = useState(false); // 전체 선택 상태
   const handleSelectAll = (isChecked) => {
@@ -178,7 +179,7 @@ const RtRegister = () => {
           return;
         }
       }
-
+  
       // 서버 요청
       const response = await axios({
         method: "POST",
