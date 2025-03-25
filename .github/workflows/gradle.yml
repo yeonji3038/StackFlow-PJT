@@ -60,7 +60,7 @@ jobs:
           pwd
           docker buildx build --platform linux/amd64 --push -f Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} .
 
-
+#run
       - name: Application Run
         uses: appleboy/ssh-action@v0.1.6
         with:
