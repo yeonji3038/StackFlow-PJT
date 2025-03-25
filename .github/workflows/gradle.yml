@@ -46,10 +46,10 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        
 
-      - name: Debug Docker Build
+      - name: Docker Image Build and Push
         run: |
-          set -x  # 실행되는 명령어를 출력
           cd ./BACK
           pwd
           docker buildx build --platform linux/amd64 --push -f Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} .
