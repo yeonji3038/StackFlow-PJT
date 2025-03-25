@@ -48,7 +48,9 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Docker Image Build and Push
-        run: docker buildx build --platform linux/amd64 --push -f BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} BACK
+        run: |
+          pwd
+          docker buildx build --platform linux/amd64 --push -f BACK/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} .
 
       - name: Application Run
         uses: appleboy/ssh-action@v0.1.6
