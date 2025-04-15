@@ -31,6 +31,6 @@ public class RtProduct {
         rtProduct.setProduct(product);
         rtProduct.setReqQuant(reqQuant);
         return rtProduct;
-    }  
+    }
 
 }
