@@ -1,35 +1,34 @@
 package ssafy.StackFlow.Domain.RT.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
 import ssafy.StackFlow.Domain.RT.dto.*;
 import ssafy.StackFlow.Domain.RT.entity.RT;
 import ssafy.StackFlow.Domain.RT.entity.RtStatus;
 import ssafy.StackFlow.Domain.RT.service.RtService;
 import ssafy.StackFlow.Domain.product.entity.Product;
-import ssafy.StackFlow.global.docs.NoticeApiSpecification;
 import ssafy.StackFlow.global.docs.RtApiSpecification;
 import ssafy.StackFlow.global.response.ApiResponse;
+import ssafy.StackFlow.global.response.PageResult;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins="http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rt")
 public class RtApiController implements RtApiSpecification {
+
     private final RtService rtService;
 
-    /**
-     * 인증 여부 확인
-     */
     private void checkAuthentication() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -37,10 +36,7 @@ public class RtApiController implements RtApiSpecification {
         }
     }
 
-    /**
-     * 상품 검색
-     */
-    @GetMapping("/search")
+    @Override
     public ApiResponse<List<RtProdDto>> searchProducts(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String categoryGroup,
@@ -71,10 +67,7 @@ public class RtApiController implements RtApiSpecification {
         }
     }
 
-    /**
-     * RT 요청 생성
-     */
-    @PostMapping("/submit")
+    @Override
     public ApiResponse<RtResponseDto> createInstructions(@RequestBody RtRequestDto request) {
         try {
             checkAuthentication();
@@ -99,10 +92,7 @@ public class RtApiController implements RtApiSpecification {
         }
     }
 
-    /**
-     * 내 매장에서 요청한 RT 목록 조회
-     */
-    @GetMapping("/meToOtherRtlist")
+    @Override
     public ApiResponse<List<MyRtDto>> getMyRTRequests() {
         try {
             checkAuthentication();
@@ -118,10 +108,7 @@ public class RtApiController implements RtApiSpecification {
         }
     }
 
-    /**
-     * 다른 매장이 내 매장에 요청한 RT 목록 조회
-     */
-    @GetMapping("/OtherToMeRtlist")
+    @Override
     public ApiResponse<List<OtherRtDto>> getOtherRTRequests() {
         try {
             checkAuthentication();
@@ -137,29 +124,23 @@ public class RtApiController implements RtApiSpecification {
         }
     }
 
-    /**
-     * 모든 RT 목록 조회
-     */
-    @GetMapping("/RTAlllist")
-    public ApiResponse<List<RTAllDto>> getAllRTs() {
-        try {
-            checkAuthentication();
+    @Override
+    public ApiResponse<PageResult<RtInstructionStatusDto>> getRTAlllist(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+        checkAuthentication();
 
-            List<RT> rtList = rtService.getAllRTsWithProducts();
-            List<RTAllDto> result = rtList.stream()
-                    .map(RTAllDto::new)
-                    .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("reqDate").descending());
+        Page<RT> rtPage = rtService.getMyStoreRTs(pageable);
+        Page<RtInstructionStatusDto> dtoPage = rtPage.map(RtInstructionStatusDto::new);
 
-            return ApiResponse.success(result);
-        } catch (Exception e) {
-            return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), null);
-        }
+        return ApiResponse.success(PageResult.from(dtoPage));
     }
 
-    /**
-     * RT 상태 업데이트
-     */
-    @PutMapping("/RTstatus")
+
+
+    @Override
     public ApiResponse<Map<String, String>> updateRtStatus(@RequestBody RtStatusUpdateRequest request) {
         try {
             checkAuthentication();
