@@ -1,6 +1,8 @@
 package ssafy.StackFlow.Domain.RT.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,9 +29,6 @@ public class RtService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
 
-    /**
-     * 현재 인증된 사용자 정보 조회
-     */
     public Signup getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -41,9 +40,6 @@ public class RtService {
                 .orElseThrow(() -> new RuntimeException("해당 사용자를 찾을 수 없습니다: " + username));
     }
 
-    /**
-     * 현재 사용자의 매장 정보 조회
-     */
     public Store getUserStore() {
         Signup user = getCurrentUser();
         Store store = user.getStore();
@@ -55,34 +51,21 @@ public class RtService {
         return store;
     }
 
-    /**
-     * 상품 ID로 상품 조회
-     */
     public Product findProduct(Long productId) {
         return productRepo.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다"));
     }
 
-    /**
-     * 키워드로 상품 검색
-     */
     public List<Product> search(String keyword) {
         return productRepo.findByProdCodeContaining(keyword);
     }
 
-    /**
-     * 필터로 상품 검색
-     */
     public List<Product> searchByFilters(String categoryGroup, String categoryCode, String colorCode, String size) {
         return productRepo.findProductsByFilters(categoryGroup, categoryCode, colorCode, size);
     }
 
-    /**
-     * RT 생성
-     */
     @Transactional
     public RT createInstruction(Long productId, Long storeId, int reqQuan) {
-        // 현재 로그인한 사용자 및 매장 정보 가져오기
         Signup currentUser = getCurrentUser();
         Store myStore = currentUser.getStore();
 
@@ -90,54 +73,42 @@ public class RtService {
             throw new RuntimeException("사용자에게 할당된 매장이 없습니다");
         }
 
-        // 요청 대상 매장 조회
         Store requestStore = storeRepository.findById(storeId)
                 .orElseThrow(() -> new RuntimeException("요청 대상 매장을 찾을 수 없습니다"));
 
-        // 상품 조회
         Product product = productRepo.findById(productId)
                 .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다"));
 
-        // RT 생성
         RT rt = RT.createRT(product, requestStore, currentUser);
 
-        // RT 상품 생성 및 연결
         RtProduct rtProduct = RtProduct.createRtProduct(product, reqQuan);
         rt.addRtProduct(rtProduct);
 
-        // 저장 및 반환
         return rtRepository.save(rt);
     }
 
-    /**
-     * 현재 사용자 매장의 RT 요청 목록 조회 (상품 정보 포함)
-     */
     public List<RT> getMyRTRequests() {
         Store myStore = getUserStore();
         return rtRepository.findByMyStoreWithProducts(myStore.getStoreName());
     }
 
-    /**
-     * 다른 매장이 현재 사용자 매장에 요청한 RT 목록 조회 (상품 정보 포함)
-     */
     public List<RT> getOtherRTRequests() {
         Store myStore = getUserStore();
         return rtRepository.findByReqStoreWithProducts(myStore.getStoreName());
     }
-
-    /**
-     * 모든 RT 목록 조회 (상품 정보 포함)
-     */
-    public List<RT> getAllRTsWithProducts() {
-        return rtRepository.findAllWithProducts();
+    public Page<RT> getMyStoreRTs(Pageable pageable) {
+        String myStoreName = getUserStore().getStoreName();
+        return rtRepository.findByMyStore(myStoreName, pageable);
+    }
+    public Page<RT> getInstructionStatusList(String status, Pageable pageable) {
+        if (status == null) {
+            return rtRepository.findAll(pageable);
+        }
+        return rtRepository.findByStatus(RtStatus.valueOf(status), pageable);
     }
 
-    /**
-     * RT 상태 업데이트
-     */
     @Transactional
     public void updateRtStatus(List<Long> rtIds, RtStatus status) {
-        // 상태 업데이트 권한 확인
         Store myStore = getUserStore();
 
         if (rtIds == null || rtIds.isEmpty()) {
@@ -146,16 +117,18 @@ public class RtService {
 
         List<RT> rts = rtRepository.findAllById(rtIds);
 
-        // 모든 RT가 내 매장으로 요청된 것인지 확인
         for (RT rt : rts) {
             if (!rt.getReqStore().equals(myStore.getStoreName())) {
                 throw new RuntimeException("다른 매장의 RT 상태를 변경할 수 없습니다");
             }
-
-            // 상태 변경
             rt.setStatus(status);
         }
 
         rtRepository.saveAll(rts);
     }
+
+    public Page<RT> getAllRTs(Pageable pageable) {
+        return rtRepository.findAll(pageable);
+    }
+
 }
