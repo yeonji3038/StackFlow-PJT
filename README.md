@@ -1,5 +1,5 @@
 # 🏷️ Stack-Flow (재고관리 서비스)
-
+<img src="./docs/image/땡그랑 소개.png">
 <br/>
 
 ## 목차
